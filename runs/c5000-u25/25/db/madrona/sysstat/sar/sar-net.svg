@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" width="1060" height="2540" fill="black" stroke="#808080" stroke-width="1">
+<text x="0" y="30" text-anchor="start" stroke="#a52a2a">Linux 6.12.94+deb13-cloud-amd64 (madrona) 	09/09/26 	_x86_64_	(16 CPU)
+</text>
+<g id="g12-0" transform="translate(0,60)">
+<rect x="0" y="0" height="300" width="1050" fill="#000000"/>
+<text x="0" y="20" style="fill: #ffff00; stroke: none">Network interfaces statistics (1) [lo]
+<tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
+</text>
+<polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
+<text x="795" y="50" style="fill: #00cc00; stroke: none; font-size: 12px">rxpck/s (17458.33, 29212.33)</text>
+<text x="795" y="65" style="fill: #ff00bf; stroke: none; font-size: 12px">txpck/s (17458.33, 29212.33)</text>
+<g transform="translate(70,250)">
+<text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
+<polyline points="0,9000.00 720,9000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.006846)"/>
+<text x="0" y="-61" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">9000.</text>
+<polyline points="0,18000.00 720,18000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.006846)"/>
+<text x="0" y="-123" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">18000.</text>
+<polyline points="0,27000.00 720,27000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.006846)"/>
+<text x="0" y="-184" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">27000.</text>
+<polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="0" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,0,0)">04:10:30</text>
+<polyline points="366,0 366,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="71" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,71,0)">04:16:36</text>
+<polyline points="732,0 732,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="143" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,143,0)">04:22:42</text>
+<polyline points="1098,0 1098,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="215" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,215,0)">04:28:48</text>
+<polyline points="1464,0 1464,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="287" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,287,0)">04:34:54</text>
+<polyline points="1830,0 1830,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="359" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,359,0)">04:41:00</text>
+<polyline points="2196,0 2196,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="431" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,431,0)">04:47:06</text>
+<polyline points="2562,0 2562,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="503" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,503,0)">04:53:12</text>
+<polyline points="2928,0 2928,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="575" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,575,0)">04:59:18</text>
+<polyline points="3294,0 3294,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="647" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,647,0)">05:05:24</text>
+<polyline points="3660,0 3660,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="719" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,719,0)">05:11:30</text>
+<text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
+<path d=" M60,17458.33 L120,27205.80 L180,27592.18 L240,27873.65 L300,28135.75 L360,28294.68 L420,28321.23 L480,28507.62 L540,28511.37 L600,28583.78 L660,28934.83 L720,28910.33 L780,28926.88 L840,28843.85 L900,28899.95 L960,29212.33 L1020,28920.75 L1080,29186.30 L1140,28808.20 L1201,29040.83 L1261,28865.31 L1321,28929.38 L1381,29008.33 L1441,29011.05 L1501,28836.37 L1561,28673.80 L1621,28860.53 L1681,28904.05 L1741,29019.12 L1801,29141.25 L1861,28762.37 L1921,29014.78 L1981,29017.77 L2041,29105.83 L2101,28797.80 L2161,28929.12 L2221,28737.98 L2281,28836.63 L2341,28862.50 L2401,28905.30 L2461,28834.22 L2521,28928.41 L2581,28971.87 L2641,28980.72 L2701,28996.03 L2761,28788.52 L2821,28903.98 L2881,28773.80 L2941,29023.55 L3001,28957.82 L3061,28701.45 L3121,28988.02 L3181,28868.30 L3241,28807.53 L3301,28919.17 L3361,28753.43 L3421,28854.97 L3481,29015.12 L3541,28850.87 L3601,28765.12 L3661,28757.93" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.196668,-0.006846)"/>
+<path d=" M60,17458.33 L120,27205.80 L180,27592.18 L240,27873.65 L300,28135.75 L360,28294.68 L420,28321.23 L480,28507.62 L540,28511.37 L600,28583.78 L660,28934.83 L720,28910.33 L780,28926.88 L840,28843.85 L900,28899.95 L960,29212.33 L1020,28920.75 L1080,29186.30 L1140,28808.20 L1201,29040.83 L1261,28865.31 L1321,28929.38 L1381,29008.33 L1441,29011.05 L1501,28836.37 L1561,28673.80 L1621,28860.53 L1681,28904.05 L1741,29019.12 L1801,29141.25 L1861,28762.37 L1921,29014.78 L1981,29017.77 L2041,29105.83 L2101,28797.80 L2161,28929.12 L2221,28737.98 L2281,28836.63 L2341,28862.50 L2401,28905.30 L2461,28834.22 L2521,28928.41 L2581,28971.87 L2641,28980.72 L2701,28996.03 L2761,28788.52 L2821,28903.98 L2881,28773.80 L2941,29023.55 L3001,28957.82 L3061,28701.45 L3121,28988.02 L3181,28868.30 L3241,28807.53 L3301,28919.17 L3361,28753.43 L3421,28854.97 L3481,29015.12 L3541,28850.87 L3601,28765.12 L3661,28757.93" style="vector-effect: non-scaling-stroke; stroke: #ff00bf; stroke-width: 1; fill-opacity: 0" transform="scale(0.196668,-0.006846)"/>
+</g>
+<rect x="0" y="310" height="300" width="1050" fill="#000000"/>
+<text x="0" y="330" style="fill: #ffff00; stroke: none">Network interfaces statistics (2) [lo]
+<tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
+</text>
+<polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
+<text x="795" y="360" style="fill: #00ffff; stroke: none; font-size: 12px">rxkB/s (9069.37, 15033.71)</text>
+<text x="795" y="375" style="fill: #ff0000; stroke: none; font-size: 12px">txkB/s (9069.37, 15033.71)</text>
+<g transform="translate(70,560)">
+<text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
+<polyline points="0,5000.00 720,5000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.013303)"/>
+<text x="0" y="-66" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">5000.</text>
+<polyline points="0,10000.00 720,10000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.013303)"/>
+<text x="0" y="-133" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">10000.</text>
+<polyline points="0,15000.00 720,15000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.013303)"/>
+<text x="0" y="-199" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">15000.</text>
+<polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="0" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,0,0)">04:10:30</text>
+<polyline points="366,0 366,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="71" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,71,0)">04:16:36</text>
+<polyline points="732,0 732,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="143" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,143,0)">04:22:42</text>
+<polyline points="1098,0 1098,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="215" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,215,0)">04:28:48</text>
+<polyline points="1464,0 1464,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="287" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,287,0)">04:34:54</text>
+<polyline points="1830,0 1830,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="359" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,359,0)">04:41:00</text>
+<polyline points="2196,0 2196,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="431" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,431,0)">04:47:06</text>
+<polyline points="2562,0 2562,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="503" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,503,0)">04:53:12</text>
+<polyline points="2928,0 2928,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="575" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,575,0)">04:59:18</text>
+<polyline points="3294,0 3294,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="647" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,647,0)">05:05:24</text>
+<polyline points="3660,0 3660,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="719" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,719,0)">05:11:30</text>
+<text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
+<path d=" M60,9069.37 L120,14449.06 L180,14587.59 L240,14722.33 L300,14861.42 L360,14759.04 L420,14727.70 L480,14878.68 L540,14780.74 L600,14780.25 L660,14830.22 L720,14874.65 L780,14841.32 L840,14885.12 L900,14913.07 L960,14911.21 L1020,14911.94 L1080,14926.07 L1140,14879.74 L1201,14875.69 L1261,14719.73 L1321,14828.69 L1381,15033.71 L1441,14991.48 L1501,14786.06 L1561,14704.47 L1621,14844.00 L1681,14783.06 L1741,15007.00 L1801,14958.62 L1861,14827.59 L1921,14734.71 L1981,14926.11 L2041,14855.85 L2101,14751.40 L2161,14927.60 L2221,15012.41 L2281,14827.96 L2341,14655.57 L2401,14973.77 L2461,14749.54 L2521,14883.87 L2581,14882.60 L2641,14827.06 L2701,14877.89 L2761,14840.43 L2821,14807.89 L2881,14867.69 L2941,14932.26 L3001,14810.51 L3061,14773.51 L3121,14975.69 L3181,14875.12 L3241,14757.23 L3301,14912.34 L3361,14841.52 L3421,14870.37 L3481,14867.92 L3541,14914.73 L3601,14843.01 L3661,14815.55" style="vector-effect: non-scaling-stroke; stroke: #00ffff; stroke-width: 1; fill-opacity: 0" transform="scale(0.196668,-0.013303)"/>
+<path d=" M60,9069.37 L120,14449.06 L180,14587.59 L240,14722.33 L300,14861.42 L360,14759.04 L420,14727.70 L480,14878.68 L540,14780.74 L600,14780.25 L660,14830.22 L720,14874.65 L780,14841.32 L840,14885.12 L900,14913.07 L960,14911.21 L1020,14911.94 L1080,14926.07 L1140,14879.74 L1201,14875.69 L1261,14719.73 L1321,14828.69 L1381,15033.71 L1441,14991.48 L1501,14786.06 L1561,14704.47 L1621,14844.00 L1681,14783.06 L1741,15007.00 L1801,14958.62 L1861,14827.59 L1921,14734.71 L1981,14926.11 L2041,14855.85 L2101,14751.40 L2161,14927.60 L2221,15012.41 L2281,14827.96 L2341,14655.57 L2401,14973.77 L2461,14749.54 L2521,14883.87 L2581,14882.60 L2641,14827.06 L2701,14877.89 L2761,14840.43 L2821,14807.89 L2881,14867.69 L2941,14932.26 L3001,14810.51 L3061,14773.51 L3121,14975.69 L3181,14875.12 L3241,14757.23 L3301,14912.34 L3361,14841.52 L3421,14870.37 L3481,14867.92 L3541,14914.73 L3601,14843.01 L3661,14815.55" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.196668,-0.013303)"/>
+</g>
+<rect x="0" y="620" height="300" width="1050" fill="#000000"/>
+<text x="0" y="640" style="fill: #ffff00; stroke: none">Network interfaces statistics (3) [lo]
+<tspan x="795" y="645" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
+</text>
+<polyline points="70,670 70,870 790,870" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
+<text x="795" y="670" style="fill: #e85f00; stroke: none; font-size: 12px">rxcmp/s (0.00, 0.00)</text>
+<text x="795" y="685" style="fill: #0000ff; stroke: none; font-size: 12px">txcmp/s (0.00, 0.00)</text>
+<text x="795" y="700" style="fill: #006020; stroke: none; font-size: 12px">rxmcst/s (0.00, 0.00)</text>
+<g transform="translate(70,870)">
+<text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.00.</text>
+<polyline points="0,0.33 720,0.33" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
+<text x="0" y="-66" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.33.</text>
+<polyline points="0,0.67 720,0.67" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
+<text x="0" y="-134" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.67.</text>
+<polyline points="0,1.00 720,1.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
+<text x="0" y="-200" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">1.00.</text>
+<polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="0" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,0,0)">04:10:30</text>
+<polyline points="366,0 366,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="71" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,71,0)">04:16:36</text>
+<polyline points="732,0 732,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="143" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,143,0)">04:22:42</text>
+<polyline points="1098,0 1098,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="215" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,215,0)">04:28:48</text>
+<polyline points="1464,0 1464,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="287" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,287,0)">04:34:54</text>
+<polyline points="1830,0 1830,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="359" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,359,0)">04:41:00</text>
+<polyline points="2196,0 2196,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="431" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,431,0)">04:47:06</text>
+<polyline points="2562,0 2562,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="503" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,503,0)">04:53:12</text>
+<polyline points="2928,0 2928,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="575" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,575,0)">04:59:18</text>
+<polyline points="3294,0 3294,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="647" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,647,0)">05:05:24</text>
+<polyline points="3660,0 3660,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="719" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,719,0)">05:11:30</text>
+<text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
+<path d=" M60,0.00 L120,0.00 L180,0.00 L240,0.00 L300,0.00 L360,0.00 L420,0.00 L480,0.00 L540,0.00 L600,0.00 L660,0.00 L720,0.00 L780,0.00 L840,0.00 L900,0.00 L960,0.00 L1020,0.00 L1080,0.00 L1140,0.00 L1201,0.00 L1261,0.00 L1321,0.00 L1381,0.00 L1441,0.00 L1501,0.00 L1561,0.00 L1621,0.00 L1681,0.00 L1741,0.00 L1801,0.00 L1861,0.00 L1921,0.00 L1981,0.00 L2041,0.00 L2101,0.00 L2161,0.00 L2221,0.00 L2281,0.00 L2341,0.00 L2401,0.00 L2461,0.00 L2521,0.00 L2581,0.00 L2641,0.00 L2701,0.00 L2761,0.00 L2821,0.00 L2881,0.00 L2941,0.00 L3001,0.00 L3061,0.00 L3121,0.00 L3181,0.00 L3241,0.00 L3301,0.00 L3361,0.00 L3421,0.00 L3481,0.00 L3541,0.00 L3601,0.00 L3661,0.00" style="vector-effect: non-scaling-stroke; stroke: #e85f00; stroke-width: 1; fill-opacity: 0" transform="scale(0.196668,-200.000000)"/>
+<path d=" M60,0.00 L120,0.00 L180,0.00 L240,0.00 L300,0.00 L360,0.00 L420,0.00 L480,0.00 L540,0.00 L600,0.00 L660,0.00 L720,0.00 L780,0.00 L840,0.00 L900,0.00 L960,0.00 L1020,0.00 L1080,0.00 L1140,0.00 L1201,0.00 L1261,0.00 L1321,0.00 L1381,0.00 L1441,0.00 L1501,0.00 L1561,0.00 L1621,0.00 L1681,0.00 L1741,0.00 L1801,0.00 L1861,0.00 L1921,0.00 L1981,0.00 L2041,0.00 L2101,0.00 L2161,0.00 L2221,0.00 L2281,0.00 L2341,0.00 L2401,0.00 L2461,0.00 L2521,0.00 L2581,0.00 L2641,0.00 L2701,0.00 L2761,0.00 L2821,0.00 L2881,0.00 L2941,0.00 L3001,0.00 L3061,0.00 L3121,0.00 L3181,0.00 L3241,0.00 L3301,0.00 L3361,0.00 L3421,0.00 L3481,0.00 L3541,0.00 L3601,0.00 L3661,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.196668,-200.000000)"/>
+<path d=" M60,0.00 L120,0.00 L180,0.00 L240,0.00 L300,0.00 L360,0.00 L420,0.00 L480,0.00 L540,0.00 L600,0.00 L660,0.00 L720,0.00 L780,0.00 L840,0.00 L900,0.00 L960,0.00 L1020,0.00 L1080,0.00 L1140,0.00 L1201,0.00 L1261,0.00 L1321,0.00 L1381,0.00 L1441,0.00 L1501,0.00 L1561,0.00 L1621,0.00 L1681,0.00 L1741,0.00 L1801,0.00 L1861,0.00 L1921,0.00 L1981,0.00 L2041,0.00 L2101,0.00 L2161,0.00 L2221,0.00 L2281,0.00 L2341,0.00 L2401,0.00 L2461,0.00 L2521,0.00 L2581,0.00 L2641,0.00 L2701,0.00 L2761,0.00 L2821,0.00 L2881,0.00 L2941,0.00 L3001,0.00 L3061,0.00 L3121,0.00 L3181,0.00 L3241,0.00 L3301,0.00 L3361,0.00 L3421,0.00 L3481,0.00 L3541,0.00 L3601,0.00 L3661,0.00" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.196668,-200.000000)"/>
+</g>
+<rect x="0" y="930" height="300" width="1050" fill="#000000"/>
+<text x="0" y="950" style="fill: #ffff00; stroke: none">Network interfaces statistics (4) [lo]
+<tspan x="795" y="955" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
+</text>
+<polyline points="70,980 70,1180 790,1180" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
+<text x="795" y="980" style="fill: #7030a0; stroke: none; font-size: 12px">%ifutil (0.00, 0.00)</text>
+<g transform="translate(70,1180)">
+<text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
+<polyline points="0,25.00 720,25.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-2.000000)"/>
+<text x="0" y="-50" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">25.</text>
+<polyline points="0,50.00 720,50.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-2.000000)"/>
+<text x="0" y="-100" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">50.</text>
+<polyline points="0,75.00 720,75.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-2.000000)"/>
+<text x="0" y="-150" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">75.</text>
+<polyline points="0,100.00 720,100.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-2.000000)"/>
+<text x="0" y="-200" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">100.</text>
+<polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="0" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,0,0)">04:10:30</text>
+<polyline points="366,0 366,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="71" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,71,0)">04:16:36</text>
+<polyline points="732,0 732,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="143" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,143,0)">04:22:42</text>
+<polyline points="1098,0 1098,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="215" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,215,0)">04:28:48</text>
+<polyline points="1464,0 1464,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="287" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,287,0)">04:34:54</text>
+<polyline points="1830,0 1830,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="359" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,359,0)">04:41:00</text>
+<polyline points="2196,0 2196,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="431" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,431,0)">04:47:06</text>
+<polyline points="2562,0 2562,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="503" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,503,0)">04:53:12</text>
+<polyline points="2928,0 2928,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="575" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,575,0)">04:59:18</text>
+<polyline points="3294,0 3294,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="647" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,647,0)">05:05:24</text>
+<polyline points="3660,0 3660,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="719" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,719,0)">05:11:30</text>
+<text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
+</g>
+</g>
+<g id="g12-1" transform="translate(0,1300)">
+<rect x="0" y="0" height="300" width="1050" fill="#000000"/>
+<text x="0" y="20" style="fill: #ffff00; stroke: none">Network interfaces statistics (1) [ens5]
+<tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
+</text>
+<polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
+<text x="795" y="50" style="fill: #00cc00; stroke: none; font-size: 12px">rxpck/s (0.22, 2.02)</text>
+<text x="795" y="65" style="fill: #ff00bf; stroke: none; font-size: 12px">txpck/s (0.22, 2.07)</text>
+<g transform="translate(70,250)">
+<text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.00.</text>
+<polyline points="0,0.69 720,0.69" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-96.790323)"/>
+<text x="0" y="-66" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.69.</text>
+<polyline points="0,1.38 720,1.38" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-96.790323)"/>
+<text x="0" y="-133" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">1.38.</text>
+<polyline points="0,2.07 720,2.07" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-96.790323)"/>
+<text x="0" y="-200" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">2.07.</text>
+<polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="0" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,0,0)">04:10:30</text>
+<polyline points="366,0 366,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="71" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,71,0)">04:16:36</text>
+<polyline points="732,0 732,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="143" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,143,0)">04:22:42</text>
+<polyline points="1098,0 1098,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="215" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,215,0)">04:28:48</text>
+<polyline points="1464,0 1464,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="287" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,287,0)">04:34:54</text>
+<polyline points="1830,0 1830,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="359" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,359,0)">04:41:00</text>
+<polyline points="2196,0 2196,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="431" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,431,0)">04:47:06</text>
+<polyline points="2562,0 2562,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="503" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,503,0)">04:53:12</text>
+<polyline points="2928,0 2928,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="575" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,575,0)">04:59:18</text>
+<polyline points="3294,0 3294,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="647" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,647,0)">05:05:24</text>
+<polyline points="3660,0 3660,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="719" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,719,0)">05:11:30</text>
+<text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
+<path d=" M60,1.03 L120,0.25 L180,0.25 L240,0.22 L300,0.22 L360,1.05 L420,0.58 L480,0.75 L540,0.28 L600,0.23 L660,1.02 L720,0.27 L780,0.23 L840,0.42 L900,0.22 L960,1.03 L1020,0.55 L1080,0.32 L1140,0.25 L1201,1.30 L1261,2.02 L1321,1.27 L1381,1.20 L1441,1.18 L1501,1.25 L1561,1.77 L1621,0.77 L1681,0.28 L1741,0.22 L1801,0.27 L1861,1.00 L1921,0.32 L1981,0.22 L2041,0.27 L2101,0.22 L2161,1.03 L2221,0.58 L2281,0.73 L2341,0.30 L2401,0.28 L2461,1.03 L2521,0.28 L2581,0.25 L2641,0.23 L2701,0.27 L2761,1.00 L2821,0.57 L2881,0.28 L2941,0.22 L3001,0.22 L3061,1.02 L3121,0.27 L3181,0.22 L3241,0.22 L3301,0.28 L3361,1.03 L3421,0.75 L3481,0.32 L3541,0.23 L3601,0.22 L3661,1.02" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.196668,-96.790323)"/>
+<path d=" M60,1.07 L120,0.27 L180,0.27 L240,0.25 L300,0.23 L360,1.10 L420,0.62 L480,0.77 L540,0.28 L600,0.25 L660,1.05 L720,0.28 L780,0.27 L840,0.43 L900,0.22 L960,1.10 L1020,0.57 L1080,0.32 L1140,0.25 L1201,1.35 L1261,2.07 L1321,1.27 L1381,1.20 L1441,1.18 L1501,1.25 L1561,1.87 L1621,0.80 L1681,0.27 L1741,0.22 L1801,0.27 L1861,1.07 L1921,0.32 L1981,0.22 L2041,0.27 L2101,0.22 L2161,1.08 L2221,0.58 L2281,0.75 L2341,0.28 L2401,0.30 L2461,1.15 L2521,0.28 L2581,0.25 L2641,0.23 L2701,0.27 L2761,1.02 L2821,0.57 L2881,0.27 L2941,0.23 L3001,0.22 L3061,1.05 L3121,0.27 L3181,0.22 L3241,0.22 L3301,0.28 L3361,1.10 L3421,0.78 L3481,0.33 L3541,0.23 L3601,0.22 L3661,1.07" style="vector-effect: non-scaling-stroke; stroke: #ff00bf; stroke-width: 1; fill-opacity: 0" transform="scale(0.196668,-96.790323)"/>
+</g>
+<rect x="0" y="310" height="300" width="1050" fill="#000000"/>
+<text x="0" y="330" style="fill: #ffff00; stroke: none">Network interfaces statistics (2) [ens5]
+<tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
+</text>
+<polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
+<text x="795" y="360" style="fill: #00ffff; stroke: none; font-size: 12px">rxkB/s (0.02, 0.25)</text>
+<text x="795" y="375" style="fill: #ff0000; stroke: none; font-size: 12px">txkB/s (0.03, 0.24)</text>
+<g transform="translate(70,560)">
+<text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.00.</text>
+<polyline points="0,0.08 720,0.08" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-794.135952)"/>
+<text x="0" y="-63" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.08.</text>
+<polyline points="0,0.17 720,0.17" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-794.135952)"/>
+<text x="0" y="-135" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.17.</text>
+<polyline points="0,0.25 720,0.25" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-794.135952)"/>
+<text x="0" y="-198" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.25.</text>
+<polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="0" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,0,0)">04:10:30</text>
+<polyline points="366,0 366,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="71" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,71,0)">04:16:36</text>
+<polyline points="732,0 732,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="143" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,143,0)">04:22:42</text>
+<polyline points="1098,0 1098,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="215" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,215,0)">04:28:48</text>
+<polyline points="1464,0 1464,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="287" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,287,0)">04:34:54</text>
+<polyline points="1830,0 1830,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="359" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,359,0)">04:41:00</text>
+<polyline points="2196,0 2196,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="431" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,431,0)">04:47:06</text>
+<polyline points="2562,0 2562,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="503" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,503,0)">04:53:12</text>
+<polyline points="2928,0 2928,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="575" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,575,0)">04:59:18</text>
+<polyline points="3294,0 3294,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="647" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,647,0)">05:05:24</text>
+<polyline points="3660,0 3660,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="719" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,719,0)">05:11:30</text>
+<text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
+<path d=" M60,0.20 L120,0.03 L180,0.03 L240,0.03 L300,0.02 L360,0.20 L420,0.15 L480,0.19 L540,0.03 L600,0.03 L660,0.20 L720,0.03 L780,0.03 L840,0.08 L900,0.02 L960,0.20 L1020,0.14 L1080,0.03 L1140,0.03 L1201,0.12 L1261,0.25 L1321,0.08 L1381,0.07 L1441,0.07 L1501,0.08 L1561,0.24 L1621,0.19 L1681,0.03 L1741,0.02 L1801,0.03 L1861,0.20 L1921,0.03 L1981,0.02 L2041,0.03 L2101,0.02 L2161,0.20 L2221,0.15 L2281,0.19 L2341,0.03 L2401,0.03 L2461,0.20 L2521,0.03 L2581,0.03 L2641,0.03 L2701,0.03 L2761,0.20 L2821,0.15 L2881,0.03 L2941,0.03 L3001,0.03 L3061,0.20 L3121,0.03 L3181,0.03 L3241,0.02 L3301,0.03 L3361,0.20 L3421,0.19 L3481,0.03 L3541,0.03 L3601,0.03 L3661,0.20" style="vector-effect: non-scaling-stroke; stroke: #00ffff; stroke-width: 1; fill-opacity: 0" transform="scale(0.196668,-794.135952)"/>
+<path d=" M60,0.18 L120,0.04 L180,0.04 L240,0.04 L300,0.04 L360,0.18 L420,0.13 L480,0.14 L540,0.04 L600,0.04 L660,0.18 L720,0.04 L780,0.04 L840,0.12 L900,0.03 L960,0.18 L1020,0.12 L1080,0.04 L1140,0.04 L1201,0.18 L1261,0.24 L1321,0.10 L1381,0.10 L1441,0.10 L1501,0.10 L1561,0.23 L1621,0.14 L1681,0.04 L1741,0.03 L1801,0.04 L1861,0.18 L1921,0.04 L1981,0.03 L2041,0.04 L2101,0.03 L2161,0.18 L2221,0.12 L2281,0.14 L2341,0.04 L2401,0.04 L2461,0.18 L2521,0.04 L2581,0.04 L2641,0.04 L2701,0.04 L2761,0.18 L2821,0.12 L2881,0.04 L2941,0.04 L3001,0.03 L3061,0.18 L3121,0.04 L3181,0.03 L3241,0.03 L3301,0.04 L3361,0.18 L3421,0.14 L3481,0.04 L3541,0.04 L3601,0.03 L3661,0.18" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.196668,-794.135952)"/>
+</g>
+<rect x="0" y="620" height="300" width="1050" fill="#000000"/>
+<text x="0" y="640" style="fill: #ffff00; stroke: none">Network interfaces statistics (3) [ens5]
+<tspan x="795" y="645" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
+</text>
+<polyline points="70,670 70,870 790,870" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
+<text x="795" y="670" style="fill: #e85f00; stroke: none; font-size: 12px">rxcmp/s (0.00, 0.00)</text>
+<text x="795" y="685" style="fill: #0000ff; stroke: none; font-size: 12px">txcmp/s (0.00, 0.00)</text>
+<text x="795" y="700" style="fill: #006020; stroke: none; font-size: 12px">rxmcst/s (0.00, 0.00)</text>
+<g transform="translate(70,870)">
+<text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.00.</text>
+<polyline points="0,0.33 720,0.33" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
+<text x="0" y="-66" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.33.</text>
+<polyline points="0,0.67 720,0.67" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
+<text x="0" y="-134" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.67.</text>
+<polyline points="0,1.00 720,1.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
+<text x="0" y="-200" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">1.00.</text>
+<polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="0" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,0,0)">04:10:30</text>
+<polyline points="366,0 366,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="71" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,71,0)">04:16:36</text>
+<polyline points="732,0 732,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="143" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,143,0)">04:22:42</text>
+<polyline points="1098,0 1098,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="215" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,215,0)">04:28:48</text>
+<polyline points="1464,0 1464,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="287" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,287,0)">04:34:54</text>
+<polyline points="1830,0 1830,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="359" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,359,0)">04:41:00</text>
+<polyline points="2196,0 2196,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="431" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,431,0)">04:47:06</text>
+<polyline points="2562,0 2562,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="503" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,503,0)">04:53:12</text>
+<polyline points="2928,0 2928,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="575" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,575,0)">04:59:18</text>
+<polyline points="3294,0 3294,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="647" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,647,0)">05:05:24</text>
+<polyline points="3660,0 3660,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="719" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,719,0)">05:11:30</text>
+<text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
+<path d=" M60,0.00 L120,0.00 L180,0.00 L240,0.00 L300,0.00 L360,0.00 L420,0.00 L480,0.00 L540,0.00 L600,0.00 L660,0.00 L720,0.00 L780,0.00 L840,0.00 L900,0.00 L960,0.00 L1020,0.00 L1080,0.00 L1140,0.00 L1201,0.00 L1261,0.00 L1321,0.00 L1381,0.00 L1441,0.00 L1501,0.00 L1561,0.00 L1621,0.00 L1681,0.00 L1741,0.00 L1801,0.00 L1861,0.00 L1921,0.00 L1981,0.00 L2041,0.00 L2101,0.00 L2161,0.00 L2221,0.00 L2281,0.00 L2341,0.00 L2401,0.00 L2461,0.00 L2521,0.00 L2581,0.00 L2641,0.00 L2701,0.00 L2761,0.00 L2821,0.00 L2881,0.00 L2941,0.00 L3001,0.00 L3061,0.00 L3121,0.00 L3181,0.00 L3241,0.00 L3301,0.00 L3361,0.00 L3421,0.00 L3481,0.00 L3541,0.00 L3601,0.00 L3661,0.00" style="vector-effect: non-scaling-stroke; stroke: #e85f00; stroke-width: 1; fill-opacity: 0" transform="scale(0.196668,-200.000000)"/>
+<path d=" M60,0.00 L120,0.00 L180,0.00 L240,0.00 L300,0.00 L360,0.00 L420,0.00 L480,0.00 L540,0.00 L600,0.00 L660,0.00 L720,0.00 L780,0.00 L840,0.00 L900,0.00 L960,0.00 L1020,0.00 L1080,0.00 L1140,0.00 L1201,0.00 L1261,0.00 L1321,0.00 L1381,0.00 L1441,0.00 L1501,0.00 L1561,0.00 L1621,0.00 L1681,0.00 L1741,0.00 L1801,0.00 L1861,0.00 L1921,0.00 L1981,0.00 L2041,0.00 L2101,0.00 L2161,0.00 L2221,0.00 L2281,0.00 L2341,0.00 L2401,0.00 L2461,0.00 L2521,0.00 L2581,0.00 L2641,0.00 L2701,0.00 L2761,0.00 L2821,0.00 L2881,0.00 L2941,0.00 L3001,0.00 L3061,0.00 L3121,0.00 L3181,0.00 L3241,0.00 L3301,0.00 L3361,0.00 L3421,0.00 L3481,0.00 L3541,0.00 L3601,0.00 L3661,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.196668,-200.000000)"/>
+<path d=" M60,0.00 L120,0.00 L180,0.00 L240,0.00 L300,0.00 L360,0.00 L420,0.00 L480,0.00 L540,0.00 L600,0.00 L660,0.00 L720,0.00 L780,0.00 L840,0.00 L900,0.00 L960,0.00 L1020,0.00 L1080,0.00 L1140,0.00 L1201,0.00 L1261,0.00 L1321,0.00 L1381,0.00 L1441,0.00 L1501,0.00 L1561,0.00 L1621,0.00 L1681,0.00 L1741,0.00 L1801,0.00 L1861,0.00 L1921,0.00 L1981,0.00 L2041,0.00 L2101,0.00 L2161,0.00 L2221,0.00 L2281,0.00 L2341,0.00 L2401,0.00 L2461,0.00 L2521,0.00 L2581,0.00 L2641,0.00 L2701,0.00 L2761,0.00 L2821,0.00 L2881,0.00 L2941,0.00 L3001,0.00 L3061,0.00 L3121,0.00 L3181,0.00 L3241,0.00 L3301,0.00 L3361,0.00 L3421,0.00 L3481,0.00 L3541,0.00 L3601,0.00 L3661,0.00" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.196668,-200.000000)"/>
+</g>
+<rect x="0" y="930" height="300" width="1050" fill="#000000"/>
+<text x="0" y="950" style="fill: #ffff00; stroke: none">Network interfaces statistics (4) [ens5]
+<tspan x="795" y="955" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
+</text>
+<polyline points="70,980 70,1180 790,1180" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
+<text x="795" y="980" style="fill: #7030a0; stroke: none; font-size: 12px">%ifutil (0.00, 0.00)</text>
+<g transform="translate(70,1180)">
+<text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
+<polyline points="0,25.00 720,25.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-2.000000)"/>
+<text x="0" y="-50" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">25.</text>
+<polyline points="0,50.00 720,50.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-2.000000)"/>
+<text x="0" y="-100" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">50.</text>
+<polyline points="0,75.00 720,75.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-2.000000)"/>
+<text x="0" y="-150" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">75.</text>
+<polyline points="0,100.00 720,100.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-2.000000)"/>
+<text x="0" y="-200" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">100.</text>
+<polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="0" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,0,0)">04:10:30</text>
+<polyline points="366,0 366,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="71" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,71,0)">04:16:36</text>
+<polyline points="732,0 732,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="143" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,143,0)">04:22:42</text>
+<polyline points="1098,0 1098,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="215" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,215,0)">04:28:48</text>
+<polyline points="1464,0 1464,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="287" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,287,0)">04:34:54</text>
+<polyline points="1830,0 1830,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="359" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,359,0)">04:41:00</text>
+<polyline points="2196,0 2196,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="431" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,431,0)">04:47:06</text>
+<polyline points="2562,0 2562,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="503" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,503,0)">04:53:12</text>
+<polyline points="2928,0 2928,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="575" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,575,0)">04:59:18</text>
+<polyline points="3294,0 3294,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="647" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,647,0)">05:05:24</text>
+<polyline points="3660,0 3660,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.196668,1)"/>
+<text x="719" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,719,0)">05:11:30</text>
+<text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
+</g>
+</g>
+<!-- Actual canvas height: 2540 -->
+</svg>

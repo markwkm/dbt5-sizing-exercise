@@ -1,0 +1,48 @@
+dbt5 - Driver Customer Emulator Main
+Using the following settings:
+
+Input files location: /tmp/.mount_dbt5aDKlNl/opt/egen/flat_in
+
+Brokerage House address: localhost
+Brokerage House port: 30000
+
+Configured customer count: 97000
+Active customer count: 97000
+Days of initial trades: 300
+Scale Factor: 500
+
+User Threads: 16
+Sleep between creating users: 3750
+
+Test duration (sec): 3600
+Pacing Delay (msec): 0
+
+Unique ID (seed): 0
+initializing data maintenance...
+
+Running Trade-Cleanup transaction before starting the test...
+Trade-Cleanup transaction completed.
+
+Test is starting at 19:45:42.798
+Estimated duration of ramp-up: 60 seconds
+Estimated end time 20:46:42.798
+>> Start of ramp-up.
+>> Data-Maintenance thread started.
+>> End of ramp-up.
+User thread # 3374754 terminated.
+User thread # 3374682 terminated.
+User thread # 3374701 terminated.
+Data-Maintenance thread stopped.
+User thread # 3374714 terminated.
+User thread # 3374724 terminated.
+User thread # 3374729 terminated.
+User thread # 3374678 terminated.
+User thread # 3374774 terminated.
+User thread # 3374718 terminated.
+User thread # 3374687 terminated.
+User thread # 3374708 terminated.
+User thread # 3374802 terminated.
+User thread # 3374765 terminated.
+User thread # 3374655 terminated.
+User thread # 3374744 terminated.
+User thread # 3374793 terminated.

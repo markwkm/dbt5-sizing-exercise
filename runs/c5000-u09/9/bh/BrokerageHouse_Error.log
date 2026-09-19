@@ -1,0 +1,7 @@
+1788867363 2211148 TRADE_RESULT giving up after 10 retries 2211148 1788867363 
+SQL: COMMIT
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during commit attempt.
+HINT:  The transaction might succeed if retried.
+
+

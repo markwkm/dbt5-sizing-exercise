@@ -1,0 +1,982 @@
+dbt5 - Brokerage House
+Listening on port: 30000
+
+Using the following database settings:
+  Database hostname: localhost
+  Database port: 
+  Database name: dbt5
+Using the following Market Exchange Emulator settings:
+  Hostname: localhost
+  Port: 30010
+Brokerage House opened for business, waiting for traders...
+1788915818 3400300 TRADE_RESULT giving up after 10 retries 3400300 1788915818 
+SQL: SELECT * FROM TradeResultFrame4($1, $2, $3, $4)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during conflict out checking.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "SELECT s_ex_id
+     , s_name
+FROM security
+WHERE s_symb = $1"
+
+
+1788915844 3400290 TRADE_RESULT giving up after 10 retries 3400290 1788915844 
+SQL: SELECT * FROM TradeResultFrame4($1, $2, $3, $4)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during conflict out checking.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "SELECT s_ex_id
+     , s_name
+FROM security
+WHERE s_symb = $1"
+
+
+1788915885 3400301 TRADE_RESULT giving up after 10 retries 3400301 1788915885 
+SQL: SELECT * FROM TradeResultFrame3($1, $2, $3, $4)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_tax = $1
+WHERE t_id = $2"
+
+
+1788915959 3400290 TRADE_RESULT giving up after 10 retries 3400290 1788915959 
+SQL: SELECT * FROM TradeResultFrame4($1, $2, $3, $4)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during conflict out checking.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "SELECT s_ex_id
+     , s_name
+FROM security
+WHERE s_symb = $1"
+
+
+1788916072 3400288 TRADE_RESULT giving up after 10 retries 3400288 1788916072 
+SQL: SELECT * FROM TradeResultFrame3($1, $2, $3, $4)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_tax = $1
+WHERE t_id = $2"
+
+
+1788916323 3400298 TRADE_RESULT giving up after 10 retries 3400298 1788916323 
+SQL: COMMIT
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on commit attempt with conflict in from prepared pivot.
+HINT:  The transaction might succeed if retried.
+
+
+1788916351 3400300 TRADE_RESULT giving up after 10 retries 3400300 1788916351 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during conflict out checking.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "SELECT 1 FROM ONLY "public"."security" x WHERE "s_symb"::pg_catalog.text OPERATOR(pg_catalog.=) $1::pg_catalog.text FOR KEY SHARE OF x"
+SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788916367 3400298 TRADE_RESULT giving up after 10 retries 3400298 1788916367 
+SQL: SELECT * FROM TradeResultFrame3($1, $2, $3, $4)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_tax = $1
+WHERE t_id = $2"
+
+
+1788916370 3400301 TRADE_RESULT giving up after 10 retries 3400301 1788916370 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on conflict out to pivot 267164478, during read.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE broker
+SET b_comm_total = b_comm_total + $1
+  , b_num_trades = b_num_trades + 1
+WHERE b_id = $2"
+
+
+1788916411 3400301 TRADE_RESULT giving up after 10 retries 3400301 1788916411 
+SQL: COMMIT
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during commit attempt.
+HINT:  The transaction might succeed if retried.
+
+
+1788916418 3400291 TRADE_RESULT giving up after 10 retries 3400291 1788916418 
+SQL: COMMIT
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on commit attempt with conflict in from prepared pivot.
+HINT:  The transaction might succeed if retried.
+
+
+1788916461 3400294 TRADE_RESULT giving up after 10 retries 3400294 1788916461 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during conflict out checking.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788916463 3400297 TRADE_RESULT giving up after 10 retries 3400297 1788916463 
+SQL: SELECT * FROM TradeResultFrame3($1, $2, $3, $4)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_tax = $1
+WHERE t_id = $2"
+
+
+1788916510 3400290 TRADE_RESULT giving up after 10 retries 3400290 1788916510 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788916634 3400303 TRADE_RESULT giving up after 10 retries 3400303 1788916634 
+SQL: COMMIT
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on commit attempt with conflict in from prepared pivot.
+HINT:  The transaction might succeed if retried.
+
+
+1788916741 3400291 TRADE_RESULT giving up after 10 retries 3400291 1788916741 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788916869 3400293 TRADE_RESULT giving up after 10 retries 3400293 1788916869 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during conflict out checking.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "SELECT 1 FROM ONLY "public"."status_type" x WHERE "st_id"::pg_catalog.text OPERATOR(pg_catalog.=) $1::pg_catalog.text FOR KEY SHARE OF x"
+SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788916894 3400289 TRADE_RESULT giving up after 10 retries 3400289 1788916894 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788916894 3400299 TRADE_RESULT giving up after 10 retries 3400299 1788916894 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788916905 3400292 TRADE_RESULT giving up after 10 retries 3400292 1788916905 
+SQL: COMMIT
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during commit attempt.
+HINT:  The transaction might succeed if retried.
+
+
+1788916980 3400298 TRADE_RESULT giving up after 10 retries 3400298 1788916980 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788916997 3400298 TRADE_RESULT giving up after 10 retries 3400298 1788916997 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788917017 3400295 TRADE_RESULT giving up after 10 retries 3400295 1788917017 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during conflict out checking.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "SELECT 1 FROM ONLY "public"."trade" x WHERE "t_id"::pg_catalog.int8 OPERATOR(pg_catalog.=) $1::pg_catalog.int8 FOR KEY SHARE OF x"
+SQL statement "INSERT INTO trade_history(
+    th_t_id
+  , th_dts
+  , th_st_id
+)
+VALUES (
+    $1
+  , $2
+  , $3
+)"
+
+
+1788917026 3400295 TRADE_RESULT giving up after 10 retries 3400295 1788917026 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788917193 3400297 TRADE_RESULT giving up after 10 retries 3400297 1788917193 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788917243 3400295 TRADE_RESULT giving up after 10 retries 3400295 1788917243 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788917298 3400297 TRADE_RESULT giving up after 10 retries 3400297 1788917298 
+SQL: SELECT * FROM TradeResultFrame6($1, $2, $3, $4, $5, $6, $7, $8, $9)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during conflict in checking.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "INSERT INTO settlement(
+    se_t_id
+  , se_cash_type
+  , se_cash_due_date
+  , se_amt)
+VALUES (
+    $1
+  , $2
+  , $3
+  , $4
+)"
+
+
+1788917365 3400287 TRADE_RESULT giving up after 10 retries 3400287 1788917365 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on conflict out to pivot 268033703, during read.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE broker
+SET b_comm_total = b_comm_total + $1
+  , b_num_trades = b_num_trades + 1
+WHERE b_id = $2"
+
+
+1788917391 3400290 TRADE_RESULT giving up after 10 retries 3400290 1788917391 
+SQL: COMMIT
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on commit attempt with conflict in from prepared pivot.
+HINT:  The transaction might succeed if retried.
+
+
+1788917452 3400288 TRADE_RESULT giving up after 10 retries 3400288 1788917452 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788917507 3400297 TRADE_RESULT giving up after 10 retries 3400297 1788917507 
+SQL: SELECT * FROM TradeResultFrame6($1, $2, $3, $4, $5, $6, $7, $8, $9)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during conflict in checking.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "INSERT INTO settlement(
+    se_t_id
+  , se_cash_type
+  , se_cash_due_date
+  , se_amt)
+VALUES (
+    $1
+  , $2
+  , $3
+  , $4
+)"
+
+
+1788917598 3400298 TRADE_RESULT giving up after 10 retries 3400298 1788917598 
+SQL: SELECT * FROM TradeResultFrame3($1, $2, $3, $4)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_tax = $1
+WHERE t_id = $2"
+
+
+1788917648 3400298 TRADE_RESULT giving up after 10 retries 3400298 1788917648 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788917648 3400292 TRADE_RESULT giving up after 10 retries 3400292 1788917648 
+SQL: COMMIT
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on commit attempt with conflict in from prepared pivot.
+HINT:  The transaction might succeed if retried.
+
+
+1788917731 3400289 TRADE_RESULT giving up after 10 retries 3400289 1788917731 
+SQL: SELECT * FROM TradeResultFrame3($1, $2, $3, $4)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_tax = $1
+WHERE t_id = $2"
+
+
+1788917757 3400296 TRADE_RESULT giving up after 10 retries 3400296 1788917757 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on conflict out to pivot 268377438, during read.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE broker
+SET b_comm_total = b_comm_total + $1
+  , b_num_trades = b_num_trades + 1
+WHERE b_id = $2"
+
+
+1788917763 3400301 TRADE_RESULT giving up after 10 retries 3400301 1788917763 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during conflict in checking.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "INSERT INTO trade_history(
+    th_t_id
+  , th_dts
+  , th_st_id
+)
+VALUES (
+    $1
+  , $2
+  , $3
+)"
+
+
+1788917881 3400300 TRADE_RESULT giving up after 10 retries 3400300 1788917881 
+SQL: SELECT * FROM TradeResultFrame6($1, $2, $3, $4, $5, $6, $7, $8, $9)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during conflict in checking.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "INSERT INTO settlement(
+    se_t_id
+  , se_cash_type
+  , se_cash_due_date
+  , se_amt)
+VALUES (
+    $1
+  , $2
+  , $3
+  , $4
+)"
+
+
+1788917955 3400296 TRADE_RESULT giving up after 10 retries 3400296 1788917955 
+SQL: SELECT * FROM TradeResultFrame6($1, $2, $3, $4, $5, $6, $7, $8, $9)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during conflict in checking.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "INSERT INTO settlement(
+    se_t_id
+  , se_cash_type
+  , se_cash_due_date
+  , se_amt)
+VALUES (
+    $1
+  , $2
+  , $3
+  , $4
+)"
+
+
+1788917972 3400287 TRADE_RESULT giving up after 10 retries 3400287 1788917972 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788917988 3400289 TRADE_RESULT giving up after 10 retries 3400289 1788917988 
+SQL: SELECT * FROM TradeResultFrame6($1, $2, $3, $4, $5, $6, $7, $8, $9)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during conflict in checking.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "INSERT INTO settlement(
+    se_t_id
+  , se_cash_type
+  , se_cash_due_date
+  , se_amt)
+VALUES (
+    $1
+  , $2
+  , $3
+  , $4
+)"
+
+
+1788917990 3400288 TRADE_RESULT giving up after 10 retries 3400288 1788917990 
+SQL: SELECT * FROM TradeResultFrame3($1, $2, $3, $4)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_tax = $1
+WHERE t_id = $2"
+
+
+1788918046 3400294 TRADE_RESULT giving up after 10 retries 3400294 1788918046 
+SQL: SELECT * FROM TradeResultFrame6($1, $2, $3, $4, $5, $6, $7, $8, $9)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during conflict in checking.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "INSERT INTO settlement(
+    se_t_id
+  , se_cash_type
+  , se_cash_due_date
+  , se_amt)
+VALUES (
+    $1
+  , $2
+  , $3
+  , $4
+)"
+
+
+1788918059 3400292 TRADE_RESULT giving up after 10 retries 3400292 1788918059 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788918074 3400299 TRADE_RESULT giving up after 10 retries 3400299 1788918074 
+SQL: COMMIT
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on commit attempt with conflict in from prepared pivot.
+HINT:  The transaction might succeed if retried.
+
+
+1788918110 3400293 TRADE_RESULT giving up after 10 retries 3400293 1788918110 
+SQL: SELECT * FROM TradeResultFrame4($1, $2, $3, $4)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during conflict out checking.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "SELECT s_ex_id
+     , s_name
+FROM security
+WHERE s_symb = $1"
+
+
+1788918142 3400292 TRADE_RESULT giving up after 10 retries 3400292 1788918142 
+SQL: COMMIT
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during commit attempt.
+HINT:  The transaction might succeed if retried.
+
+
+1788918144 3400294 TRADE_RESULT giving up after 10 retries 3400294 1788918144 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788918144 3400288 TRADE_RESULT giving up after 10 retries 3400288 1788918144 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during conflict out checking.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788918144 3400298 TRADE_RESULT giving up after 10 retries 3400298 1788918144 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788918144 3400295 TRADE_RESULT giving up after 10 retries 3400295 1788918144 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788918159 3400293 TRADE_RESULT giving up after 10 retries 3400293 1788918159 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on conflict out to pivot 268730048, during read.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE broker
+SET b_comm_total = b_comm_total + $1
+  , b_num_trades = b_num_trades + 1
+WHERE b_id = $2"
+
+
+1788918165 3400293 TRADE_RESULT giving up after 10 retries 3400293 1788918165 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788918175 3400298 TRADE_RESULT giving up after 10 retries 3400298 1788918175 
+SQL: COMMIT
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on commit attempt with conflict in from prepared pivot.
+HINT:  The transaction might succeed if retried.
+
+
+1788918181 3400297 TRADE_RESULT giving up after 10 retries 3400297 1788918181 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788918229 3400290 TRADE_RESULT giving up after 10 retries 3400290 1788918229 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788918301 3400295 TRADE_RESULT giving up after 10 retries 3400295 1788918301 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788918305 3400292 TRADE_RESULT giving up after 10 retries 3400292 1788918305 
+SQL: COMMIT
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on commit attempt with conflict in from prepared pivot.
+HINT:  The transaction might succeed if retried.
+
+
+1788918363 3400291 TRADE_RESULT giving up after 10 retries 3400291 1788918363 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788918377 3400295 TRADE_RESULT giving up after 10 retries 3400295 1788918377 
+SQL: SELECT * FROM TradeResultFrame6($1, $2, $3, $4, $5, $6, $7, $8, $9)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during conflict in checking.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "INSERT INTO settlement(
+    se_t_id
+  , se_cash_type
+  , se_cash_due_date
+  , se_amt)
+VALUES (
+    $1
+  , $2
+  , $3
+  , $4
+)"
+
+
+1788918432 3400287 TRADE_RESULT giving up after 10 retries 3400287 1788918432 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during conflict out checking.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "SELECT 1 FROM ONLY "public"."status_type" x WHERE "st_id"::pg_catalog.text OPERATOR(pg_catalog.=) $1::pg_catalog.text FOR KEY SHARE OF x"
+SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788918546 3400292 TRADE_RESULT giving up after 10 retries 3400292 1788918546 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788918564 3400303 TRADE_RESULT giving up after 10 retries 3400303 1788918564 
+SQL: SELECT * FROM TradeResultFrame2($1, $2, $3, $4, $5, $6, $7, $8)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "DELETE FROM holding
+WHERE h_t_id = $1"
+
+
+1788918570 3400292 TRADE_RESULT giving up after 10 retries 3400292 1788918570 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788918605 3400300 TRADE_RESULT giving up after 10 retries 3400300 1788918605 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on conflict out to pivot 269121931, during read.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE broker
+SET b_comm_total = b_comm_total + $1
+  , b_num_trades = b_num_trades + 1
+WHERE b_id = $2"
+
+
+1788918615 3400290 TRADE_RESULT giving up after 10 retries 3400290 1788918615 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788918621 3400294 TRADE_RESULT giving up after 10 retries 3400294 1788918621 
+SQL: COMMIT
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during commit attempt.
+HINT:  The transaction might succeed if retried.
+
+
+1788918621 3400293 TRADE_RESULT giving up after 10 retries 3400293 1788918621 
+SQL: SELECT * FROM TradeResultFrame3($1, $2, $3, $4)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_tax = $1
+WHERE t_id = $2"
+
+
+1788918643 3400292 TRADE_RESULT giving up after 10 retries 3400292 1788918643 
+SQL: SELECT * FROM TradeResultFrame3($1, $2, $3, $4)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_tax = $1
+WHERE t_id = $2"
+
+
+1788918668 3400297 TRADE_RESULT giving up after 10 retries 3400297 1788918668 
+SQL: SELECT * FROM TradeResultFrame6($1, $2, $3, $4, $5, $6, $7, $8, $9)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during conflict in checking.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "INSERT INTO settlement(
+    se_t_id
+  , se_cash_type
+  , se_cash_due_date
+  , se_amt)
+VALUES (
+    $1
+  , $2
+  , $3
+  , $4
+)"
+
+
+1788918707 3400297 TRADE_RESULT giving up after 10 retries 3400297 1788918707 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788918707 3400298 TRADE_RESULT giving up after 10 retries 3400298 1788918707 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788918729 3400294 TRADE_RESULT giving up after 10 retries 3400294 1788918729 
+SQL: COMMIT
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on commit attempt with conflict in from prepared pivot.
+HINT:  The transaction might succeed if retried.
+
+
+1788918751 3400297 TRADE_RESULT giving up after 10 retries 3400297 1788918751 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on conflict out to pivot 269250090, during read.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE broker
+SET b_comm_total = b_comm_total + $1
+  , b_num_trades = b_num_trades + 1
+WHERE b_id = $2"
+
+
+1788918964 3400298 TRADE_RESULT giving up after 10 retries 3400298 1788918964 
+SQL: SELECT * FROM TradeResultFrame2($1, $2, $3, $4, $5, $6, $7, $8)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE holding
+SET h_qty = $1
+WHERE h_t_id = $2"
+
+
+1788918970 3400297 TRADE_RESULT giving up after 10 retries 3400297 1788918970 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during conflict out checking.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "SELECT 1 FROM ONLY "public"."status_type" x WHERE "st_id"::pg_catalog.text OPERATOR(pg_catalog.=) $1::pg_catalog.text FOR KEY SHARE OF x"
+SQL statement "INSERT INTO trade_history(
+    th_t_id
+  , th_dts
+  , th_st_id
+)
+VALUES (
+    $1
+  , $2
+  , $3
+)"
+
+
+1788918983 3400298 TRADE_RESULT giving up after 10 retries 3400298 1788918983 
+SQL: SELECT * FROM TradeResultFrame6($1, $2, $3, $4, $5, $6, $7, $8, $9)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during conflict in checking.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "INSERT INTO settlement(
+    se_t_id
+  , se_cash_type
+  , se_cash_due_date
+  , se_amt)
+VALUES (
+    $1
+  , $2
+  , $3
+  , $4
+)"
+
+
+1788918994 3400294 TRADE_RESULT giving up after 10 retries 3400294 1788918994 
+SQL: COMMIT
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on commit attempt with conflict in from prepared pivot.
+HINT:  The transaction might succeed if retried.
+
+
+1788918995 3400291 TRADE_RESULT giving up after 10 retries 3400291 1788918995 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during write.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  , t_st_id = $3
+  , t_trade_price = $4
+WHERE t_id = $5"
+
+
+1788919023 3400297 TRADE_RESULT giving up after 10 retries 3400297 1788919023 
+SQL: SELECT * FROM TradeResultFrame4($1, $2, $3, $4)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during conflict out checking.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "SELECT s_ex_id
+     , s_name
+FROM security
+WHERE s_symb = $1"
+
+
+1788919057 3400297 TRADE_RESULT giving up after 10 retries 3400297 1788919057 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on identification as a pivot, during conflict out checking.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE trade
+SET t_comm = $1
+  , t_dts = $2
+  ,

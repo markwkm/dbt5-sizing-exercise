@@ -1,0 +1,11 @@
+1788859846 1147274 TRADE_RESULT giving up after 10 retries 1147274 1788859846 
+SQL: SELECT * FROM TradeResultFrame5($1, $2, $3, $4, $5, $6)
+ERROR:  could not serialize access due to read/write dependencies among transactions
+DETAIL:  Reason code: Canceled on conflict out to pivot 224723066, during read.
+HINT:  The transaction might succeed if retried.
+CONTEXT:  SQL statement "UPDATE broker
+SET b_comm_total = b_comm_total + $1
+  , b_num_trades = b_num_trades + 1
+WHERE b_id = $2"
+
+

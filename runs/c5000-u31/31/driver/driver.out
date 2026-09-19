@@ -1,0 +1,63 @@
+dbt5 - Driver Customer Emulator Main
+Using the following settings:
+
+Input files location: /tmp/.mount_dbt5ndENib/opt/egen/flat_in
+
+Brokerage House address: localhost
+Brokerage House port: 30000
+
+Configured customer count: 5000
+Active customer count: 5000
+Days of initial trades: 300
+Scale Factor: 500
+
+User Threads: 31
+Sleep between creating users: 1935
+
+Test duration (sec): 3600
+Pacing Delay (msec): 0
+
+Unique ID (seed): 0
+initializing data maintenance...
+
+Running Trade-Cleanup transaction before starting the test...
+Trade-Cleanup transaction completed.
+
+Test is starting at 10:27:41.087
+Estimated duration of ramp-up: 59 seconds
+Estimated end time 11:27:41.087
+>> Start of ramp-up.
+>> Data-Maintenance thread started.
+>> End of ramp-up.
+User thread # 1875775 terminated.
+User thread # 1878784 terminated.
+User thread # 1879427 terminated.
+User thread # 1873248 terminated.
+User thread # 1875493 terminated.
+User thread # 1877560 terminated.
+User thread # 1873354 terminated.
+User thread # 1877264 terminated.
+User thread # 1874960 terminated.
+User thread # 1878461 terminated.
+User thread # 1876076 terminated.
+User thread # 1878147 terminated.
+User thread # 1873091 terminated.
+User thread # 1873820 terminated.
+User thread # 1876980 terminated.
+User thread # 1879073 terminated.
+User thread # 1874210 terminated.
+User thread # 1874686 terminated.
+User thread # 1873127 terminated.
+User thread # 1873170 terminated.
+User thread # 1876698 terminated.
+User thread # 1873507 terminated.
+User thread # 1875207 terminated.
+User thread # 1873660 terminated.
+User thread # 1876397 terminated.
+User thread # 1879706 terminated.
+User thread # 1877850 terminated.
+User thread # 1874420 terminated.
+User thread # 1880024 terminated.
+User thread # 1873082 terminated.
+User thread # 1874023 terminated.
+Data-Maintenance thread stopped.

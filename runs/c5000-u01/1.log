@@ -1,0 +1,39 @@
+# DBT-5
+
+Workload consists of 4 stages:
+
+1. Start of the Brokerage House server
+2. Start of the Market Exchange server
+3. Test (Start of the Customer Emulator)
+4. Processing of results
+
+Results will be found in: /home/markwkm/claude-tests/scaling2/c5000-u01/1
+
+## 1. Starting Brokerage House server
+
+Giving BrokerageHouseMain 1 second to start up.
+
+## 2. Starting Market Exchange server
+
+## 3. Starting Customer driver(s)
+
+* 1 user starting every 60000 milliseconds.
+
+1 user(s) started.
+
+* User ramp up to finish in 120 s.
+WARNING: collectd not started
+* Test expected to finish in 3600 s.
+* Profiling to start in 1800 s.
+WARNING: /proc/profile does not exist, Linux may need profile=2 set in the kernel command line
+
+## 4. Processing data
+/tmp/.mount_dbt5pAfipf/usr/bin/dbt5-run: line 867: 3585621 Killed                  /tmp/.mount_dbt5pAfipf/opt/egen/bin/MarketExchangeMain -c 5000 -t 5000 -i /tmp/.mount_dbt5pAfipf/opt/egen/flat_in -o /home/markwkm/claude-tests/scaling2/c5000-u01/1/mee > /home/markwkm/claude-tests/scaling2/c5000-u01/1/mee/mee.out 2>&1
+/tmp/.mount_dbt5pAfipf/usr/bin/dbt5-run: line 793: 3585617 Killed                  /tmp/.mount_dbt5pAfipf/opt/egen/bin/BrokerageHouseMain -h localhost -d dbt5 -o /home/markwkm/claude-tests/scaling2/c5000-u01/1/bh > /home/markwkm/claude-tests/scaling2/c5000-u01/1/bh/bh.out 2>&1
+processing profiling data...
+
+## Primary Metric
+
+21.71 TRTPS
+
+Complete results are in: /home/markwkm/claude-tests/scaling2/c5000-u01/1

@@ -1,0 +1,40 @@
+# PostgreSQL settings in effect at the start of scaling2, 2026-09-08T00:24:21+00:00: the original scaling search's configuration with statement logging off
+# PostgreSQL 18.4 on x86_64-linux, compiled by gcc-14.2.0, 64-bit
+            name            |                 setting                  | unit |       source       
+----------------------------+------------------------------------------+------+--------------------
+ DateStyle                  | ISO, MDY                                 |      | configuration file
+ TimeZone                   | Etc/UTC                                  |      | configuration file
+ autovacuum_worker_slots    | 16                                       |      | configuration file
+ checkpoint_timeout         | 1800                                     | s    | configuration file
+ default_text_search_config | pg_catalog.english                       |      | configuration file
+ dynamic_shared_memory_type | posix                                    |      | configuration file
+ effective_cache_size       | 5242880                                  | 8kB  | configuration file
+ effective_io_concurrency   | 300                                      |      | configuration file
+ huge_pages                 | off                                      |      | configuration file
+ jit                        | off                                      |      | configuration file
+ lc_messages                | C.UTF-8                                  |      | configuration file
+ lc_monetary                | C.UTF-8                                  |      | configuration file
+ lc_numeric                 | C.UTF-8                                  |      | configuration file
+ lc_time                    | C.UTF-8                                  |      | configuration file
+ log_connections            | off                                      |      | configuration file
+ log_disconnections         | off                                      |      | configuration file
+ log_line_prefix            | %t [%p]: db=%d,user=%u,app=%a,client=%h  |      | configuration file
+ log_lock_waits             | on                                       |      | configuration file
+ log_rotation_size          | 102400                                   | kB   | configuration file
+ log_statement              | none                                     |      | configuration file
+ log_temp_files             | 0                                        | kB   | configuration file
+ log_timezone               | Etc/UTC                                  |      | configuration file
+ maintenance_io_concurrency | 200                                      |      | configuration file
+ maintenance_work_mem       | 1048576                                  | kB   | configuration file
+ max_connections            | 1000                                     |      | configuration file
+ max_wal_size               | 512000                                   | MB   | configuration file
+ min_wal_size               | 80                                       | MB   | configuration file
+ random_page_cost           | 1                                        |      | configuration file
+ shared_buffers             | 4194304                                  | 8kB  | configuration file
+ work_mem                   | 65536                                    | kB   | configuration file
+(30 rows)
+
+
+# 2026-09-11T21:17:03+00:00: checkpoint_timeout changed from 30min to 15min by ALTER SYSTEM and reload,
+# before any phase 6 measurement, to meet clause 6.6.5.3; every run before
+# phase 6 was measured at 30min.

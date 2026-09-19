@@ -1,0 +1,1506 @@
+
+Sorted summary for file /home/markwkm/.local/pgsql-18/bin/postgres
+----------------------------------------------
+
+   55.04 /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1022
+   32.89 /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1019
+    5.60 /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1024
+    1.70 /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1774
+ Percent |	Source code & Disassembly of /home/markwkm/.local/pgsql-18/bin/postgres for cpu-clock:ppp (2767 samples, percent: local period)
+-----------------------------------------------------------------------------------------------------------------------------------------------
+         :
+         :
+         :
+         : 3      Disassembly of section .text:
+         :
+         : 5      00000000005a23c0 <hash_search_with_hash_value>:
+         : 6      hash_search_with_hash_value(HTAB *hashp,
+         : 7      const void *keyPtr,
+         : 8      uint32 hashvalue,
+         : 9      HASHACTION action,
+         : 10     bool *foundPtr)
+         : 11     {
+    0.04 :   5a23c0: push   %r15
+    0.07 :   5a23c2: mov    %r8,%r11
+    0.00 :   5a23c5: mov    %rdi,%r15
+    0.04 :   5a23c8: mov    %ecx,%r10d
+    0.07 :   5a23cb: push   %r14
+    0.14 :   5a23cd: push   %r13
+    0.04 :   5a23cf: mov    %rsi,%r13
+    0.04 :   5a23d2: push   %r12
+    0.07 :   5a23d4: push   %rbp
+    0.07 :   5a23d5: mov    %edx,%ebp
+    0.04 :   5a23d7: push   %rbx
+    0.00 :   5a23d8: sub    $0x48,%rsp
+         : 24     HASHHDR    *hctl = hashp->hctl;
+    0.07 :   5a23dc: mov    (%rdi),%r8
+         : 26     int                     freelist_idx = FREELIST_IDX(hctl, hashvalue);
+    0.04 :   5a23df: cmpq   $0x0,0x330(%r8)
+         : 28     {
+         : 29     /*
+         : 30     * Can't split if running in partitioned mode, nor if frozen, nor if
+         : 31     * table is the subject of any active hash_seq_search scans.
+         : 32     */
+         : 33     if (hctl->freeList[0].nentries > (long) hctl->max_bucket &&
+    0.22 :   5a23e7: mov    0x310(%r8),%edi
+         : 35     int                     freelist_idx = FREELIST_IDX(hctl, hashvalue);
+    0.04 :   5a23ee: je     5a2550 <hash_search_with_hash_value+0x190>
+    0.07 :   5a23f4: mov    %edx,%eax
+         : 38     #ifdef HASH_STATISTICS
+         : 39     hash_expansions++;
+         : 40     #endif
+         :
+         : 42     new_bucket = hctl->max_bucket + 1;
+         : 43     new_segnum = new_bucket >> hashp->sshift;
+    0.00 :   5a23f6: mov    0x58(%r15),%ecx
+         : 45     uint32          bucket;
+         :
+         : 47     bucket = calc_bucket(hctl, hashvalue);
+         :
+         : 49     segment_num = bucket >> hashp->sshift;
+         : 50     segment_ndx = MOD(bucket, hashp->ssize);
+    0.00 :   5a23fa: mov    %r8,%rsi
+    0.00 :   5a23fd: and    $0x1f,%eax
+    0.11 :   5a2400: mov    %eax,0x20(%rsp)
+    0.00 :   5a2404: mov    0x50(%r15),%rax
+    0.00 :   5a2408: lea    -0x1(%rax),%rdx
+         : 56     bucket = hash_val & hctl->high_mask;
+    0.00 :   5a240c: mov    0x314(%rsi),%eax
+    0.07 :   5a2412: and    %ebp,%eax
+         : 59     if (bucket > hctl->max_bucket)
+    0.00 :   5a2414: cmp    %eax,%edi
+    0.00 :   5a2416: jae    5a241e <hash_search_with_hash_value+0x5e>
+         : 62     bucket = bucket & hctl->low_mask;
+    0.11 :   5a2418: and    0x318(%rsi),%eax
+         : 64     segment_ndx = MOD(bucket, hashp->ssize);
+    0.29 :   5a241e: and    %eax,%edx
+         :
+         : 67     segp = hashp->dir[segment_num];
+    0.07 :   5a2420: shr    %cl,%eax
+    0.00 :   5a2422: mov    0x8(%r15),%rcx
+    0.04 :   5a2426: mov    (%rcx,%rax,8),%rax
+         :
+         : 72     if (segp == NULL)
+    1.70 :   5a242a: test   %rax,%rax // /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1774
+    0.00 :   5a242d: je     1688db <hash_search_with_hash_value.cold>
+         : 75     hash_corrupted(hashp);
+         :
+         : 77     *bucketptr = &segp[segment_ndx];
+    0.00 :   5a2433: lea    (%rax,%rdx,8),%r12
+         : 79     keysize = hashp->keysize;       /* ditto */
+    0.00 :   5a2437: mov    0x48(%r15),%r14
+         : 81     match = hashp->match;           /* save one fetch in inner loop */
+    0.04 :   5a243b: mov    0x18(%r15),%rdx
+         : 83     currBucket = *prevBucketPtr;
+    0.04 :   5a243f: mov    (%r12),%rbx
+         : 85     while (currBucket != NULL)
+   32.89 :   5a2443: test   %rbx,%rbx // /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1019
+    0.00 :   5a2446: je     5a2801 <hash_search_with_hash_value+0x441>
+    0.33 :   5a244c: mov    %r15,0x8(%rsp)
+    0.00 :   5a2451: mov    %ebp,%r15d
+    0.00 :   5a2454: mov    %r12,%rbp
+    0.00 :   5a2457: mov    %rbx,%r12
+    0.00 :   5a245a: mov    %r8,(%rsp)
+    0.00 :   5a245e: mov    %rdx,%rbx
+    0.00 :   5a2461: mov    %r10d,0x10(%rsp)
+    0.00 :   5a2466: mov    %r11,0x18(%rsp)
+    0.14 :   5a246b: jmp    5a248c <hash_search_with_hash_value+0xcc>
+    0.00 :   5a246d: data16 cs nopw 0x0(%rax,%rax,1)
+    0.00 :   5a2478: nopl   0x0(%rax,%rax,1)
+         : 99     prevBucketPtr = &(currBucket->link);
+    5.60 :   5a2480: mov    %r12,%rbp // /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1024
+         : 101    currBucket = *prevBucketPtr;
+    0.07 :   5a2483: mov    (%r12),%r12
+         : 103    while (currBucket != NULL)
+    0.36 :   5a2487: test   %r12,%r12
+    0.00 :   5a248a: je     5a24a4 <hash_search_with_hash_value+0xe4>
+         : 106    if (currBucket->hashvalue == hashvalue &&
+    0.07 :   5a248c: cmp    %r15d,0x8(%r12)
+    0.04 :   5a2491: jne    5a2480 <hash_search_with_hash_value+0xc0>
+         : 109    match(ELEMENTKEY(currBucket), keyPtr, keysize) == 0)
+   55.04 :   5a2493: lea    0x10(%r12),%rdi // /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1022
+    0.47 :   5a2498: mov    %r14,%rdx
+    0.07 :   5a249b: mov    %r13,%rsi
+    0.00 :   5a249e: call   *%rbx
+         : 114    if (currBucket->hashvalue == hashvalue &&
+    0.04 :   5a24a0: test   %eax,%eax
+    0.00 :   5a24a2: jne    5a2480 <hash_search_with_hash_value+0xc0>
+    0.11 :   5a24a4: mov    0x18(%rsp),%r11
+         : 118    if (foundPtr)
+    0.00 :   5a24a9: mov    %r12,%rbx
+    0.00 :   5a24ac: mov    (%rsp),%r8
+    0.04 :   5a24b0: mov    %rbp,%r12
+    0.11 :   5a24b3: mov    0x10(%rsp),%r10d
+    0.00 :   5a24b8: mov    %r15d,%ebp
+    0.00 :   5a24bb: mov    0x8(%rsp),%r15
+    0.04 :   5a24c0: test   %r11,%r11
+    0.00 :   5a24c3: je     5a2588 <hash_search_with_hash_value+0x1c8>
+         : 127    *foundPtr = (bool) (currBucket != NULL);
+    0.00 :   5a24c9: test   %rbx,%rbx
+    0.00 :   5a24cc: setne  (%r11)
+         : 130    switch (action)
+    0.00 :   5a24d0: cmp    $0x1,%r10d
+    0.00 :   5a24d4: je     5a25bd <hash_search_with_hash_value+0x1fd>
+    0.00 :   5a24da: jbe    5a2594 <hash_search_with_hash_value+0x1d4>
+    0.00 :   5a24e0: cmp    $0x2,%r10d
+    0.00 :   5a24e4: jne    5a25b3 <hash_search_with_hash_value+0x1f3>
+         : 136    if (currBucket != NULL)
+    0.00 :   5a24ea: test   %rbx,%rbx
+    0.00 :   5a24ed: je     5a273f <hash_search_with_hash_value+0x37f>
+         : 139    if (IS_PARTITIONED(hctl))
+    0.00 :   5a24f3: cmpq   $0x0,0x330(%r8)
+         : 141    SpinLockAcquire(&(hctl->freeList[freelist_idx].mutex));
+    0.00 :   5a24fb: movslq 0x20(%rsp),%r11
+         : 143    if (IS_PARTITIONED(hctl))
+    0.00 :   5a2500: je     5a251a <hash_search_with_hash_value+0x15a>
+         : 145    SpinLockAcquire(&(hctl->freeList[freelist_idx].mutex));
+    0.00 :   5a2502: lea    (%r11,%r11,2),%rax
+    0.00 :   5a2506: lea    (%r8,%rax,8),%rdi
+         : 148    static __inline__ int
+         : 149    tas(volatile slock_t *lock)
+         : 150    {
+         : 151    slock_t         _res = 1;
+         :
+         : 153    __asm__ __volatile__(
+    0.00 :   5a250a: mov    $0x1,%eax
+    0.00 :   5a250f: lock xchg %al,(%rdi)
+    0.00 :   5a2512: test   %al,%al
+    0.00 :   5a2514: jne    5a2838 <hash_search_with_hash_value+0x478>
+         : 158    hctl->freeList[freelist_idx].nentries--;
+    0.00 :   5a251a: lea    (%r11,%r11,2),%rax
+    0.00 :   5a251e: lea    (%r8,%rax,8),%rax
+    0.00 :   5a2522: subq   $0x1,0x8(%rax)
+         : 162    *prevBucketPtr = currBucket->link;
+    0.00 :   5a2527: mov    (%rbx),%rdx
+    0.00 :   5a252a: mov    %rdx,(%r12)
+         : 165    currBucket->link = hctl->freeList[freelist_idx].freeList;
+    0.00 :   5a252e: mov    0x10(%rax),%rdx
+    0.00 :   5a2532: mov    %rdx,(%rbx)
+         : 168    hctl->freeList[freelist_idx].freeList = currBucket;
+    0.00 :   5a2535: mov    %rbx,0x10(%rax)
+         : 170    if (IS_PARTITIONED(hctl))
+    0.00 :   5a2539: cmpq   $0x0,0x330(%r8)
+    0.00 :   5a2541: je     5a259d <hash_search_with_hash_value+0x1dd>
+         : 173    SpinLockRelease(&hctl->freeList[freelist_idx].mutex);
+    0.00 :   5a2543: movb   $0x0,(%rax)
+         : 175    return ELEMENTKEY(currBucket);
+    0.00 :   5a2546: jmp    5a259d <hash_search_with_hash_value+0x1dd>
+    0.00 :   5a2548: nopl   0x0(%rax,%rax,1)
+         : 178    if (action == HASH_ENTER || action == HASH_ENTER_NULL)
+    0.04 :   5a2550: mov    %ecx,%eax
+    0.00 :   5a2552: and    $0xfffffffd,%eax
+    0.00 :   5a2555: cmp    $0x1,%eax
+    0.00 :   5a2558: jne    5a2566 <hash_search_with_hash_value+0x1a6>
+         : 183    if (hctl->freeList[0].nentries > (long) hctl->max_bucket &&
+    0.00 :   5a255a: mov    %edi,%eax
+    0.00 :   5a255c: cmp    %rax,0x8(%r8)
+    0.00 :   5a2560: jg     5a26c8 <hash_search_with_hash_value+0x308>
+         : 187    new_segndx = MOD(new_bucket, hashp->ssize);
+    0.04 :   5a2566: mov    0x50(%r15),%rax
+    0.00 :   5a256a: movl   $0x0,0x20(%rsp)
+    0.00 :   5a2572: mov    %r8,%rsi
+         : 191    new_segnum = new_bucket >> hashp->sshift;
+    0.00 :   5a2575: mov    0x58(%r15),%ecx
+         : 193    new_segndx = MOD(new_bucket, hashp->ssize);
+    0.00 :   5a2579: lea    -0x1(%rax),%rdx
+    0.00 :   5a257d: jmp    5a240c <hash_search_with_hash_value+0x4c>
+    0.00 :   5a2582: nopw   0x0(%rax,%rax,1)
+         : 197    switch (action)
+    0.11 :   5a2588: cmp    $0x1,%r10d
+    0.00 :   5a258c: je     5a25bd <hash_search_with_hash_value+0x1fd>
+    0.00 :   5a258e: ja     5a26a8 <hash_search_with_hash_value+0x2e8>
+         : 201    if (currBucket != NULL)
+    0.00 :   5a2594: test   %rbx,%rbx
+    0.00 :   5a2597: je     5a273f <hash_search_with_hash_value+0x37f>
+         : 204    return ELEMENTKEY(currBucket);
+    0.00 :   5a259d: add    $0x10,%rbx
+         : 206    }
+    0.22 :   5a25a1: add    $0x48,%rsp
+    0.04 :   5a25a5: mov    %rbx,%rax
+    0.00 :   5a25a8: pop    %rbx
+    0.04 :   5a25a9: pop    %rbp
+    0.07 :   5a25aa: pop    %r12
+    0.00 :   5a25ac: pop    %r13
+    0.00 :   5a25ae: pop    %r14
+    0.07 :   5a25b0: pop    %r15
+    0.07 :   5a25b2: ret
+         : 216    switch (action)
+    0.00 :   5a25b3: cmp    $0x3,%r10d
+    0.00 :   5a25b7: jne    5a2c2f <hash_search_with_hash_value+0x86f>
+         : 219    if (currBucket != NULL)
+    0.04 :   5a25bd: test   %rbx,%rbx
+    0.00 :   5a25c0: jne    5a259d <hash_search_with_hash_value+0x1dd>
+         : 222    if (hashp->frozen)
+    0.00 :   5a25c2: cmpb   $0x0,0x42(%r15)
+    0.00 :   5a25c7: jne    16891c <hash_search_with_hash_value.cold+0x41>
+         : 225    SpinLockAcquire(&hctl->freeList[freelist_idx].mutex);
+    0.00 :   5a25cd: movslq 0x20(%rsp),%r11
+         : 227    HASHHDR    *hctl = hashp->hctl;
+    0.00 :   5a25d2: mov    (%r15),%r8
+         : 229    SpinLockAcquire(&hctl->freeList[freelist_idx].mutex);
+    0.00 :   5a25d5: mov    %r12,(%rsp)
+    0.00 :   5a25d9: mov    %ebp,0x8(%rsp)
+    0.00 :   5a25dd: lea    (%r11,%r11,2),%rdx
+    0.00 :   5a25e1: mov    %r11,%rbx
+    0.00 :   5a25e4: mov    %r10d,0x10(%rsp)
+    0.00 :   5a25e9: mov    %r8,%rbp
+    0.00 :   5a25ec: lea    (%r8,%rdx,8),%r11
+    0.00 :   5a25f0: mov    %rdx,0x18(%rsp)
+    0.00 :   5a25f5: mov    %r11,%r12
+    0.00 :   5a25f8: jmp    5a2649 <hash_search_with_hash_value+0x289>
+    0.00 :   5a25fa: nopw   0x0(%rax,%rax,1)
+    0.00 :   5a2600: mov    $0x1,%eax
+    0.00 :   5a2605: lock xchg %al,(%r12)
+    0.00 :   5a260a: test   %al,%al
+    0.00 :   5a260c: jne    5a2710 <hash_search_with_hash_value+0x350>
+         : 245    newElement = hctl->freeList[freelist_idx].freeList;
+    0.00 :   5a2612: mov    0x10(%r12),%rdx
+         : 247    if (IS_PARTITIONED(hctl))
+    0.00 :   5a2617: mov    0x330(%rbp),%rax
+         : 249    if (newElement != NULL)
+    0.00 :   5a261e: test   %rdx,%rdx
+    0.00 :   5a2621: jne    5a2890 <hash_search_with_hash_value+0x4d0>
+         : 252    if (IS_PARTITIONED(hctl))
+    0.00 :   5a2627: test   %rax,%rax
+    0.00 :   5a262a: je     5a2631 <hash_search_with_hash_value+0x271>
+         : 255    SpinLockRelease(&hctl->freeList[freelist_idx].mutex);
+    0.00 :   5a262c: movb   $0x0,(%r12)
+         : 257    if (!element_alloc(hashp, hctl->nelem_alloc, freelist_idx))
+    0.00 :   5a2631: mov    0x34c(%rbp),%esi
+    0.00 :   5a2637: mov    %ebx,%edx
+    0.00 :   5a2639: mov    %r15,%rdi
+    0.00 :   5a263c: call   5a2220 <element_alloc>
+    0.00 :   5a2641: test   %al,%al
+    0.00 :   5a2643: je     5a2746 <hash_search_with_hash_value+0x386>
+         : 264    if (IS_PARTITIONED(hctl))
+    0.00 :   5a2649: cmpq   $0x0,0x330(%rbp)
+    0.00 :   5a2651: jne    5a2600 <hash_search_with_hash_value+0x240>
+         : 267    newElement = hctl->freeList[freelist_idx].freeList;
+    0.00 :   5a2653: mov    0x10(%r12),%rdx
+         : 269    if (newElement != NULL)
+    0.00 :   5a2658: test   %rdx,%rdx
+    0.00 :   5a265b: je     5a2631 <hash_search_with_hash_value+0x271>
+    0.00 :   5a265d: mov    %rdx,%rbx
+    0.00 :   5a2660: mov    0x18(%rsp),%rdx
+         : 274    hctl->freeList[freelist_idx].freeList = newElement->link;
+    0.00 :   5a2665: mov    %rbp,%r8
+    0.00 :   5a2668: mov    %r12,%r11
+    0.00 :   5a266b: mov    (%rbx),%rax
+    0.07 :   5a266e: mov    (%rsp),%r12
+    0.00 :   5a2672: mov    0x8(%rsp),%ebp
+    0.00 :   5a2676: mov    %rax,0x10(%r8,%rdx,8)
+         : 281    hctl->freeList[freelist_idx].nentries++;
+    0.00 :   5a267b: addq   $0x1,0x8(%r11)
+         : 283    *prevBucketPtr = currBucket;
+    0.00 :   5a2680: mov    %rbx,(%r12)
+         : 285    hashp->keycopy(ELEMENTKEY(currBucket), keyPtr, keysize);
+    0.00 :   5a2684: add    $0x10,%rbx
+    0.00 :   5a2688: mov    %r14,%rdx
+    0.00 :   5a268b: mov    %r13,%rsi
+         : 289    currBucket->link = NULL;
+    0.00 :   5a268e: movq   $0x0,-0x10(%rbx)
+         : 291    currBucket->hashvalue = hashvalue;
+    0.00 :   5a2696: mov    %ebp,-0x8(%rbx)
+         : 293    hashp->keycopy(ELEMENTKEY(currBucket), keyPtr, keysize);
+    0.00 :   5a2699: mov    %rbx,%rdi
+    0.00 :   5a269c: call   *0x20(%r15)
+         : 296    return ELEMENTKEY(currBucket);
+    0.00 :   5a26a0: jmp    5a25a1 <hash_search_with_hash_value+0x1e1>
+    0.00 :   5a26a5: nopl   (%rax)
+         : 299    switch (action)
+    0.04 :   5a26a8: cmp    $0x2,%r10d
+    0.00 :   5a26ac: je     5a24ea <hash_search_with_hash_value+0x12a>
+    0.00 :   5a26b2: cmp    $0x3,%r10d
+    0.00 :   5a26b6: je     5a25bd <hash_search_with_hash_value+0x1fd>
+    0.00 :   5a26bc: jmp    1688e3 <hash_search_with_hash_value.cold+0x8>
+    0.00 :   5a26c1: nopl   0x0(%rax)
+         : 306    !IS_PARTITIONED(hctl) && !hashp->frozen &&
+    0.00 :   5a26c8: cmpb   $0x0,0x42(%r15)
+    0.00 :   5a26cd: jne    5a2566 <hash_search_with_hash_value+0x1a6>
+         : 309    static bool
+         : 310    has_seq_scans(HTAB *hashp)
+         : 311    {
+         : 312    int                     i;
+         :
+         : 314    for (i = 0; i < num_seq_scans; i++)
+    0.00 :   5a26d3: movslq 0x443d26(%rip),%rdx        # 9e6400 <num_seq_scans>
+    0.00 :   5a26da: test   %edx,%edx
+    0.00 :   5a26dc: jle    5a2903 <hash_search_with_hash_value+0x543>
+    0.00 :   5a26e2: lea    0x443ed7(%rip),%rax        # 9e65c0 <seq_scan_tables>
+    0.00 :   5a26e9: lea    (%rax,%rdx,8),%rdx
+    0.00 :   5a26ed: jmp    5a26fd <hash_search_with_hash_value+0x33d>
+    0.00 :   5a26ef: nop
+    0.00 :   5a26f0: add    $0x8,%rax
+    0.00 :   5a26f4: cmp    %rdx,%rax
+    0.00 :   5a26f7: je     5a2903 <hash_search_with_hash_value+0x543>
+         : 325    {
+         : 326    if (seq_scan_tables[i] == hashp)
+    0.00 :   5a26fd: cmp    (%rax),%r15
+    0.00 :   5a2700: jne    5a26f0 <hash_search_with_hash_value+0x330>
+    0.00 :   5a2702: jmp    5a2566 <hash_search_with_hash_value+0x1a6>
+    0.00 :   5a2707: nopw   0x0(%rax,%rax,1)
+         : 331    SpinLockAcquire(&hctl->freeList[freelist_idx].mutex);
+    0.00 :   5a2710: lea    0x1aa261(%rip),%rcx        # 74c978 <__func__.6>
+    0.00 :   5a2717: mov    $0x4f4,%edx
+    0.00 :   5a271c: lea    0x159345(%rip),%rsi        # 6fba68 <_IO_stdin_used+0x8ba68>
+    0.00 :   5a2723: mov    %r12,%rdi
+    0.00 :   5a2726: call   4649d0 <s_lock>
+    0.00 :   5a272b: jmp    5a2612 <hash_search_with_hash_value+0x252>
+    0.00 :   5a2730: mov    0x20(%rsp),%r10d
+         : 339    if (action == HASH_ENTER_NULL)
+    0.00 :   5a2735: cmp    $0x3,%r10d
+    0.00 :   5a2739: jne    168952 <hash_search_with_hash_value.cold+0x77>
+         : 342    return NULL;
+    0.00 :   5a273f: xor    %ebx,%ebx
+    0.00 :   5a2741: jmp    5a25a1 <hash_search_with_hash_value+0x1e1>
+         : 345    if (!IS_PARTITIONED(hctl))
+    0.00 :   5a2746: mov    %rbp,%r8
+    0.00 :   5a2749: mov    0x10(%rsp),%r10d
+    0.00 :   5a274e: mov    0x8(%rsp),%ebp
+    0.00 :   5a2752: cmpq   $0x0,0x330(%r8)
+    0.00 :   5a275a: je     5a2735 <hash_search_with_hash_value+0x375>
+         : 351    borrow_from_idx = (borrow_from_idx + 1) % NUM_FREELISTS;
+    0.00 :   5a275c: mov    0x20(%rsp),%ecx
+    0.00 :   5a2760: lea    0x1(%rcx),%eax
+    0.00 :   5a2763: and    $0x1f,%eax
+         : 355    if (borrow_from_idx == freelist_idx)
+    0.00 :   5a2766: cmp    %ecx,%eax
+    0.00 :   5a2768: je     5a2735 <hash_search_with_hash_value+0x375>
+         : 358    SpinLockAcquire(&(hctl->freeList[borrow_from_idx].mutex));
+    0.00 :   5a276a: mov    %r12,0x8(%rsp)
+    0.00 :   5a276f: mov    %ecx,%ebx
+    0.00 :   5a2771: mov    %eax,%r12d
+    0.00 :   5a2774: mov    %ebp,0x18(%rsp)
+    0.00 :   5a2778: mov    %r8,%rbp
+    0.00 :   5a277b: mov    %r13,0x10(%rsp)
+    0.00 :   5a2780: mov    %r10d,0x20(%rsp)
+    0.00 :   5a2785: jmp    5a27ce <hash_search_with_hash_value+0x40e>
+    0.00 :   5a2787: nopw   0x0(%rax,%rax,1)
+         : 368    newElement = hctl->freeList[borrow_from_idx].freeList;
+    0.00 :   5a2790: lea    0x0(%r13,%r13,2),%rax
+    0.00 :   5a2795: lea    0x0(%rbp,%rax,8),%rax
+    0.00 :   5a279a: mov    0x10(%rax),%rdx
+         : 372    if (newElement != NULL)
+    0.00 :   5a279e: test   %rdx,%rdx
+    0.00 :   5a27a1: jne    5a28c5 <hash_search_with_hash_value+0x505>
+         : 375    borrow_from_idx = (borrow_from_idx + 1) % NUM_FREELISTS;
+    0.00 :   5a27a7: lea    0x1(%r12),%r9d
+         : 377    SpinLockRelease(&(hctl->freeList[borrow_from_idx].mutex));
+    0.00 :   5a27ac: movb   $0x0,(%rax)
+         : 379    borrow_from_idx = (borrow_from_idx + 1) % NUM_FREELISTS;
+    0.00 :   5a27af: mov    %r9d,%eax
+    0.00 :   5a27b2: sar    $0x1f,%eax
+    0.00 :   5a27b5: shr    $0x1b,%eax
+    0.00 :   5a27b8: add    %eax,%r9d
+    0.00 :   5a27bb: and    $0x1f,%r9d
+    0.00 :   5a27bf: sub    %eax,%r9d
+    0.00 :   5a27c2: mov    %r9d,%r12d
+         : 387    if (borrow_from_idx == freelist_idx)
+    0.00 :   5a27c5: cmp    %ebx,%r9d
+    0.00 :   5a27c8: je     5a2730 <hash_search_with_hash_value+0x370>
+         : 390    SpinLockAcquire(&(hctl->freeList[borrow_from_idx].mutex));
+    0.00 :   5a27ce: movslq %r12d,%r13
+    0.00 :   5a27d1: lea    0x0(%r13,%r13,2),%rax
+    0.00 :   5a27d6: lea    0x0(%rbp,%rax,8),%rdi
+    0.00 :   5a27db: mov    $0x1,%eax
+    0.00 :   5a27e0: lock xchg %al,(%rdi)
+    0.00 :   5a27e3: test   %al,%al
+    0.00 :   5a27e5: je     5a2790 <hash_search_with_hash_value+0x3d0>
+    0.00 :   5a27e7: lea    0x1aa18a(%rip),%rcx        # 74c978 <__func__.6>
+    0.00 :   5a27ee: mov    $0x51a,%edx
+    0.00 :   5a27f3: lea    0x15926e(%rip),%rsi        # 6fba68 <_IO_stdin_used+0x8ba68>
+    0.00 :   5a27fa: call   4649d0 <s_lock>
+    0.00 :   5a27ff: jmp    5a2790 <hash_search_with_hash_value+0x3d0>
+         : 403    if (foundPtr)
+    0.00 :   5a2801: test   %r11,%r11
+    0.00 :   5a2804: je     5a2867 <hash_search_with_hash_value+0x4a7>
+         : 406    *foundPtr = (bool) (currBucket != NULL);
+    0.04 :   5a2806: movb   $0x0,(%r11)
+         : 408    switch (action)
+    0.00 :   5a280a: cmp    $0x1,%r10d
+    0.00 :   5a280e: je     5a25c2 <hash_search_with_hash_value+0x202>
+    0.00 :   5a2814: jbe    5a273f <hash_search_with_hash_value+0x37f>
+    0.00 :   5a281a: cmp    $0x2,%r10d
+    0.00 :   5a281e: je     5a273f <hash_search_with_hash_value+0x37f>
+    0.00 :   5a2824: cmp    $0x3,%r10d
+    0.00 :   5a2828: je     5a25c2 <hash_search_with_hash_value+0x202>
+    0.00 :   5a282e: jmp    1688e3 <hash_search_with_hash_value.cold+0x8>
+    0.00 :   5a2833: nopl   0x0(%rax,%rax,1)
+         : 418    SpinLockAcquire(&(hctl->freeList[freelist_idx].mutex));
+    0.00 :   5a2838: lea    0x1aa161(%rip),%rcx        # 74c9a0 <__func__.8>
+    0.00 :   5a283f: mov    $0x41a,%edx
+    0.00 :   5a2844: lea    0x15921d(%rip),%rsi        # 6fba68 <_IO_stdin_used+0x8ba68>
+    0.00 :   5a284b: mov    %r11,0x8(%rsp)
+    0.00 :   5a2850: mov    %r8,(%rsp)
+    0.00 :   5a2854: call   4649d0 <s_lock>
+    0.00 :   5a2859: mov    0x8(%rsp),%r11
+    0.00 :   5a285e: mov    (%rsp),%r8
+    0.00 :   5a2862: jmp    5a251a <hash_search_with_hash_value+0x15a>
+         : 428    switch (action)
+    0.00 :   5a2867: cmp    $0x1,%r10d
+    0.00 :   5a286b: je     5a25c2 <hash_search_with_hash_value+0x202>
+    0.00 :   5a2871: jbe    5a273f <hash_search_with_hash_value+0x37f>
+    0.00 :   5a2877: cmp    $0x2,%r10d
+    0.00 :   5a287b: je     5a273f <hash_search_with_hash_value+0x37f>
+    0.00 :   5a2881: cmp    $0x3,%r10d
+    0.00 :   5a2885: je     5a25c2 <hash_search_with_hash_value+0x202>
+    0.00 :   5a288b: jmp    1688e3 <hash_search_with_hash_value.cold+0x8>
+         : 437    hctl->freeList[freelist_idx].freeList = newElement->link;
+    0.00 :   5a2890: mov    %rdx,%rbx
+    0.00 :   5a2893: mov    0x18(%rsp),%rdx
+    0.00 :   5a2898: mov    %rbp,%r8
+    0.00 :   5a289b: mov    %r12,%r11
+    0.00 :   5a289e: mov    (%rbx),%rcx
+    0.22 :   5a28a1: mov    (%rsp),%r12
+    0.00 :   5a28a5: mov    0x8(%rsp),%ebp
+    0.00 :   5a28a9: mov    %rcx,0x10(%r8,%rdx,8)
+         : 446    hctl->freeList[freelist_idx].nentries++;
+    0.00 :   5a28ae: addq   $0x1,0x8(%r11)
+         : 448    if (IS_PARTITIONED(hctl))
+    0.00 :   5a28b3: test   %rax,%rax
+    0.00 :   5a28b6: je     5a2680 <hash_search_with_hash_value+0x2c0>
+         : 451    SpinLockRelease(&hctl->freeList[freelist_idx].mutex);
+    0.00 :   5a28bc: movb   $0x0,(%r11)
+         : 453    if (currBucket == NULL)
+    0.00 :   5a28c0: jmp    5a2680 <hash_search_with_hash_value+0x2c0>
+         : 455    hctl->freeList[borrow_from_idx].freeList = newElement->link;
+    0.00 :   5a28c5: mov    %rdx,%rbx
+    0.00 :   5a28c8: mov    (%rdx),%rdx
+    0.00 :   5a28cb: mov    (%rsp),%r12
+    0.00 :   5a28cf: mov    0x8(%rsp),%r11
+    0.00 :   5a28d4: mov    0x10(%rsp),%r13
+    0.00 :   5a28d9: mov    %rdx,0x10(%rax)
+    0.00 :   5a28dd: mov    0x18(%rsp),%ebp
+         : 463    SpinLockRelease(&(hctl->freeList[borrow_from_idx].mutex));
+    0.00 :   5a28e1: movb   $0x0,(%rax)
+    0.00 :   5a28e4: mov    $0x1,%eax
+    0.00 :   5a28e9: lock xchg %al,(%r11)
+         : 467    SpinLockAcquire(&hctl->freeList[freelist_idx].mutex);
+    0.00 :   5a28ed: test   %al,%al
+    0.00 :   5a28ef: jne    5a2bca <hash_search_with_hash_value+0x80a>
+         : 470    hctl->freeList[freelist_idx].nentries++;
+    0.00 :   5a28f5: addq   $0x1,0x8(%r11)
+         : 472    SpinLockRelease(&hctl->freeList[freelist_idx].mutex);
+    0.00 :   5a28fa: movb   $0x0,(%r11)
+         : 474    if (currBucket == NULL)
+    0.00 :   5a28fe: jmp    5a2680 <hash_search_with_hash_value+0x2c0>
+         : 476    new_segndx = MOD(new_bucket, hashp->ssize);
+    0.00 :   5a2903: mov    0x50(%r15),%rdx
+         : 478    new_bucket = hctl->max_bucket + 1;
+    0.00 :   5a2907: lea    0x1(%rdi),%eax
+         : 480    new_segnum = new_bucket >> hashp->sshift;
+    0.00 :   5a290a: mov    0x58(%r15),%ecx
+    0.00 :   5a290e: mov    %rax,%rsi
+         : 483    new_bucket = hctl->max_bucket + 1;
+    0.00 :   5a2911: mov    %rax,%rbx
+         : 485    new_segndx = MOD(new_bucket, hashp->ssize);
+    0.00 :   5a2914: sub    $0x1,%rdx
+         : 487    new_segnum = new_bucket >> hashp->sshift;
+    0.00 :   5a2918: sar    %cl,%rsi
+         : 489    new_segndx = MOD(new_bucket, hashp->ssize);
+    0.00 :   5a291b: and    %rdx,%rax
+         : 491    new_segnum = new_bucket >> hashp->sshift;
+    0.00 :   5a291e: mov    %rsi,(%rsp)
+         : 493    new_segndx = MOD(new_bucket, hashp->ssize);
+    0.00 :   5a2922: mov    %rax,0x10(%rsp)
+         : 495    if (new_segnum >= hctl->nsegs)
+    0.00 :   5a2927: cmp    0x308(%r8),%rsi
+    0.00 :   5a292e: jge    5a2a1b <hash_search_with_hash_value+0x65b>
+         : 498    new_seg = hashp->dir[new_segnum];
+    0.00 :   5a2934: shl    $0x3,%rsi
+    0.00 :   5a2938: mov    %rsi,%r14
+    0.00 :   5a293b: mov    %ebx,%esi
+         : 502    hctl->max_bucket++;
+    0.00 :   5a293d: mov    0x318(%r8),%edi
+         : 504    if ((uint32) new_bucket > hctl->high_mask)
+    0.00 :   5a2944: mov    0x314(%r8),%eax
+         : 506    hctl->max_bucket++;
+    0.00 :   5a294b: mov    %esi,0x310(%r8)
+         : 508    old_bucket = (new_bucket & hctl->low_mask);
+    0.00 :   5a2952: and    %ebx,%edi
+    0.00 :   5a2954: mov    %edi,%edx
+         : 511    if ((uint32) new_bucket > hctl->high_mask)
+    0.00 :   5a2956: cmp    %ebx,%eax
+    0.00 :   5a2958: jae    5a2971 <hash_search_with_hash_value+0x5b1>
+         : 514    hctl->high_mask = (uint32) new_bucket | hctl->low_mask;
+    0.00 :   5a295a: or     %eax,%ebx
+    0.00 :   5a295c: movd   %eax,%xmm1
+    0.00 :   5a2960: movd   %ebx,%xmm0
+    0.00 :   5a2964: punpckldq %xmm1,%xmm0
+    0.00 :   5a2968: movq   %xmm0,0x314(%r8)
+         : 520    old_segnum = old_bucket >> hashp->sshift;
+    0.00 :   5a2971: mov    0x58(%r15),%ecx
+    0.00 :   5a2975: mov    %rdx,%rax
+         : 523    old_seg = hashp->dir[old_segnum];
+    0.00 :   5a2978: mov    0x8(%r15),%rbx
+         : 525    old_segnum = old_bucket >> hashp->sshift;
+    0.00 :   5a297c: sar    %cl,%rax
+    0.00 :   5a297f: mov    %rax,%rcx
+         : 528    old_segndx = MOD(old_bucket, hashp->ssize);
+    0.00 :   5a2982: mov    0x50(%r15),%rax
+    0.00 :   5a2986: sub    $0x1,%rax
+    0.00 :   5a298a: and    %rdx,%rax
+         : 532    oldlink = &old_seg[old_segndx];
+    0.00 :   5a298d: mov    (%rbx,%rcx,8),%rdx
+         : 534    newlink = &new_seg[new_segndx];
+    0.00 :   5a2991: mov    0x10(%rsp),%rcx
+         : 536    oldlink = &old_seg[old_segndx];
+    0.00 :   5a2996: lea    (%rdx,%rax,8),%r12
+         : 538    newlink = &new_seg[new_segndx];
+    0.00 :   5a299a: mov    (%rbx,%r14,1),%rax
+         : 540    for (currElement = *oldlink;
+    0.00 :   5a299e: mov    (%r12),%rdx
+         : 542    newlink = &new_seg[new_segndx];
+    0.00 :   5a29a2: lea    (%rax,%rcx,8),%rbx
+         : 544    currElement != NULL;
+    0.00 :   5a29a6: test   %rdx,%rdx
+    0.00 :   5a29a9: jne    5a29c5 <hash_search_with_hash_value+0x605>
+    0.00 :   5a29ab: jmp    5a29ea <hash_search_with_hash_value+0x62a>
+    0.00 :   5a29ad: nopl   (%rax)
+         : 549    *newlink = currElement;
+    0.00 :   5a29b0: mov    %rdx,(%rbx)
+         : 551    newlink = &currElement->link;
+    0.00 :   5a29b3: mov    %rdx,%rbx
+         : 553    currElement != NULL;
+    0.00 :   5a29b6: test   %rcx,%rcx
+    0.00 :   5a29b9: je     5a29ea <hash_search_with_hash_value+0x62a>
+         : 556    if (bucket > hctl->max_bucket)
+    0.00 :   5a29bb: mov    0x310(%r8),%esi
+    0.00 :   5a29c2: mov    %rcx,%rdx
+         : 559    bucket = hash_val & hctl->high_mask;
+    0.00 :   5a29c5: mov    0x8(%rdx),%eax
+    0.00 :   5a29c8: and    0x314(%r8),%eax
+         : 562    nextElement = currElement->link;
+    0.00 :   5a29cf: mov    (%rdx),%rcx
+         : 564    if (bucket > hctl->max_bucket)
+    0.00 :   5a29d2: cmp    %eax,%esi
+    0.00 :   5a29d4: jae    5a29dd <hash_search_with_hash_value+0x61d>
+         : 567    bucket = bucket & hctl->low_mask;
+    0.00 :   5a29d6: and    0x318(%r8),%eax
+         : 569    if ((long) calc_bucket(hctl, currElement->hashvalue) == old_bucket)
+    0.00 :   5a29dd: cmp    %eax,%edi
+    0.00 :   5a29df: jne    5a29b0 <hash_search_with_hash_value+0x5f0>
+         : 572    *oldlink = currElement;
+    0.00 :   5a29e1: mov    %rdx,(%r12)
+         : 574    oldlink = &currElement->link;
+    0.00 :   5a29e5: mov    %rdx,%r12
+    0.00 :   5a29e8: jmp    5a29b6 <hash_search_with_hash_value+0x5f6>
+         : 577    *oldlink = NULL;
+    0.00 :   5a29ea: movq   $0x0,(%r12)
+         : 579    *newlink = NULL;
+    0.00 :   5a29f2: movq   $0x0,(%rbx)
+         : 581    HASHHDR    *hctl = hashp->hctl;
+    0.00 :   5a29f9: mov    (%r15),%rsi
+         : 583    segment_ndx = MOD(bucket, hashp->ssize);
+    0.00 :   5a29fc: mov    0x50(%r15),%rax
+         : 585    segment_num = bucket >> hashp->sshift;
+    0.00 :   5a2a00: mov    0x58(%r15),%ecx
+         : 587    if (bucket > hctl->max_bucket)
+    0.00 :   5a2a04: mov    0x310(%rsi),%edi
+         : 589    segment_ndx = MOD(bucket, hashp->ssize);
+    0.00 :   5a2a0a: lea    -0x1(%rax),%rdx
+         : 591    return true;
+    0.00 :   5a2a0e: movl   $0x0,0x20(%rsp)
+    0.00 :   5a2a16: jmp    5a240c <hash_search_with_hash_value+0x4c>
+         : 594    if (new_segnum >= hctl->dsize)
+    0.00 :   5a2a1b: mov    0x300(%r8),%rsi
+    0.00 :   5a2a22: cmp    %rsi,(%rsp)
+    0.00 :   5a2a26: jl     5a2b71 <hash_search_with_hash_value+0x7b1>
+         : 598    if (hashp->hctl->max_dsize != NO_MAX_DSIZE)
+    0.00 :   5a2a2c: cmpq   $0xffffffffffffffff,0x338(%r8)
+    0.00 :   5a2a34: jne    5a2bf2 <hash_search_with_hash_value+0x832>
+         : 601    old_p = hashp->dir;
+    0.00 :   5a2a3a: mov    0x8(%r15),%rax
+         : 603    new_dirsize = new_dsize * sizeof(HASHSEGMENT);
+    0.00 :   5a2a3e: mov    %rsi,%r14
+    0.00 :   5a2a41: mov    %r11,0x38(%rsp)
+    0.00 :   5a2a46: shl    $0x4,%r14
+    0.00 :   5a2a4a: mov    %r10d,0x30(%rsp)
+         : 608    old_p = hashp->dir;
+    0.00 :   5a2a4f: mov    %rax,0x8(%rsp)
+         : 610    new_dsize = hashp->hctl->dsize << 1;
+    0.00 :   5a2a54: lea    (%rsi,%rsi,1),%rax
+         : 612    p = (HASHSEGMENT *) hashp->alloc((Size) new_dirsize);
+    0.00 :   5a2a58: mov    %r14,%rdi
+         : 614    new_dsize = hashp->hctl->dsize << 1;
+    0.00 :   5a2a5b: mov    %rax,0x18(%rsp)
+         : 616    CurrentDynaHashCxt = hashp->hcxt;
+    0.00 :   5a2a60: mov    0x30(%r15),%rax
+    0.00 :   5a2a64: mov    %r8,0x28(%rsp)
+         : 619    new_dirsize = new_dsize * sizeof(HASHSEGMENT);
+    0.00 :   5a2a69: mov    %rsi,0x20(%rsp)
+         : 621    CurrentDynaHashCxt = hashp->hcxt;
+    0.00 :   5a2a6e: mov    %rax,0x443e6b(%rip)        # 9e68e0 <CurrentDynaHashCxt>
+         : 623    p = (HASHSEGMENT *) hashp->alloc((Size) new_dirsize);
+    0.00 :   5a2a75: call   *0x28(%r15)
+         : 625    if (p != NULL)
+    0.00 :   5a2a79: mov    0x20(%rsp),%rsi
+    0.00 :   5a2a7e: mov    0x28(%rsp),%r8
+    0.00 :   5a2a83: test   %rax,%rax
+    0.00 :   5a2a86: mov    0x30(%rsp),%r10d
+    0.00 :   5a2a8b: mov    0x38(%rsp),%r11
+         : 631    p = (HASHSEGMENT *) hashp->alloc((Size) new_dirsize);
+    0.00 :   5a2a90: mov    %rax,%r12
+         : 633    if (p != NULL)
+    0.00 :   5a2a93: je     5a29f9 <hash_search_with_hash_value+0x639>
+         : 635    old_dirsize = hashp->hctl->dsize * sizeof(HASHSEGMENT);
+    0.00 :   5a2a99: lea    0x0(,%rsi,8),%rdx
+         : 637    memcpy(p, old_p, old_dirsize);
+    0.00 :   5a2aa1: mov    0x8(%rsp),%rsi
+    0.00 :   5a2aa6: mov    %rax,%rdi
+    0.00 :   5a2aa9: mov    %r11,0x38(%rsp)
+    0.00 :   5a2aae: mov    %r10d,0x30(%rsp)
+    0.00 :   5a2ab3: mov    %r8,0x28(%rsp)
+    0.00 :   5a2ab8: mov    %rdx,0x20(%rsp)
+    0.00 :   5a2abd: call   e6160 <memcpy@plt>
+         : 645    MemSet(((char *) p) + old_dirsize, 0, new_dirsize - old_dirsize);
+    0.00 :   5a2ac2: mov    0x20(%rsp),%rdx
+    0.00 :   5a2ac7: mov    %r14,%rax
+    0.00 :   5a2aca: mov    0x28(%rsp),%r8
+    0.00 :   5a2acf: mov    0x30(%rsp),%r10d
+    0.00 :   5a2ad4: mov    0x38(%rsp),%r11
+    0.00 :   5a2ad9: sub    %rdx,%rax
+    0.00 :   5a2adc: test   $0x7,%r12b
+    0.00 :   5a2ae0: lea    (%r12,%rdx,1),%rdi
+    0.00 :   5a2ae4: jne    5a2c02 <hash_search_with_hash_value+0x842>
+    0.00 :   5a2aea: cmp    $0x400,%rax
+    0.00 :   5a2af0: ja     5a2c02 <hash_search_with_hash_value+0x842>
+    0.00 :   5a2af6: add    %r12,%r14
+    0.00 :   5a2af9: cmp    %r14,%rdi
+    0.00 :   5a2afc: jae    5a2b36 <hash_search_with_hash_value+0x776>
+    0.00 :   5a2afe: lea    -0x1(%r14),%rax
+    0.00 :   5a2b02: xor    %esi,%esi
+    0.00 :   5a2b04: mov    %r11,0x30(%rsp)
+    0.00 :   5a2b09: sub    %rdi,%rax
+    0.00 :   5a2b0c: mov    %r10d,0x28(%rsp)
+    0.00 :   5a2b11: shr    $0x3,%rax
+    0.00 :   5a2b15: mov    %r8,0x20(%rsp)
+    0.00 :   5a2b1a: lea    0x8(,%rax,8),%rdx
+    0.00 :   5a2b22: call   e46f0 <memset@plt>
+    0.00 :   5a2b27: mov    0x20(%rsp),%r8
+    0.00 :   5a2b2c: mov    0x28(%rsp),%r10d
+    0.00 :   5a2b31: mov    0x30(%rsp),%r11
+         : 672    hashp->hctl->dsize = new_dsize;
+    0.00 :   5a2b36: mov    (%r15),%rax
+    0.00 :   5a2b39: mov    0x18(%rsp),%rcx
+         : 675    hashp->dir = p;
+    0.00 :   5a2b3e: mov    %r12,0x8(%r15)
+         : 677    pfree(old_p);
+    0.00 :   5a2b42: mov    0x8(%rsp),%rdi
+    0.00 :   5a2b47: mov    %r11,0x30(%rsp)
+         : 680    hashp->hctl->dsize = new_dsize;
+    0.00 :   5a2b4c: mov    %rcx,0x300(%rax)
+    0.00 :   5a2b53: mov    %r10d,0x28(%rsp)
+    0.00 :   5a2b58: mov    %r8,0x20(%rsp)
+         : 684    pfree(old_p);
+    0.00 :   5a2b5d: call   5bcd20 <pfree>
+    0.00 :   5a2b62: mov    0x30(%rsp),%r11
+    0.00 :   5a2b67: mov    0x28(%rsp),%r10d
+    0.00 :   5a2b6c: mov    0x20(%rsp),%r8
+         : 689    if (!(hashp->dir[new_segnum] = seg_alloc(hashp)))
+    0.00 :   5a2b71: mov    (%rsp),%r14
+    0.00 :   5a2b75: mov    0x8(%r15),%r12
+    0.00 :   5a2b79: mov    %r15,%rdi
+    0.00 :   5a2b7c: mov    %r11,0x20(%rsp)
+    0.00 :   5a2b81: mov    %r10d,0x18(%rsp)
+    0.00 :   5a2b86: mov    %r8,0x8(%rsp)
+    0.00 :   5a2b8b: shl    $0x3,%r14
+    0.00 :   5a2b8f: call   5a2140 <seg_alloc>
+    0.00 :   5a2b94: add    %r14,%r12
+    0.00 :   5a2b97: mov    0x8(%rsp),%r8
+    0.00 :   5a2b9c: mov    0x18(%rsp),%r10d
+    0.00 :   5a2ba1: test   %rax,%rax
+    0.00 :   5a2ba4: mov    %rax,(%r12)
+    0.00 :   5a2ba8: mov    0x20(%rsp),%r11
+    0.00 :   5a2bad: je     5a29f9 <hash_search_with_hash_value+0x639>
+         : 705    hctl->max_bucket++;
+    0.00 :   5a2bb3: mov    0x310(%r8),%eax
+         : 707    hctl->nsegs++;
+    0.00 :   5a2bba: addq   $0x1,0x308(%r8)
+         : 709    hctl->max_bucket++;
+    0.00 :   5a2bc2: lea    0x1(%rax),%esi
+    0.00 :   5a2bc5: jmp    5a293d <hash_search_with_hash_value+0x57d>
+         : 712    SpinLockAcquire(&hctl->freeList[freelist_idx].mutex);
+    0.00 :   5a2bca: mov    %r11,%rdi
+    0.00 :   5a2bcd: mov    $0x523,%edx
+    0.00 :   5a2bd2: mov    %r11,(%rsp)
+    0.00 :   5a2bd6: lea    0x1a9d9b(%rip),%rcx        # 74c978 <__func__.6>
+    0.00 :   5a2bdd: lea    0x158e84(%rip),%rsi        # 6fba68 <_IO_stdin_used+0x8ba68>
+    0.00 :   5a2be4: call   4649d0 <s_lock>
+    0.00 :   5a2be9: mov    (%rsp),%r11
+    0.00 :   5a2bed: jmp    5a28f5 <hash_search_with_hash_value+0x535>
+    0.00 :   5a2bf2: movl   $0x0,0x20(%rsp)
+    0.00 :   5a2bfa: mov    %r8,%rsi
+    0.00 :   5a2bfd: jmp    5a240c <hash_search_with_hash_value+0x4c>
+         : 724    MemSet(((char *) p) + old_dirsize, 0, new_dirsize - old_dirsize);
+    0.00 :   5a2c02: mov    %rax,%rdx
+    0.00 :   5a2c05: xor    %esi,%esi
+    0.00 :   5a2c07: mov    %r11,0x30(%rsp)
+    0.00 :   5a2c0c: mov    %r10d,0x28(%rsp)
+    0.00 :   5a2c11: mov    %r8,0x20(%rsp)
+    0.00 :   5a2c16: call   e46f0 <memset@plt>
+    0.00 :   5a2c1b: mov    0x30(%rsp),%r11
+    0.00 :   5a2c20: mov    0x28(%rsp),%r10d
+    0.00 :   5a2c25: mov    0x20(%rsp),%r8
+    0.00 :   5a2c2a: jmp    5a2b36 <hash_search_with_hash_value+0x776>
+    0.00 :   5a2c2f: jmp    1688e3 <hash_search_with_hash_value.cold+0x8>
+
+Sorted summary for file /home/markwkm/.local/pgsql-18/bin/postgres
+----------------------------------------------
+
+   96.98 /home/markwkm/postgres/build/../src/backend/access/heap/pruneheap.c:214
+    0.84 /home/markwkm/postgres/build/../src/backend/access/heap/pruneheap.c:194
+    0.70 /home/markwkm/postgres/build/../src/backend/access/heap/pruneheap.c:294
+ Percent |	Source code & Disassembly of /home/markwkm/.local/pgsql-18/bin/postgres for cpu-clock:ppp (2154 samples, percent: local period)
+-----------------------------------------------------------------------------------------------------------------------------------------------
+         :
+         :
+         :
+         : 3      Disassembly of section .text:
+         :
+         : 5      00000000001c6410 <heap_page_prune_opt>:
+         : 6      *
+         : 7      * Caller must have pin on the buffer, and must *not* have a lock on it.
+         : 8      */
+         : 9      void
+         : 10     heap_page_prune_opt(Relation relation, Buffer buffer)
+         : 11     {
+    0.19 :   1c6410: push   %r14
+    0.84 :   1c6412: push   %r13 // /home/markwkm/postgres/build/../src/backend/access/heap/pruneheap.c:194
+    0.14 :   1c6414: push   %r12
+    0.00 :   1c6416: mov    %rdi,%r12
+    0.00 :   1c6419: push   %rbp
+    0.05 :   1c641a: mov    %esi,%ebp
+    0.00 :   1c641c: push   %rbx
+    0.09 :   1c641d: sub    $0x280,%rsp
+         : 20     static inline Block
+         : 21     BufferGetBlock(Buffer buffer)
+         : 22     {
+         : 23     Assert(BufferIsValid(buffer));
+         :
+         : 25     if (BufferIsLocal(buffer))
+    0.09 :   1c6424: test   %esi,%esi
+    0.00 :   1c6426: js     1c6540 <heap_page_prune_opt+0x130>
+         : 28     return LocalBufferBlockPointers[-buffer - 1];
+         : 29     else
+         : 30     return (Block) (BufferBlocks + ((Size) (buffer - 1)) * BLCKSZ);
+    0.00 :   1c642c: lea    0x80b045(%rip),%rax        # 9d1478 <BufferBlocks>
+    0.09 :   1c6433: lea    -0x1(%rsi),%ebx
+    0.00 :   1c6436: movslq %ebx,%rbx
+    0.09 :   1c6439: shl    $0xd,%rbx
+    0.09 :   1c643d: add    (%rax),%rbx
+         : 36     /*
+         : 37     * We can't write WAL in recovery mode, so there's no point trying to
+         : 38     * clean the page. The primary will likely issue a cleaning WAL record
+         : 39     * soon anyway, so this is no particular loss.
+         : 40     */
+         : 41     if (RecoveryInProgress())
+    0.32 :   1c6440: call   20e160 <RecoveryInProgress>
+    0.23 :   1c6445: test   %al,%al
+    0.00 :   1c6447: jne    1c6452 <heap_page_prune_opt+0x42>
+         : 45     /*
+         : 46     * First check whether there's any chance there's something to prune,
+         : 47     * determining the appropriate horizon is a waste if there's no prune_xid
+         : 48     * (i.e. no updates/deletes left potentially dead tuples around).
+         : 49     */
+         : 50     prune_xid = ((PageHeader) page)->pd_prune_xid;
+    0.00 :   1c6449: mov    0x14(%rbx),%r13d
+         : 52     if (!TransactionIdIsValid(prune_xid))
+   96.98 :   1c644d: test   %r13d,%r13d // /home/markwkm/postgres/build/../src/backend/access/heap/pruneheap.c:214
+    0.00 :   1c6450: jne    1c6468 <heap_page_prune_opt+0x58>
+         : 55     * We avoid reuse of any free space created on the page by unrelated
+         : 56     * UPDATEs/INSERTs by opting to not update the FSM at this point.  The
+         : 57     * free space should be reused by UPDATEs to *this* page.
+         : 58     */
+         : 59     }
+         : 60     }
+    0.70 :   1c6452: add    $0x280,%rsp // /home/markwkm/postgres/build/../src/backend/access/heap/pruneheap.c:294
+    0.00 :   1c6459: pop    %rbx
+    0.00 :   1c645a: pop    %rbp
+    0.00 :   1c645b: pop    %r12
+    0.09 :   1c645d: pop    %r13
+    0.00 :   1c645f: pop    %r14
+    0.00 :   1c6461: ret
+    0.00 :   1c6462: nopw   0x0(%rax,%rax,1)
+         : 69     vistest = GlobalVisTestFor(relation);
+    0.00 :   1c6468: mov    %r12,%rdi
+    0.00 :   1c646b: call   44d420 <GlobalVisTestFor>
+         : 72     if (!GlobalVisTestIsRemovableXid(vistest, prune_xid))
+    0.00 :   1c6470: mov    %r13d,%esi
+    0.00 :   1c6473: mov    %rax,%rdi
+         : 75     vistest = GlobalVisTestFor(relation);
+    0.00 :   1c6476: mov    %rax,%r14
+         : 77     if (!GlobalVisTestIsRemovableXid(vistest, prune_xid))
+    0.00 :   1c6479: call   44d540 <GlobalVisTestIsRemovableXid>
+    0.00 :   1c647e: test   %al,%al
+    0.00 :   1c6480: je     1c6452 <heap_page_prune_opt+0x42>
+         : 81     minfree = RelationGetTargetPageFreeSpace(relation,
+    0.00 :   1c6482: mov    0x130(%r12),%rdx
+    0.00 :   1c648a: mov    $0x333,%r13d
+    0.00 :   1c6490: test   %rdx,%rdx
+    0.00 :   1c6493: je     1c64c3 <heap_page_prune_opt+0xb3>
+    0.00 :   1c6495: mov    $0x64,%eax
+    0.00 :   1c649a: sub    0x4(%rdx),%eax
+    0.00 :   1c649d: shl    $0xd,%eax
+    0.00 :   1c64a0: movslq %eax,%r13
+    0.00 :   1c64a3: sar    $0x1f,%eax
+    0.00 :   1c64a6: imul   $0x51eb851f,%r13,%r13
+    0.00 :   1c64ad: sar    $0x25,%r13
+    0.00 :   1c64b1: sub    %eax,%r13d
+         : 94     minfree = Max(minfree, BLCKSZ / 10);
+    0.00 :   1c64b4: mov    $0x333,%eax
+         : 96     minfree = RelationGetTargetPageFreeSpace(relation,
+    0.00 :   1c64b9: movslq %r13d,%r13
+         : 98     minfree = Max(minfree, BLCKSZ / 10);
+    0.00 :   1c64bc: cmp    %rax,%r13
+    0.00 :   1c64bf: cmovb  %rax,%r13
+         : 101    if (PageIsFull(page) || PageGetHeapFreeSpace(page) < minfree)
+    0.00 :   1c64c3: testb  $0x2,0xa(%rbx)
+    0.00 :   1c64c7: je     1c6560 <heap_page_prune_opt+0x150>
+         : 104    if (!ConditionalLockBufferForCleanup(buffer))
+    0.00 :   1c64cd: mov    %ebp,%edi
+    0.00 :   1c64cf: call   4380a0 <ConditionalLockBufferForCleanup>
+    0.00 :   1c64d4: test   %al,%al
+    0.00 :   1c64d6: je     1c6452 <heap_page_prune_opt+0x42>
+         : 109    if (PageIsFull(page) || PageGetHeapFreeSpace(page) < minfree)
+    0.00 :   1c64dc: testb  $0x2,0xa(%rbx)
+    0.00 :   1c64e0: jne    1c64ef <heap_page_prune_opt+0xdf>
+    0.00 :   1c64e2: mov    %rbx,%rdi
+    0.00 :   1c64e5: call   465950 <PageGetHeapFreeSpace>
+    0.00 :   1c64ea: cmp    %r13,%rax
+    0.00 :   1c64ed: jae    1c6522 <heap_page_prune_opt+0x112>
+         : 116    heap_page_prune_and_freeze(relation, buffer, vistest, 0,
+    0.00 :   1c64ef: push   $0x0
+    0.00 :   1c64f1: mov    %ebp,%esi
+    0.00 :   1c64f3: xor    %r8d,%r8d
+    0.00 :   1c64f6: xor    %ecx,%ecx
+    0.00 :   1c64f8: push   $0x0
+    0.00 :   1c64fa: mov    %r14,%rdx
+    0.00 :   1c64fd: mov    %r12,%rdi
+    0.00 :   1c6500: lea    0x1e(%rsp),%rax
+    0.00 :   1c6505: push   %rax
+    0.00 :   1c6506: push   $0x0
+    0.00 :   1c6508: lea    0x30(%rsp),%r9
+    0.00 :   1c650d: call   1c5260 <heap_page_prune_and_freeze>
+         : 129    if (presult.ndeleted > presult.nnewlpdead)
+    0.00 :   1c6512: mov    0x30(%rsp),%esi
+    0.00 :   1c6516: mov    0x34(%rsp),%eax
+    0.00 :   1c651a: add    $0x20,%rsp
+    0.00 :   1c651e: cmp    %eax,%esi
+    0.00 :   1c6520: jg     1c6580 <heap_page_prune_opt+0x170>
+         : 135    }
+    0.00 :   1c6522: add    $0x280,%rsp
+         : 137    LockBuffer(buffer, BUFFER_LOCK_UNLOCK);
+    0.00 :   1c6529: mov    %ebp,%edi
+    0.00 :   1c652b: xor    %esi,%esi
+         : 140    }
+    0.00 :   1c652d: pop    %rbx
+    0.00 :   1c652e: pop    %rbp
+    0.00 :   1c652f: pop    %r12
+    0.00 :   1c6531: pop    %r13
+    0.00 :   1c6533: pop    %r14
+         : 146    LockBuffer(buffer, BUFFER_LOCK_UNLOCK);
+    0.00 :   1c6535: jmp    436970 <LockBuffer>
+    0.00 :   1c653a: nopw   0x0(%rax,%rax,1)
+         : 149    return LocalBufferBlockPointers[-buffer - 1];
+    0.00 :   1c6540: lea    0x80aff1(%rip),%rdx        # 9d1538 <LocalBufferBlockPointers>
+    0.00 :   1c6547: mov    %esi,%eax
+    0.00 :   1c6549: not    %eax
+    0.00 :   1c654b: mov    (%rdx),%rdx
+    0.00 :   1c654e: cltq
+    0.00 :   1c6550: mov    (%rdx,%rax,8),%rbx
+    0.00 :   1c6554: jmp    1c6440 <heap_page_prune_opt+0x30>
+    0.00 :   1c6559: nopl   0x0(%rax)
+         : 158    if (PageIsFull(page) || PageGetHeapFreeSpace(page) < minfree)
+    0.00 :   1c6560: mov    %rbx,%rdi
+    0.00 :   1c6563: call   465950 <PageGetHeapFreeSpace>
+    0.00 :   1c6568: cmp    %r13,%rax
+    0.00 :   1c656b: jb     1c64cd <heap_page_prune_opt+0xbd>
+    0.00 :   1c6571: jmp    1c6452 <heap_page_prune_opt+0x42>
+    0.00 :   1c6576: cs nopw 0x0(%rax,%rax,1)
+         : 165    pgstat_update_heap_dead_tuples(relation,
+    0.00 :   1c6580: sub    %eax,%esi
+    0.00 :   1c6582: mov    %r12,%rdi
+    0.00 :   1c6585: call   48a060 <pgstat_update_heap_dead_tuples>
+    0.00 :   1c658a: jmp    1c6522 <heap_page_prune_opt+0x112>
+
+Sorted summary for file /home/markwkm/.local/pgsql-18/bin/postgres
+----------------------------------------------
+
+   55.64 /home/markwkm/postgres/build/../src/backend/access/heap/heapam.c:1783
+   37.15 /home/markwkm/postgres/build/../src/backend/access/heap/heapam.c:1755
+    0.57 /home/markwkm/postgres/build/../src/backend/access/heap/heapam.c:1813
+ Percent |	Source code & Disassembly of /home/markwkm/.local/pgsql-18/bin/postgres for cpu-clock:ppp (1747 samples, percent: local period)
+-----------------------------------------------------------------------------------------------------------------------------------------------
+         :
+         :
+         :
+         : 3      Disassembly of section .text:
+         :
+         : 5      00000000001bbae0 <heap_hot_search_buffer>:
+         : 6      */
+         : 7      bool
+         : 8      heap_hot_search_buffer(ItemPointer tid, Relation relation, Buffer buffer,
+         : 9      Snapshot snapshot, HeapTuple heapTuple,
+         : 10     bool *all_dead, bool first_call)
+         : 11     {
+    0.00 :   1bbae0: push   %r15
+    0.00 :   1bbae2: mov    %r9,%r15
+    0.17 :   1bbae5: push   %r14
+    0.00 :   1bbae7: mov    %rsi,%r14
+    0.00 :   1bbaea: push   %r13
+    0.00 :   1bbaec: push   %r12
+    0.06 :   1bbaee: push   %rbp
+    0.00 :   1bbaef: push   %rbx
+    0.00 :   1bbaf0: mov    %r8,%rbx
+    0.00 :   1bbaf3: sub    $0x28,%rsp
+    0.11 :   1bbaf7: mov    %rcx,0x8(%rsp)
+    0.06 :   1bbafc: mov    0x60(%rsp),%ecx
+    0.00 :   1bbb00: mov    %ecx,%r10d
+         : 25     static inline Block
+         : 26     BufferGetBlock(Buffer buffer)
+         : 27     {
+         : 28     Assert(BufferIsValid(buffer));
+         :
+         : 30     if (BufferIsLocal(buffer))
+    0.06 :   1bbb03: test   %edx,%edx
+    0.00 :   1bbb05: js     1bbd70 <heap_hot_search_buffer+0x290>
+         : 33     return LocalBufferBlockPointers[-buffer - 1];
+         : 34     else
+         : 35     return (Block) (BufferBlocks + ((Size) (buffer - 1)) * BLCKSZ);
+    0.06 :   1bbb0b: lea    0x815966(%rip),%rax        # 9d1478 <BufferBlocks>
+    0.06 :   1bbb12: lea    -0x1(%rdx),%ebp
+    0.00 :   1bbb15: movslq %ebp,%rbp
+    0.29 :   1bbb18: shl    $0xd,%rbp
+    0.00 :   1bbb1c: add    (%rax),%rbp
+         : 41     bool            valid;
+         : 42     bool            skip;
+         : 43     GlobalVisState *vistest = NULL;
+         :
+         : 45     /* If this is not the first call, previous call returned a (live!) tuple */
+         : 46     if (all_dead)
+    0.06 :   1bbb1f: test   %r15,%r15
+    0.00 :   1bbb22: je     1bbb27 <heap_hot_search_buffer+0x47>
+         : 49     *all_dead = first_call;
+    0.00 :   1bbb24: mov    %cl,(%r15)
+         : 51     *               Returns the offset number of a disk item pointer.
+         : 52     */
+         : 53     static inline OffsetNumber
+         : 54     ItemPointerGetOffsetNumberNoCheck(const ItemPointerData *pointer)
+         : 55     {
+         : 56     return pointer->ip_posid;
+    0.29 :   1bbb27: movzwl 0x4(%rdi),%r12d
+    0.00 :   1bbb2c: mov    (%rdi),%r13d
+         :
+         : 60     blkno = ItemPointerGetBlockNumber(tid);
+         : 61     offnum = ItemPointerGetOffsetNumber(tid);
+         : 62     at_chain_start = first_call;
+         : 63     skip = !first_call;
+    0.00 :   1bbb2f: xor    $0x1,%ecx
+         : 65     for (;;)
+         : 66     {
+         : 67     ItemId          lp;
+         :
+         : 69     /* check for bogus TID */
+         : 70     if (offnum < FirstOffsetNumber || offnum > PageGetMaxOffsetNumber(page))
+    0.00 :   1bbb32: test   %r12w,%r12w
+    0.00 :   1bbb36: je     1bbc90 <heap_hot_search_buffer+0x1b0>
+    0.29 :   1bbb3c: mov    %rdi,0x18(%rsp)
+    0.00 :   1bbb41: mov    %r14,%rax
+         : 75     TransactionId prev_xmax = InvalidTransactionId;
+    0.00 :   1bbb44: xor    %r9d,%r9d
+    0.00 :   1bbb47: mov    %r12d,%r14d
+         : 78     GlobalVisState *vistest = NULL;
+    0.06 :   1bbb4a: movq   $0x0,(%rsp)
+    0.00 :   1bbb52: mov    %r10d,%esi
+    0.06 :   1bbb55: mov    %rax,%r12
+    0.00 :   1bbb58: mov    %edx,0x10(%rsp)
+    0.06 :   1bbb5c: mov    %r9d,%edx
+         : 84     static inline OffsetNumber
+         : 85     PageGetMaxOffsetNumber(const PageData *page)
+         : 86     {
+         : 87     const PageHeaderData *pageheader = (const PageHeaderData *) page;
+         :
+         : 89     if (pageheader->pd_lower <= SizeOfPageHeaderData)
+    0.00 :   1bbb5f: movzwl 0xc(%rbp),%eax
+    0.11 :   1bbb63: cmp    $0x18,%ax
+    0.00 :   1bbb67: jbe    1bbc90 <heap_hot_search_buffer+0x1b0>
+         : 93     return 0;
+         : 94     else
+         : 95     return (pageheader->pd_lower - SizeOfPageHeaderData) / sizeof(ItemIdData);
+    0.00 :   1bbb6d: shr    $0x2,%rax
+    0.34 :   1bbb71: sub    $0x6,%rax
+         : 98     if (offnum < FirstOffsetNumber || offnum > PageGetMaxOffsetNumber(page))
+    0.00 :   1bbb75: cmp    %r14w,%ax
+    0.00 :   1bbb79: jb     1bbc90 <heap_hot_search_buffer+0x1b0>
+         : 101    return &((PageHeader) page)->pd_linp[offsetNumber - 1];
+    0.00 :   1bbb7f: movzwl %r14w,%eax
+    0.00 :   1bbb83: sub    $0x1,%eax
+         : 104    break;
+         :
+         : 106    lp = PageGetItemId(page, offnum);
+         :
+         : 108    /* check for unused, dead, or redirected items */
+         : 109    if (!ItemIdIsNormal(lp))
+    0.23 :   1bbb86: cltq
+    0.00 :   1bbb88: add    $0x4,%rax
+    0.06 :   1bbb8c: mov    0x8(%rbp,%rax,4),%edi
+   37.15 :   1bbb90: and    $0x18000,%edi // /home/markwkm/postgres/build/../src/backend/access/heap/heapam.c:1755
+    0.29 :   1bbb96: cmp    $0x8000,%edi
+    0.00 :   1bbb9c: jne    1bbca8 <heap_hot_search_buffer+0x1c8>
+         : 116    return (Item) (((const char *) page) + ItemIdGetOffset(itemId));
+    0.06 :   1bbba2: movzwl 0x8(%rbp,%rax,4),%edi
+    0.11 :   1bbba7: and    $0x7fff,%edi
+    0.06 :   1bbbad: add    %rbp,%rdi
+         : 120    * Update heapTuple to point to the element of the HOT chain we're
+         : 121    * currently investigating. Having t_self set correctly is important
+         : 122    * because the SSI checks and the *Satisfies routine for historical
+         : 123    * MVCC snapshots need the correct tid to decide about the visibility.
+         : 124    */
+         : 125    heapTuple->t_data = (HeapTupleHeader) PageGetItem(page, lp);
+    0.29 :   1bbbb0: mov    %rdi,0x10(%rbx)
+         : 127    heapTuple->t_len = ItemIdGetLength(lp);
+    0.11 :   1bbbb4: movzwl 0xa(%rbp,%rax,4),%eax
+    0.06 :   1bbbb9: shr    $1,%ax
+    0.00 :   1bbbbc: movzwl %ax,%eax
+    0.06 :   1bbbbf: mov    %eax,(%rbx)
+         : 132    heapTuple->t_tableOid = RelationGetRelid(relation);
+    0.11 :   1bbbc1: mov    0x48(%r12),%eax
+         : 134    *               Sets a block identifier to the specified value.
+         : 135    */
+         : 136    static inline void
+         : 137    BlockIdSet(BlockIdData *blockId, BlockNumber blockNumber)
+         : 138    {
+         : 139    blockId->bi_hi = blockNumber >> 16;
+    0.00 :   1bbbc6: mov    %r13d,0x4(%rbx)
+    0.00 :   1bbbca: mov    %eax,0xc(%rbx)
+         : 142    static inline void
+         : 143    ItemPointerSet(ItemPointerData *pointer, BlockNumber blockNumber, OffsetNumber offNum)
+         : 144    {
+         : 145    Assert(PointerIsValid(pointer));
+         : 146    BlockIdSet(&pointer->ip_blkid, blockNumber);
+         : 147    pointer->ip_posid = offNum;
+    0.00 :   1bbbcd: mov    %r14w,0x8(%rbx)
+         : 149    ItemPointerSet(&heapTuple->t_self, blkno, offnum);
+         :
+         : 151    /*
+         : 152    * Shouldn't see a HEAP_ONLY tuple at chain start.
+         : 153    */
+         : 154    if (at_chain_start && HeapTupleIsHeapOnly(heapTuple))
+    0.11 :   1bbbd2: test   %sil,%sil
+    0.00 :   1bbbd5: je     1bbbe2 <heap_hot_search_buffer+0x102>
+    0.00 :   1bbbd7: cmpw   $0x0,0x12(%rdi)
+   55.64 :   1bbbdc: js     1bbc90 <heap_hot_search_buffer+0x1b0> // /home/markwkm/postgres/build/../src/backend/access/heap/heapam.c:1783
+         :
+         : 160    /*
+         : 161    * The xmin should match the previous xmax value, else chain is
+         : 162    * broken.
+         : 163    */
+         : 164    if (TransactionIdIsValid(prev_xmax) &&
+    0.40 :   1bbbe2: test   %edx,%edx
+    0.00 :   1bbbe4: je     1bbc00 <heap_hot_search_buffer+0x120>
+         :
+         : 168    static inline TransactionId
+         : 169    HeapTupleHeaderGetXmin(const HeapTupleHeaderData *tup)
+         : 170    {
+         : 171    return HeapTupleHeaderXminFrozen(tup) ?
+         : 172    FrozenTransactionId : HeapTupleHeaderGetRawXmin(tup);
+    0.00 :   1bbbe6: movzwl 0x14(%rdi),%eax
+    0.06 :   1bbbea: mov    $0x2,%esi
+    0.00 :   1bbbef: not    %eax
+    0.00 :   1bbbf1: test   $0x3,%ah
+    0.00 :   1bbbf4: je     1bbbf8 <heap_hot_search_buffer+0x118>
+         : 178    return tup->t_choice.t_heap.t_xmin;
+    0.00 :   1bbbf6: mov    (%rdi),%esi
+    0.00 :   1bbbf8: cmp    %esi,%edx
+    0.00 :   1bbbfa: jne    1bbc90 <heap_hot_search_buffer+0x1b0>
+         : 182    * return the first tuple we find.  But on later passes, heapTuple
+         : 183    * will initially be pointing to the tuple we returned last time.
+         : 184    * Returning it again would be incorrect (and would loop forever), so
+         : 185    * we skip it and return the next match we find.
+         : 186    */
+         : 187    if (!skip)
+    0.06 :   1bbc00: test   %cl,%cl
+    0.00 :   1bbc02: je     1bbcd0 <heap_hot_search_buffer+0x1f0>
+         : 190    * transactions.
+         : 191    *
+         : 192    * Note: if you change the criterion here for what is "dead", fix the
+         : 193    * planner's get_actual_variable_range() function to match.
+         : 194    */
+         : 195    if (all_dead && *all_dead)
+    0.00 :   1bbc08: test   %r15,%r15
+    0.00 :   1bbc0b: je     1bbc40 <heap_hot_search_buffer+0x160>
+    0.00 :   1bbc0d: cmpb   $0x0,(%r15)
+    0.00 :   1bbc11: je     1bbc40 <heap_hot_search_buffer+0x160>
+         : 200    {
+         : 201    if (!vistest)
+    0.00 :   1bbc13: cmpq   $0x0,(%rsp)
+    0.00 :   1bbc18: je     1bbda0 <heap_hot_search_buffer+0x2c0>
+         : 204    vistest = GlobalVisTestFor(relation);
+         :
+         : 206    if (!HeapTupleIsSurelyDead(heapTuple, vistest))
+    0.00 :   1bbc1e: mov    (%rsp),%rsi
+    0.00 :   1bbc22: mov    %rbx,%rdi
+    0.00 :   1bbc25: call   1bfb20 <HeapTupleIsSurelyDead>
+    0.00 :   1bbc2a: test   %al,%al
+    0.00 :   1bbc2c: je     1bbd60 <heap_hot_search_buffer+0x280>
+    0.00 :   1bbc32: data16 cs nopw 0x0(%rax,%rax,1)
+    0.00 :   1bbc3d: nopl   (%rax)
+         : 214    }
+         :
+         : 216    static inline bool
+         : 217    HeapTupleIsHotUpdated(const HeapTupleData *tuple)
+         : 218    {
+         : 219    return HeapTupleHeaderIsHotUpdated(tuple->t_data);
+    0.00 :   1bbc40: mov    0x10(%rbx),%rdi
+         : 221    (tup->t_infomask & HEAP_XMAX_INVALID) == 0 &&
+    0.00 :   1bbc44: testb  $0x40,0x13(%rdi)
+    0.00 :   1bbc48: je     1bbc90 <heap_hot_search_buffer+0x1b0>
+    0.00 :   1bbc4a: movzwl 0x14(%rdi),%eax
+         : 225    (tup->t_infomask2 & HEAP_HOT_UPDATED) != 0 &&
+    0.00 :   1bbc4e: test   $0x8,%ah
+    0.00 :   1bbc51: jne    1bbc90 <heap_hot_search_buffer+0x1b0>
+         : 228    (tup->t_infomask & HEAP_XMAX_INVALID) == 0 &&
+    0.00 :   1bbc53: mov    %eax,%edx
+    0.00 :   1bbc55: and    $0x300,%dx
+    0.00 :   1bbc5a: cmp    $0x200,%dx
+    0.00 :   1bbc5f: je     1bbc90 <heap_hot_search_buffer+0x1b0>
+         : 233    return pointer->ip_posid;
+    0.00 :   1bbc61: movzwl 0x10(%rdi),%r14d
+         : 235    if (!((tup)->t_infomask & HEAP_XMAX_INVALID) &&
+    0.00 :   1bbc66: test   $0x10,%ah
+    0.00 :   1bbc69: je     1bbc73 <heap_hot_search_buffer+0x193>
+         : 238    ((tup)->t_infomask & HEAP_XMAX_IS_MULTI) &&
+    0.00 :   1bbc6b: test   $0x80,%al
+    0.00 :   1bbc6d: je     1bbd90 <heap_hot_search_buffer+0x2b0>
+         : 241    return tup->t_choice.t_heap.t_xmax;
+    0.00 :   1bbc73: mov    0x4(%rdi),%edx
+         : 243    skip = false;
+    0.00 :   1bbc76: xor    %ecx,%ecx
+         : 245    if (offnum < FirstOffsetNumber || offnum > PageGetMaxOffsetNumber(page))
+    0.00 :   1bbc78: xor    %esi,%esi
+    0.00 :   1bbc7a: test   %r14w,%r14w
+    0.00 :   1bbc7e: jne    1bbb5f <heap_hot_search_buffer+0x7f>
+    0.00 :   1bbc84: data16 cs nopw 0x0(%rax,%rax,1)
+    0.00 :   1bbc8f: nop
+         : 251    }
+         : 252    else
+         : 253    break;                          /* end of chain */
+         : 254    }
+         :
+         : 256    return false;
+    0.00 :   1bbc90: xor    %eax,%eax
+         : 258    }
+    0.00 :   1bbc92: add    $0x28,%rsp
+    0.00 :   1bbc96: pop    %rbx
+    0.11 :   1bbc97: pop    %rbp
+    0.11 :   1bbc98: pop    %r12
+    0.06 :   1bbc9a: pop    %r13
+    0.00 :   1bbc9c: pop    %r14
+    0.00 :   1bbc9e: pop    %r15
+    0.06 :   1bbca0: ret
+    0.00 :   1bbca1: nopl   0x0(%rax)
+         : 268    if (ItemIdIsRedirected(lp) && at_chain_start)
+    0.23 :   1bbca8: cmp    $0x10000,%edi
+    0.00 :   1bbcae: jne    1bbc90 <heap_hot_search_buffer+0x1b0>
+    0.00 :   1bbcb0: test   %sil,%sil
+    0.00 :   1bbcb3: je     1bbc90 <heap_hot_search_buffer+0x1b0>
+         : 273    offnum = ItemIdGetRedirect(lp);
+    0.00 :   1bbcb5: movzwl 0x8(%rbp,%rax,4),%r11d
+    0.00 :   1bbcbb: and    $0x7fff,%r11w
+    0.00 :   1bbcc1: mov    %r11d,%r14d
+         : 277    continue;
+    0.00 :   1bbcc4: jmp    1bbc78 <heap_hot_search_buffer+0x198>
+    0.00 :   1bbcc6: cs nopw 0x0(%rax,%rax,1)
+         : 280    valid = HeapTupleSatisfiesVisibility(heapTuple, snapshot, buffer);
+    0.17 :   1bbcd0: mov    0x10(%rsp),%edx
+    0.00 :   1bbcd4: mov    0x8(%rsp),%rsi
+    0.00 :   1bbcd9: mov    %rbx,%rdi
+    0.00 :   1bbcdc: call   1c0050 <HeapTupleSatisfiesVisibility>
+         : 285    HeapCheckForSerializableConflictOut(valid, relation, heapTuple,
+    0.00 :   1bbce1: mov    0x8(%rsp),%r8
+    0.23 :   1bbce6: mov    %rbx,%rdx
+    0.00 :   1bbce9: mov    %r12,%rsi
+    0.00 :   1bbcec: mov    0x10(%rsp),%ecx
+    0.11 :   1bbcf0: movzbl %al,%edi
+    0.00 :   1bbcf3: mov    %al,0x17(%rsp)
+    0.00 :   1bbcf7: call   1b9330 <HeapCheckForSerializableConflictOut>
+         : 293    if (valid)
+    0.11 :   1bbcfc: movzbl 0x17(%rsp),%eax
+    0.06 :   1bbd01: test   %al,%al
+    0.00 :   1bbd03: je     1bbc08 <heap_hot_search_buffer+0x128>
+         : 297    */
+         : 298    static inline void
+         : 299    ItemPointerSetOffsetNumber(ItemPointerData *pointer, OffsetNumber offsetNumber)
+         : 300    {
+         : 301    Assert(PointerIsValid(pointer));
+         : 302    pointer->ip_posid = offsetNumber;
+    0.00 :   1bbd09: mov    0x18(%rsp),%rdi
+    0.00 :   1bbd0e: mov    %r12,%rcx
+    0.00 :   1bbd11: mov    %r14d,%r12d
+    0.00 :   1bbd14: mov    %rcx,%r14
+    0.06 :   1bbd17: mov    %r12w,0x4(%rdi)
+         : 308    HeapTupleHeaderGetXmin(heapTuple->t_data));
+    0.57 :   1bbd1c: mov    0x10(%rbx),%rsi // /home/markwkm/postgres/build/../src/backend/access/heap/heapam.c:1813
+         : 310    FrozenTransactionId : HeapTupleHeaderGetRawXmin(tup);
+    0.06 :   1bbd20: mov    $0x2,%edi
+    0.00 :   1bbd25: movzwl 0x14(%rsi),%ecx
+    0.46 :   1bbd29: not    %ecx
+    0.06 :   1bbd2b: and    $0x3,%ch
+    0.00 :   1bbd2e: je     1bbd32 <heap_hot_search_buffer+0x252>
+         : 316    return tup->t_choice.t_heap.t_xmin;
+    0.06 :   1bbd30: mov    (%rsi),%edi
+         : 318    PredicateLockTID(relation, &heapTuple->t_self, snapshot,
+    0.00 :   1bbd32: mov    0x8(%rsp),%rdx
+    0.00 :   1bbd37: mov    %edi,%ecx
+    0.00 :   1bbd39: lea    0x4(%rbx),%rsi
+    0.11 :   1bbd3d: mov    %r14,%rdi
+    0.00 :   1bbd40: mov    %al,(%rsp)
+    0.00 :   1bbd43: call   4618c0 <PredicateLockTID>
+         : 325    if (all_dead)
+    0.23 :   1bbd48: test   %r15,%r15
+    0.00 :   1bbd4b: movzbl (%rsp),%eax
+    0.00 :   1bbd4f: je     1bbc92 <heap_hot_search_buffer+0x1b2>
+         : 329    *all_dead = false;
+    0.17 :   1bbd55: movb   $0x0,(%r15)
+    0.00 :   1bbd59: jmp    1bbc92 <heap_hot_search_buffer+0x1b2>
+    0.00 :   1bbd5e: xchg   %ax,%ax
+         : 333    *all_dead = false;
+    0.00 :   1bbd60: movb   $0x0,(%r15)
+    0.00 :   1bbd64: jmp    1bbc40 <heap_hot_search_buffer+0x160>
+    0.00 :   1bbd69: nopl   0x0(%rax)
+         : 337    return LocalBufferBlockPointers[-buffer - 1];
+    0.00 :   1bbd70: lea    0x8157c1(%rip),%r8        # 9d1538 <LocalBufferBlockPointers>
+    0.00 :   1bbd77: mov    %edx,%eax
+    0.00 :   1bbd79: not    %eax
+    0.00 :   1bbd7b: mov    (%r8),%r8
+    0.00 :   1bbd7e: cltq
+    0.00 :   1bbd80: mov    (%r8,%rax,8),%rbp
+    0.00 :   1bbd84: jmp    1bbb1f <heap_hot_search_buffer+0x3f>
+    0.00 :   1bbd89: nopl   0x0(%rax)
+         : 346    return HeapTupleGetUpdateXid(tup);
+    0.00 :   1bbd90: call   1b5c60 <HeapTupleGetUpdateXid>
+         : 348    skip = false;
+    0.00 :   1bbd95: xor    %ecx,%ecx
+    0.00 :   1bbd97: mov    %eax,%edx
+    0.00 :   1bbd99: jmp    1bbc78 <heap_hot_search_buffer+0x198>
+    0.00 :   1bbd9e: xchg   %ax,%ax
+         : 353    vistest = GlobalVisTestFor(relation);
+    0.00 :   1bbda0: mov    %r12,%rdi
+    0.00 :   1bbda3: call   44d420 <GlobalVisTestFor>
+    0.00 :   1bbda8: mov    %rax,(%rsp)
+    0.00 :   1bbdac: jmp    1bbc1e <heap_hot_search_buffer+0x13e>
+
+Sorted summary for file /home/markwkm/.local/pgsql-18/bin/postgres
+----------------------------------------------
+
+   86.31 /home/markwkm/postgres/build/../src/include/storage/buf_internals.h:348
+    9.03 /home/markwkm/postgres/build/../src/include/port/atomics/arch-x86.h:171
+    1.12 /home/markwkm/postgres/build/../src/backend/storage/buffer/bufmgr.c:3085
+ Percent |	Source code & Disassembly of /home/markwkm/.local/pgsql-18/bin/postgres for cpu-clock:ppp (1695 samples, percent: local period)
+-----------------------------------------------------------------------------------------------------------------------------------------------
+         :
+         :
+         :
+         : 3      Disassembly of section .text:
+         :
+         : 5      0000000000434e00 <PinBuffer>:
+         : 6      * Returns true if buffer is BM_VALID, else false.  This provision allows
+         : 7      * some callers to avoid an extra spinlock cycle.
+         : 8      */
+         : 9      static bool
+         : 10     PinBuffer(BufferDesc *buf, BufferAccessStrategy strategy)
+         : 11     {
+    0.24 :   434e00: push   %r15
+    0.00 :   434e02: mov    %rsi,%r15
+         : 14     PrivateRefCountEntry *ref;
+         :
+         : 16     Assert(!BufferIsLocal(b));
+         : 17     Assert(ReservedRefCountEntry != NULL);
+         :
+         : 19     ref = GetPrivateRefCountEntry(b, true);
+    0.00 :   434e05: mov    $0x1,%esi
+         : 21     {
+    0.41 :   434e0a: push   %r14
+    0.00 :   434e0c: push   %r13
+    0.00 :   434e0e: push   %r12
+    0.00 :   434e10: push   %rbp
+    0.18 :   434e11: push   %rbx
+    0.00 :   434e12: mov    %rdi,%rbx
+    0.00 :   434e15: sub    $0x48,%rsp
+         : 29     }
+         :
+         : 31     static inline Buffer
+         : 32     BufferDescriptorGetBuffer(const BufferDesc *bdesc)
+         : 33     {
+         : 34     return (Buffer) (bdesc->buf_id + 1);
+    0.06 :   434e19: mov    0x14(%rdi),%eax
+   86.31 :   434e1c: lea    0x1(%rax),%r13d // /home/markwkm/postgres/build/../src/include/storage/buf_internals.h:348
+         : 37     ref = GetPrivateRefCountEntry(b, true);
+    1.12 :   434e20: mov    %r13d,%edi // /home/markwkm/postgres/build/../src/backend/storage/buffer/bufmgr.c:3085
+    0.00 :   434e23: call   434d20 <GetPrivateRefCountEntry>
+         :
+         : 41     if (ref == NULL)
+    0.12 :   434e28: test   %rax,%rax
+    0.00 :   434e2b: je     434e70 <PinBuffer+0x70>
+         : 44     #ifndef PG_HAVE_ATOMIC_READ_U32
+         : 45     #define PG_HAVE_ATOMIC_READ_U32
+         : 46     static inline uint32
+         : 47     pg_atomic_read_u32_impl(volatile pg_atomic_uint32 *ptr)
+         : 48     {
+         : 49     return ptr->value;
+    0.00 :   434e2d: mov    0x18(%rbx),%ebx
+    0.00 :   434e30: mov    %rax,%r14
+         : 52     * client requests on top of our client requests to enforce that
+         : 53     * buffers are only accessed while locked (and pinned).  It's possible
+         : 54     * that the buffer page is legitimately non-accessible here.  We
+         : 55     * cannot meddle with that.
+         : 56     */
+         : 57     result = (pg_atomic_read_u32(&buf->state) & BM_VALID) != 0;
+    0.00 :   434e33: shr    $0x18,%ebx
+    0.00 :   434e36: and    $0x1,%ebx
+         : 60     }
+         :
+         : 62     ref->refcount++;
+    0.29 :   434e39: addl   $0x1,0x4(%r14)
+         : 64     Assert(ref->refcount > 0);
+         : 65     ResourceOwnerRememberBuffer(CurrentResourceOwner, b);
+    0.00 :   434e3e: lea    0x5b327b(%rip),%rax        # 9e80c0 <CurrentResourceOwner>
+         : 67     *               Returns datum representation for a 32-bit integer.
+         : 68     */
+         : 69     static inline Datum
+         : 70     Int32GetDatum(int32 X)
+         : 71     {
+         : 72     return (Datum) X;
+    0.00 :   434e45: movslq %r13d,%rsi
+         :
+         : 75     /* Convenience wrappers over ResourceOwnerRemember/Forget */
+         : 76     static inline void
+         : 77     ResourceOwnerRememberBuffer(ResourceOwner owner, Buffer buffer)
+         : 78     {
+         : 79     ResourceOwnerRemember(owner, Int32GetDatum(buffer), &buffer_pin_resowner_desc);
+    0.41 :   434e48: lea    0x559df1(%rip),%rdx        # 98ec40 <buffer_pin_resowner_desc>
+    0.00 :   434e4f: mov    (%rax),%rdi
+    0.00 :   434e52: call   5beea0 <ResourceOwnerRemember>
+         : 83     return result;
+         : 84     }
+    0.00 :   434e57: add    $0x48,%rsp
+    0.18 :   434e5b: mov    %ebx,%eax
+    0.12 :   434e5d: pop    %rbx
+    0.06 :   434e5e: pop    %rbp
+    0.00 :   434e5f: pop    %r12
+    0.06 :   434e61: pop    %r13
+    0.00 :   434e63: pop    %r14
+    0.00 :   434e65: pop    %r15
+    0.00 :   434e67: ret
+    0.00 :   434e68: nopl   0x0(%rax,%rax,1)
+         : 95     res = ReservedRefCountEntry;
+    0.29 :   434e70: mov    0x59c651(%rip),%r14        # 9d14c8 <ReservedRefCountEntry>
+         : 97     ReservedRefCountEntry = NULL;
+    0.00 :   434e77: lea    0x18(%rbx),%rbp
+    0.00 :   434e7b: lea    0x10(%rsp),%r12
+    0.12 :   434e80: movq   $0x0,0x59c63d(%rip)        # 9d14c8 <ReservedRefCountEntry>
+         : 101    res->buffer = buffer;
+    0.00 :   434e8b: mov    %r13d,(%r14)
+         : 103    res->refcount = 0;
+    0.00 :   434e8e: movl   $0x0,0x4(%r14)
+    0.18 :   434e96: mov    0x18(%rbx),%eax
+    0.00 :   434e99: jmp    434ecb <PinBuffer+0xcb>
+    0.00 :   434e9b: nopl   0x0(%rax,%rax,1)
+         : 108    buf_state += BUF_REFCOUNT_ONE;
+    0.24 :   434ea0: lea    0x1(%rax),%edx
+         : 110    if (strategy == NULL)
+    0.00 :   434ea3: test   %r15,%r15
+    0.00 :   434ea6: je     434f50 <PinBuffer+0x150>
+         : 113    buf_state += BUF_USAGECOUNT_ONE;
+    0.00 :   434eac: lea    0x40001(%rax),%ecx
+    0.00 :   434eb2: test   $0x3c0000,%edx
+    0.00 :   434eb8: cmove  %ecx,%edx
+         :
+         : 118    /*
+         : 119    * Perform cmpxchg and use the zero flag which it implicitly sets when
+         : 120    * equal to measure the success.
+         : 121    */
+         : 122    __asm__ __volatile__(
+    0.00 :   434ebb: lock cmpxchg %edx,0x0(%rbp)
+    9.03 :   434ec0: sete   %cl // /home/markwkm/postgres/build/../src/include/port/atomics/arch-x86.h:171
+         : 125    if (pg_atomic_compare_exchange_u32(&buf->state, &old_buf_state,
+    0.12 :   434ec3: test   %cl,%cl
+    0.00 :   434ec5: jne    434f70 <PinBuffer+0x170>
+         : 128    if (old_buf_state & BM_LOCKED)
+    0.00 :   434ecb: test   $0x400000,%eax
+    0.00 :   434ed0: je     434ea0 <PinBuffer+0xa0>
+         : 131    const char *file, int line, const char *func)
+         : 132    {
+         : 133    status->spins = 0;
+         : 134    status->delays = 0;
+         : 135    status->cur_delay = 0;
+         : 136    status->file = file;
+    0.00 :   434ed2: lea    0x2b2727(%rip),%rax        # 6e7600 <_IO_stdin_used+0x77600>
+         : 138    status->cur_delay = 0;
+    0.00 :   434ed9: movl   $0x0,0x18(%rsp)
+         : 140    status->file = file;
+    0.00 :   434ee1: mov    %rax,0x20(%rsp)
+         : 142    status->line = line;
+         : 143    status->func = func;
+    0.00 :   434ee6: lea    0x2fdc33(%rip),%rax        # 732b20 <__func__.22>
+    0.00 :   434eed: mov    %rax,0x30(%rsp)
+    0.00 :   434ef2: mov    0x18(%rbx),%eax
+         : 147    status->spins = 0;
+    0.00 :   434ef5: movq   $0x0,0x10(%rsp)
+         : 149    status->line = line;
+    0.00 :   434efe: movl   $0x1898,0x28(%rsp)
+         :
+         : 152    init_local_spin_delay(&delayStatus);
+         :
+         : 154    buf_state = pg_atomic_read_u32(&buf->state);
+         :
+         : 156    while (buf_state & BM_LOCKED)
+    0.00 :   434f06: test   $0x400000,%eax
+    0.00 :   434f0b: je     434f80 <PinBuffer+0x180>
+    0.00 :   434f0d: mov    %r12,0x8(%rsp)
+    0.00 :   434f12: data16 cs nopw 0x0(%rax,%rax,1)
+    0.00 :   434f1d: nopl   (%rax)
+         : 162    {
+         : 163    perform_spin_delay(&delayStatus);
+    0.00 :   434f20: mov    %r12,%rdi
+    0.00 :   434f23: call   4648d0 <perform_spin_delay>
+    0.00 :   434f28: mov    0x18(%rbx),%eax
+         : 167    while (buf_state & BM_LOCKED)
+    0.00 :   434f2b: test   $0x400000,%eax
+    0.00 :   434f30: jne    434f20 <PinBuffer+0x120>
+         : 170    buf_state = pg_atomic_read_u32(&buf->state);
+         : 171    }
+         :
+         : 173    finish_spin_delay(&delayStatus);
+    0.00 :   434f32: mov    0x8(%rsp),%rdi
+    0.00 :   434f37: mov    %eax,0x4(%rsp)
+    0.00 :   434f3b: call   464990 <finish_spin_delay>
+    0.00 :   434f40: mov    0x4(%rsp),%eax
+         : 178    buf_state += BUF_REFCOUNT_ONE;
+    0.00 :   434f44: lea    0x1(%rax),%edx
+         : 180    if (strategy == NULL)
+    0.00 :   434f47: test   %r15,%r15
+    0.00 :   434f4a: jne    434eac <PinBuffer+0xac>
+         : 183    if (BUF_STATE_GET_USAGECOUNT(buf_state) < BM_MAX_USAGE_COUNT)
+    0.06 :   434f50: mov    %edx,%ecx
+         : 185    buf_state += BUF_USAGECOUNT_ONE;
+    0.00 :   434f52: lea    0x40001(%rax),%esi
+         : 187    if (BUF_STATE_GET_USAGECOUNT(buf_state) < BM_MAX_USAGE_COUNT)
+    0.00 :   434f58: shr    $0x12,%ecx
+    0.00 :   434f5b: and    $0xf,%ecx
+         : 190    buf_state += BUF_USAGECOUNT_ONE;
+    0.29 :   434f5e: cmp    $0x5,%ecx
+    0.00 :   434f61: cmovb  %esi,%edx
+    0.00 :   434f64: jmp    434ebb <PinBuffer+0xbb>
+    0.00 :   434f69: nopl   0x0(%rax)
+         : 195    result = (buf_state & BM_VALID) != 0;
+    0.12 :   434f70: shr    $0x18,%edx
+    0.00 :   434f73: mov    %edx,%ebx
+    0.00 :   434f75: and    $0x1,%ebx
+         : 199    break;
+    0.00 :   434f78: jmp    434e39 <PinBuffer+0x39>
+    0.00 :   434f7d: nopl   (%rax)
+    0.00 :   434f80: lea    0x10(%rsp),%rsi
+    0.00 :   434f85: mov    %rsi,0x8(%rsp)
+    0.00 :   434f8a: jmp    434f32 <PinBuffer+0x132>

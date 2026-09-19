@@ -1,0 +1,4 @@
+ctime,pid,datid,datname,relid,phase,heap_blks_total,heap_blks_scanned,heap_blks_vacuumed,index_vacuum_count,max_dead_tuple_bytes,dead_tuple_bytes,num_dead_item_ids,indexes_total,indexes_processed,delay_time
+1788949653.767566,1817816,1985237,dbt5,1985396,vacuuming heap,1611862,1611862,1373319,1,1073741824,10944512,2681899,0,0,0
+1788949713.886814,1817816,1985237,dbt5,1985396,vacuuming heap,1611862,1611862,1597695,1,1073741824,10944512,2681899,0,0,0
+1788950193.071644,1968588,1985237,dbt5,1985402,vacuuming indexes,110,110,0,0,1073741824,204800,4172,2,1,0

@@ -1,0 +1,8 @@
+[ perf record: Woken up 742 times to write data ]
+Warning:
+Processed 69148 events and lost 48 chunks!
+
+Check IO/CPU overload!
+
+[ perf record: Captured and wrote 210.776 MB /home/markwkm/claude-tests/scaling2/c32000-u22/22/db/madrona/profile/perf.data (29446 samples) ]
+Interrupt

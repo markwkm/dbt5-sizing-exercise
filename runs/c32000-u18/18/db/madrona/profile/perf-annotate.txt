@@ -1,0 +1,1277 @@
+
+Sorted summary for file /home/markwkm/.local/pgsql-18/bin/postgres
+----------------------------------------------
+
+   37.06 /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1019
+   29.89 /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1022
+   11.04 /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1024
+    9.10 /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1331
+    3.36 /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1774
+    2.71 /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1268
+    0.69 /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1050
+ Percent |	Source code & Disassembly of /home/markwkm/.local/pgsql-18/bin/postgres for cpu-clock:ppp (2472 samples, percent: local period)
+-----------------------------------------------------------------------------------------------------------------------------------------------
+         :
+         :
+         :
+         : 3      Disassembly of section .text:
+         :
+         : 5      00000000005a23c0 <hash_search_with_hash_value>:
+         : 6      hash_search_with_hash_value(HTAB *hashp,
+         : 7      const void *keyPtr,
+         : 8      uint32 hashvalue,
+         : 9      HASHACTION action,
+         : 10     bool *foundPtr)
+         : 11     {
+    0.00 :   5a23c0: push   %r15
+    0.08 :   5a23c2: mov    %r8,%r11
+    0.00 :   5a23c5: mov    %rdi,%r15
+    0.00 :   5a23c8: mov    %ecx,%r10d
+    0.04 :   5a23cb: push   %r14
+    0.12 :   5a23cd: push   %r13
+    0.00 :   5a23cf: mov    %rsi,%r13
+    0.00 :   5a23d2: push   %r12
+    0.08 :   5a23d4: push   %rbp
+    0.08 :   5a23d5: mov    %edx,%ebp
+    0.00 :   5a23d7: push   %rbx
+    0.00 :   5a23d8: sub    $0x48,%rsp
+         : 24     HASHHDR    *hctl = hashp->hctl;
+    0.08 :   5a23dc: mov    (%rdi),%r8
+         : 26     int                     freelist_idx = FREELIST_IDX(hctl, hashvalue);
+    0.04 :   5a23df: cmpq   $0x0,0x330(%r8)
+         : 28     {
+         : 29     /*
+         : 30     * Can't split if running in partitioned mode, nor if frozen, nor if
+         : 31     * table is the subject of any active hash_seq_search scans.
+         : 32     */
+         : 33     if (hctl->freeList[0].nentries > (long) hctl->max_bucket &&
+    0.36 :   5a23e7: mov    0x310(%r8),%edi
+         : 35     int                     freelist_idx = FREELIST_IDX(hctl, hashvalue);
+    0.16 :   5a23ee: je     5a2550 <hash_search_with_hash_value+0x190>
+    0.00 :   5a23f4: mov    %edx,%eax
+         : 38     #ifdef HASH_STATISTICS
+         : 39     hash_expansions++;
+         : 40     #endif
+         :
+         : 42     new_bucket = hctl->max_bucket + 1;
+         : 43     new_segnum = new_bucket >> hashp->sshift;
+    0.00 :   5a23f6: mov    0x58(%r15),%ecx
+         : 45     uint32          bucket;
+         :
+         : 47     bucket = calc_bucket(hctl, hashvalue);
+         :
+         : 49     segment_num = bucket >> hashp->sshift;
+         : 50     segment_ndx = MOD(bucket, hashp->ssize);
+    0.00 :   5a23fa: mov    %r8,%rsi
+    0.04 :   5a23fd: and    $0x1f,%eax
+    0.04 :   5a2400: mov    %eax,0x20(%rsp)
+    0.04 :   5a2404: mov    0x50(%r15),%rax
+    0.00 :   5a2408: lea    -0x1(%rax),%rdx
+         : 56     bucket = hash_val & hctl->high_mask;
+    0.00 :   5a240c: mov    0x314(%rsi),%eax
+    0.04 :   5a2412: and    %ebp,%eax
+         : 59     if (bucket > hctl->max_bucket)
+    0.00 :   5a2414: cmp    %eax,%edi
+    0.00 :   5a2416: jae    5a241e <hash_search_with_hash_value+0x5e>
+         : 62     bucket = bucket & hctl->low_mask;
+    0.12 :   5a2418: and    0x318(%rsi),%eax
+         : 64     segment_ndx = MOD(bucket, hashp->ssize);
+    0.12 :   5a241e: and    %eax,%edx
+         :
+         : 67     segp = hashp->dir[segment_num];
+    0.16 :   5a2420: shr    %cl,%eax
+    0.08 :   5a2422: mov    0x8(%r15),%rcx
+    0.00 :   5a2426: mov    (%rcx,%rax,8),%rax
+         :
+         : 72     if (segp == NULL)
+    3.36 :   5a242a: test   %rax,%rax // /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1774
+    0.00 :   5a242d: je     1688db <hash_search_with_hash_value.cold>
+         : 75     hash_corrupted(hashp);
+         :
+         : 77     *bucketptr = &segp[segment_ndx];
+    0.12 :   5a2433: lea    (%rax,%rdx,8),%r12
+         : 79     keysize = hashp->keysize;       /* ditto */
+    0.00 :   5a2437: mov    0x48(%r15),%r14
+         : 81     match = hashp->match;           /* save one fetch in inner loop */
+    0.00 :   5a243b: mov    0x18(%r15),%rdx
+         : 83     currBucket = *prevBucketPtr;
+    0.00 :   5a243f: mov    (%r12),%rbx
+         : 85     while (currBucket != NULL)
+   36.29 :   5a2443: test   %rbx,%rbx // /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1019
+    0.00 :   5a2446: je     5a2801 <hash_search_with_hash_value+0x441>
+    0.77 :   5a244c: mov    %r15,0x8(%rsp)
+    0.16 :   5a2451: mov    %ebp,%r15d
+    0.00 :   5a2454: mov    %r12,%rbp
+    0.00 :   5a2457: mov    %rbx,%r12
+    0.00 :   5a245a: mov    %r8,(%rsp)
+    0.08 :   5a245e: mov    %rdx,%rbx
+    0.00 :   5a2461: mov    %r10d,0x10(%rsp)
+    0.04 :   5a2466: mov    %r11,0x18(%rsp)
+    0.00 :   5a246b: jmp    5a248c <hash_search_with_hash_value+0xcc>
+    0.00 :   5a246d: data16 cs nopw 0x0(%rax,%rax,1)
+    0.00 :   5a2478: nopl   0x0(%rax,%rax,1)
+         : 99     prevBucketPtr = &(currBucket->link);
+   11.04 :   5a2480: mov    %r12,%rbp // /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1024
+         : 101    currBucket = *prevBucketPtr;
+    0.32 :   5a2483: mov    (%r12),%r12
+         : 103    while (currBucket != NULL)
+    0.28 :   5a2487: test   %r12,%r12
+    0.00 :   5a248a: je     5a24a4 <hash_search_with_hash_value+0xe4>
+         : 106    if (currBucket->hashvalue == hashvalue &&
+    0.12 :   5a248c: cmp    %r15d,0x8(%r12)
+    0.12 :   5a2491: jne    5a2480 <hash_search_with_hash_value+0xc0>
+         : 109    match(ELEMENTKEY(currBucket), keyPtr, keysize) == 0)
+   29.37 :   5a2493: lea    0x10(%r12),%rdi // /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1022
+    0.53 :   5a2498: mov    %r14,%rdx
+    0.04 :   5a249b: mov    %r13,%rsi
+    0.00 :   5a249e: call   *%rbx
+         : 114    if (currBucket->hashvalue == hashvalue &&
+    0.00 :   5a24a0: test   %eax,%eax
+    0.00 :   5a24a2: jne    5a2480 <hash_search_with_hash_value+0xc0>
+    0.16 :   5a24a4: mov    0x18(%rsp),%r11
+         : 118    if (foundPtr)
+    0.00 :   5a24a9: mov    %r12,%rbx
+    0.00 :   5a24ac: mov    (%rsp),%r8
+    0.00 :   5a24b0: mov    %rbp,%r12
+    0.00 :   5a24b3: mov    0x10(%rsp),%r10d
+    0.04 :   5a24b8: mov    %r15d,%ebp
+    0.00 :   5a24bb: mov    0x8(%rsp),%r15
+    0.00 :   5a24c0: test   %r11,%r11
+    0.00 :   5a24c3: je     5a2588 <hash_search_with_hash_value+0x1c8>
+         : 127    *foundPtr = (bool) (currBucket != NULL);
+    0.00 :   5a24c9: test   %rbx,%rbx
+    0.04 :   5a24cc: setne  (%r11)
+         : 130    switch (action)
+    0.00 :   5a24d0: cmp    $0x1,%r10d
+    0.00 :   5a24d4: je     5a25bd <hash_search_with_hash_value+0x1fd>
+    0.00 :   5a24da: jbe    5a2594 <hash_search_with_hash_value+0x1d4>
+    0.00 :   5a24e0: cmp    $0x2,%r10d
+    0.00 :   5a24e4: jne    5a25b3 <hash_search_with_hash_value+0x1f3>
+         : 136    if (currBucket != NULL)
+    0.00 :   5a24ea: test   %rbx,%rbx
+    0.00 :   5a24ed: je     5a273f <hash_search_with_hash_value+0x37f>
+         : 139    if (IS_PARTITIONED(hctl))
+    0.00 :   5a24f3: cmpq   $0x0,0x330(%r8)
+         : 141    SpinLockAcquire(&(hctl->freeList[freelist_idx].mutex));
+    0.04 :   5a24fb: movslq 0x20(%rsp),%r11
+         : 143    if (IS_PARTITIONED(hctl))
+    0.00 :   5a2500: je     5a251a <hash_search_with_hash_value+0x15a>
+         : 145    SpinLockAcquire(&(hctl->freeList[freelist_idx].mutex));
+    0.04 :   5a2502: lea    (%r11,%r11,2),%rax
+    0.00 :   5a2506: lea    (%r8,%rax,8),%rdi
+         : 148    static __inline__ int
+         : 149    tas(volatile slock_t *lock)
+         : 150    {
+         : 151    slock_t         _res = 1;
+         :
+         : 153    __asm__ __volatile__(
+    0.00 :   5a250a: mov    $0x1,%eax
+    0.00 :   5a250f: lock xchg %al,(%rdi)
+    0.69 :   5a2512: test   %al,%al // /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1050
+    0.00 :   5a2514: jne    5a2838 <hash_search_with_hash_value+0x478>
+         : 158    hctl->freeList[freelist_idx].nentries--;
+    0.00 :   5a251a: lea    (%r11,%r11,2),%rax
+    0.00 :   5a251e: lea    (%r8,%rax,8),%rax
+    0.00 :   5a2522: subq   $0x1,0x8(%rax)
+         : 162    *prevBucketPtr = currBucket->link;
+    0.20 :   5a2527: mov    (%rbx),%rdx
+    0.16 :   5a252a: mov    %rdx,(%r12)
+         : 165    currBucket->link = hctl->freeList[freelist_idx].freeList;
+    0.00 :   5a252e: mov    0x10(%rax),%rdx
+    0.00 :   5a2532: mov    %rdx,(%rbx)
+         : 168    hctl->freeList[freelist_idx].freeList = currBucket;
+    0.00 :   5a2535: mov    %rbx,0x10(%rax)
+         : 170    if (IS_PARTITIONED(hctl))
+    0.00 :   5a2539: cmpq   $0x0,0x330(%r8)
+    0.00 :   5a2541: je     5a259d <hash_search_with_hash_value+0x1dd>
+         : 173    SpinLockRelease(&hctl->freeList[freelist_idx].mutex);
+    0.00 :   5a2543: movb   $0x0,(%rax)
+         : 175    return ELEMENTKEY(currBucket);
+    0.04 :   5a2546: jmp    5a259d <hash_search_with_hash_value+0x1dd>
+    0.00 :   5a2548: nopl   0x0(%rax,%rax,1)
+         : 178    if (action == HASH_ENTER || action == HASH_ENTER_NULL)
+    0.00 :   5a2550: mov    %ecx,%eax
+    0.00 :   5a2552: and    $0xfffffffd,%eax
+    0.00 :   5a2555: cmp    $0x1,%eax
+    0.00 :   5a2558: jne    5a2566 <hash_search_with_hash_value+0x1a6>
+         : 183    if (hctl->freeList[0].nentries > (long) hctl->max_bucket &&
+    0.00 :   5a255a: mov    %edi,%eax
+    0.00 :   5a255c: cmp    %rax,0x8(%r8)
+    0.00 :   5a2560: jg     5a26c8 <hash_search_with_hash_value+0x308>
+         : 187    new_segndx = MOD(new_bucket, hashp->ssize);
+    0.04 :   5a2566: mov    0x50(%r15),%rax
+    0.00 :   5a256a: movl   $0x0,0x20(%rsp)
+    0.00 :   5a2572: mov    %r8,%rsi
+         : 191    new_segnum = new_bucket >> hashp->sshift;
+    0.00 :   5a2575: mov    0x58(%r15),%ecx
+         : 193    new_segndx = MOD(new_bucket, hashp->ssize);
+    0.00 :   5a2579: lea    -0x1(%rax),%rdx
+    0.00 :   5a257d: jmp    5a240c <hash_search_with_hash_value+0x4c>
+    0.00 :   5a2582: nopw   0x0(%rax,%rax,1)
+         : 197    switch (action)
+    0.00 :   5a2588: cmp    $0x1,%r10d
+    0.00 :   5a258c: je     5a25bd <hash_search_with_hash_value+0x1fd>
+    0.00 :   5a258e: ja     5a26a8 <hash_search_with_hash_value+0x2e8>
+         : 201    if (currBucket != NULL)
+    0.00 :   5a2594: test   %rbx,%rbx
+    0.00 :   5a2597: je     5a273f <hash_search_with_hash_value+0x37f>
+         : 204    return ELEMENTKEY(currBucket);
+    0.00 :   5a259d: add    $0x10,%rbx
+         : 206    }
+    0.16 :   5a25a1: add    $0x48,%rsp
+    0.08 :   5a25a5: mov    %rbx,%rax
+    0.00 :   5a25a8: pop    %rbx
+    0.24 :   5a25a9: pop    %rbp
+    0.04 :   5a25aa: pop    %r12
+    0.04 :   5a25ac: pop    %r13
+    0.00 :   5a25ae: pop    %r14
+    0.04 :   5a25b0: pop    %r15
+    0.08 :   5a25b2: ret
+         : 216    switch (action)
+    0.00 :   5a25b3: cmp    $0x3,%r10d
+    0.00 :   5a25b7: jne    5a2c2f <hash_search_with_hash_value+0x86f>
+         : 219    if (currBucket != NULL)
+    0.00 :   5a25bd: test   %rbx,%rbx
+    0.00 :   5a25c0: jne    5a259d <hash_search_with_hash_value+0x1dd>
+         : 222    if (hashp->frozen)
+    0.00 :   5a25c2: cmpb   $0x0,0x42(%r15)
+    0.00 :   5a25c7: jne    16891c <hash_search_with_hash_value.cold+0x41>
+         : 225    SpinLockAcquire(&hctl->freeList[freelist_idx].mutex);
+    0.08 :   5a25cd: movslq 0x20(%rsp),%r11
+         : 227    HASHHDR    *hctl = hashp->hctl;
+    0.04 :   5a25d2: mov    (%r15),%r8
+         : 229    SpinLockAcquire(&hctl->freeList[freelist_idx].mutex);
+    0.00 :   5a25d5: mov    %r12,(%rsp)
+    0.04 :   5a25d9: mov    %ebp,0x8(%rsp)
+    0.08 :   5a25dd: lea    (%r11,%r11,2),%rdx
+    0.00 :   5a25e1: mov    %r11,%rbx
+    0.00 :   5a25e4: mov    %r10d,0x10(%rsp)
+    0.00 :   5a25e9: mov    %r8,%rbp
+    0.00 :   5a25ec: lea    (%r8,%rdx,8),%r11
+    0.00 :   5a25f0: mov    %rdx,0x18(%rsp)
+    0.00 :   5a25f5: mov    %r11,%r12
+    0.00 :   5a25f8: jmp    5a2649 <hash_search_with_hash_value+0x289>
+    0.00 :   5a25fa: nopw   0x0(%rax,%rax,1)
+    0.00 :   5a2600: mov    $0x1,%eax
+    0.00 :   5a2605: lock xchg %al,(%r12)
+    2.71 :   5a260a: test   %al,%al // /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1268
+    0.00 :   5a260c: jne    5a2710 <hash_search_with_hash_value+0x350>
+         : 245    newElement = hctl->freeList[freelist_idx].freeList;
+    0.00 :   5a2612: mov    0x10(%r12),%rdx
+         : 247    if (IS_PARTITIONED(hctl))
+    0.12 :   5a2617: mov    0x330(%rbp),%rax
+         : 249    if (newElement != NULL)
+    0.00 :   5a261e: test   %rdx,%rdx
+    0.00 :   5a2621: jne    5a2890 <hash_search_with_hash_value+0x4d0>
+         : 252    if (IS_PARTITIONED(hctl))
+    0.00 :   5a2627: test   %rax,%rax
+    0.00 :   5a262a: je     5a2631 <hash_search_with_hash_value+0x271>
+         : 255    SpinLockRelease(&hctl->freeList[freelist_idx].mutex);
+    0.00 :   5a262c: movb   $0x0,(%r12)
+         : 257    if (!element_alloc(hashp, hctl->nelem_alloc, freelist_idx))
+    0.00 :   5a2631: mov    0x34c(%rbp),%esi
+    0.00 :   5a2637: mov    %ebx,%edx
+    0.00 :   5a2639: mov    %r15,%rdi
+    0.00 :   5a263c: call   5a2220 <element_alloc>
+    0.00 :   5a2641: test   %al,%al
+    0.00 :   5a2643: je     5a2746 <hash_search_with_hash_value+0x386>
+         : 264    if (IS_PARTITIONED(hctl))
+    0.00 :   5a2649: cmpq   $0x0,0x330(%rbp)
+    0.00 :   5a2651: jne    5a2600 <hash_search_with_hash_value+0x240>
+         : 267    newElement = hctl->freeList[freelist_idx].freeList;
+    0.00 :   5a2653: mov    0x10(%r12),%rdx
+         : 269    if (newElement != NULL)
+    0.00 :   5a2658: test   %rdx,%rdx
+    0.00 :   5a265b: je     5a2631 <hash_search_with_hash_value+0x271>
+    0.00 :   5a265d: mov    %rdx,%rbx
+    0.00 :   5a2660: mov    0x18(%rsp),%rdx
+         : 274    hctl->freeList[freelist_idx].freeList = newElement->link;
+    0.00 :   5a2665: mov    %rbp,%r8
+    0.00 :   5a2668: mov    %r12,%r11
+    0.00 :   5a266b: mov    (%rbx),%rax
+    0.08 :   5a266e: mov    (%rsp),%r12
+    0.00 :   5a2672: mov    0x8(%rsp),%ebp
+    0.00 :   5a2676: mov    %rax,0x10(%r8,%rdx,8)
+         : 281    hctl->freeList[freelist_idx].nentries++;
+    0.00 :   5a267b: addq   $0x1,0x8(%r11)
+         : 283    *prevBucketPtr = currBucket;
+    0.00 :   5a2680: mov    %rbx,(%r12)
+         : 285    hashp->keycopy(ELEMENTKEY(currBucket), keyPtr, keysize);
+    0.00 :   5a2684: add    $0x10,%rbx
+    0.00 :   5a2688: mov    %r14,%rdx
+    0.04 :   5a268b: mov    %r13,%rsi
+         : 289    currBucket->link = NULL;
+    0.00 :   5a268e: movq   $0x0,-0x10(%rbx)
+         : 291    currBucket->hashvalue = hashvalue;
+    0.00 :   5a2696: mov    %ebp,-0x8(%rbx)
+         : 293    hashp->keycopy(ELEMENTKEY(currBucket), keyPtr, keysize);
+    0.00 :   5a2699: mov    %rbx,%rdi
+    0.04 :   5a269c: call   *0x20(%r15)
+         : 296    return ELEMENTKEY(currBucket);
+    0.00 :   5a26a0: jmp    5a25a1 <hash_search_with_hash_value+0x1e1>
+    0.00 :   5a26a5: nopl   (%rax)
+         : 299    switch (action)
+    0.12 :   5a26a8: cmp    $0x2,%r10d
+    0.00 :   5a26ac: je     5a24ea <hash_search_with_hash_value+0x12a>
+    0.00 :   5a26b2: cmp    $0x3,%r10d
+    0.00 :   5a26b6: je     5a25bd <hash_search_with_hash_value+0x1fd>
+    0.00 :   5a26bc: jmp    1688e3 <hash_search_with_hash_value.cold+0x8>
+    0.00 :   5a26c1: nopl   0x0(%rax)
+         : 306    !IS_PARTITIONED(hctl) && !hashp->frozen &&
+    0.00 :   5a26c8: cmpb   $0x0,0x42(%r15)
+    0.00 :   5a26cd: jne    5a2566 <hash_search_with_hash_value+0x1a6>
+         : 309    static bool
+         : 310    has_seq_scans(HTAB *hashp)
+         : 311    {
+         : 312    int                     i;
+         :
+         : 314    for (i = 0; i < num_seq_scans; i++)
+    0.00 :   5a26d3: movslq 0x443d26(%rip),%rdx        # 9e6400 <num_seq_scans>
+    0.00 :   5a26da: test   %edx,%edx
+    0.00 :   5a26dc: jle    5a2903 <hash_search_with_hash_value+0x543>
+    0.00 :   5a26e2: lea    0x443ed7(%rip),%rax        # 9e65c0 <seq_scan_tables>
+    0.00 :   5a26e9: lea    (%rax,%rdx,8),%rdx
+    0.00 :   5a26ed: jmp    5a26fd <hash_search_with_hash_value+0x33d>
+    0.00 :   5a26ef: nop
+    0.00 :   5a26f0: add    $0x8,%rax
+    0.00 :   5a26f4: cmp    %rdx,%rax
+    0.00 :   5a26f7: je     5a2903 <hash_search_with_hash_value+0x543>
+         : 325    {
+         : 326    if (seq_scan_tables[i] == hashp)
+    0.00 :   5a26fd: cmp    (%rax),%r15
+    0.00 :   5a2700: jne    5a26f0 <hash_search_with_hash_value+0x330>
+    0.00 :   5a2702: jmp    5a2566 <hash_search_with_hash_value+0x1a6>
+    0.00 :   5a2707: nopw   0x0(%rax,%rax,1)
+         : 331    SpinLockAcquire(&hctl->freeList[freelist_idx].mutex);
+    0.00 :   5a2710: lea    0x1aa261(%rip),%rcx        # 74c978 <__func__.6>
+    0.00 :   5a2717: mov    $0x4f4,%edx
+    0.00 :   5a271c: lea    0x159345(%rip),%rsi        # 6fba68 <_IO_stdin_used+0x8ba68>
+    0.00 :   5a2723: mov    %r12,%rdi
+    0.00 :   5a2726: call   4649d0 <s_lock>
+    0.00 :   5a272b: jmp    5a2612 <hash_search_with_hash_value+0x252>
+    0.00 :   5a2730: mov    0x20(%rsp),%r10d
+         : 339    if (action == HASH_ENTER_NULL)
+    0.00 :   5a2735: cmp    $0x3,%r10d
+    0.00 :   5a2739: jne    168952 <hash_search_with_hash_value.cold+0x77>
+         : 342    return NULL;
+    0.04 :   5a273f: xor    %ebx,%ebx
+    0.04 :   5a2741: jmp    5a25a1 <hash_search_with_hash_value+0x1e1>
+         : 345    if (!IS_PARTITIONED(hctl))
+    0.00 :   5a2746: mov    %rbp,%r8
+    0.00 :   5a2749: mov    0x10(%rsp),%r10d
+    0.00 :   5a274e: mov    0x8(%rsp),%ebp
+    0.00 :   5a2752: cmpq   $0x0,0x330(%r8)
+    0.00 :   5a275a: je     5a2735 <hash_search_with_hash_value+0x375>
+         : 351    borrow_from_idx = (borrow_from_idx + 1) % NUM_FREELISTS;
+    0.00 :   5a275c: mov    0x20(%rsp),%ecx
+    0.00 :   5a2760: lea    0x1(%rcx),%eax
+    0.00 :   5a2763: and    $0x1f,%eax
+         : 355    if (borrow_from_idx == freelist_idx)
+    0.00 :   5a2766: cmp    %ecx,%eax
+    0.00 :   5a2768: je     5a2735 <hash_search_with_hash_value+0x375>
+         : 358    SpinLockAcquire(&(hctl->freeList[borrow_from_idx].mutex));
+    0.00 :   5a276a: mov    %r12,0x8(%rsp)
+    0.00 :   5a276f: mov    %ecx,%ebx
+    0.00 :   5a2771: mov    %eax,%r12d
+    0.00 :   5a2774: mov    %ebp,0x18(%rsp)
+    0.00 :   5a2778: mov    %r8,%rbp
+    0.00 :   5a277b: mov    %r13,0x10(%rsp)
+    0.00 :   5a2780: mov    %r10d,0x20(%rsp)
+    0.00 :   5a2785: jmp    5a27ce <hash_search_with_hash_value+0x40e>
+    0.00 :   5a2787: nopw   0x0(%rax,%rax,1)
+         : 368    newElement = hctl->freeList[borrow_from_idx].freeList;
+    0.00 :   5a2790: lea    0x0(%r13,%r13,2),%rax
+    0.00 :   5a2795: lea    0x0(%rbp,%rax,8),%rax
+    0.00 :   5a279a: mov    0x10(%rax),%rdx
+         : 372    if (newElement != NULL)
+    0.00 :   5a279e: test   %rdx,%rdx
+    0.00 :   5a27a1: jne    5a28c5 <hash_search_with_hash_value+0x505>
+         : 375    borrow_from_idx = (borrow_from_idx + 1) % NUM_FREELISTS;
+    0.00 :   5a27a7: lea    0x1(%r12),%r9d
+         : 377    SpinLockRelease(&(hctl->freeList[borrow_from_idx].mutex));
+    0.00 :   5a27ac: movb   $0x0,(%rax)
+         : 379    borrow_from_idx = (borrow_from_idx + 1) % NUM_FREELISTS;
+    0.00 :   5a27af: mov    %r9d,%eax
+    0.00 :   5a27b2: sar    $0x1f,%eax
+    0.00 :   5a27b5: shr    $0x1b,%eax
+    0.00 :   5a27b8: add    %eax,%r9d
+    0.00 :   5a27bb: and    $0x1f,%r9d
+    0.00 :   5a27bf: sub    %eax,%r9d
+    0.00 :   5a27c2: mov    %r9d,%r12d
+         : 387    if (borrow_from_idx == freelist_idx)
+    0.00 :   5a27c5: cmp    %ebx,%r9d
+    0.00 :   5a27c8: je     5a2730 <hash_search_with_hash_value+0x370>
+         : 390    SpinLockAcquire(&(hctl->freeList[borrow_from_idx].mutex));
+    0.00 :   5a27ce: movslq %r12d,%r13
+    0.00 :   5a27d1: lea    0x0(%r13,%r13,2),%rax
+    0.00 :   5a27d6: lea    0x0(%rbp,%rax,8),%rdi
+    0.00 :   5a27db: mov    $0x1,%eax
+    0.00 :   5a27e0: lock xchg %al,(%rdi)
+    0.00 :   5a27e3: test   %al,%al
+    0.00 :   5a27e5: je     5a2790 <hash_search_with_hash_value+0x3d0>
+    0.00 :   5a27e7: lea    0x1aa18a(%rip),%rcx        # 74c978 <__func__.6>
+    0.00 :   5a27ee: mov    $0x51a,%edx
+    0.00 :   5a27f3: lea    0x15926e(%rip),%rsi        # 6fba68 <_IO_stdin_used+0x8ba68>
+    0.00 :   5a27fa: call   4649d0 <s_lock>
+    0.00 :   5a27ff: jmp    5a2790 <hash_search_with_hash_value+0x3d0>
+         : 403    if (foundPtr)
+    0.36 :   5a2801: test   %r11,%r11
+    0.00 :   5a2804: je     5a2867 <hash_search_with_hash_value+0x4a7>
+         : 406    *foundPtr = (bool) (currBucket != NULL);
+    0.00 :   5a2806: movb   $0x0,(%r11)
+         : 408    switch (action)
+    0.00 :   5a280a: cmp    $0x1,%r10d
+    0.00 :   5a280e: je     5a25c2 <hash_search_with_hash_value+0x202>
+    0.00 :   5a2814: jbe    5a273f <hash_search_with_hash_value+0x37f>
+    0.00 :   5a281a: cmp    $0x2,%r10d
+    0.00 :   5a281e: je     5a273f <hash_search_with_hash_value+0x37f>
+    0.00 :   5a2824: cmp    $0x3,%r10d
+    0.00 :   5a2828: je     5a25c2 <hash_search_with_hash_value+0x202>
+    0.00 :   5a282e: jmp    1688e3 <hash_search_with_hash_value.cold+0x8>
+    0.00 :   5a2833: nopl   0x0(%rax,%rax,1)
+         : 418    SpinLockAcquire(&(hctl->freeList[freelist_idx].mutex));
+    0.00 :   5a2838: lea    0x1aa161(%rip),%rcx        # 74c9a0 <__func__.8>
+    0.00 :   5a283f: mov    $0x41a,%edx
+    0.00 :   5a2844: lea    0x15921d(%rip),%rsi        # 6fba68 <_IO_stdin_used+0x8ba68>
+    0.00 :   5a284b: mov    %r11,0x8(%rsp)
+    0.00 :   5a2850: mov    %r8,(%rsp)
+    0.00 :   5a2854: call   4649d0 <s_lock>
+    0.00 :   5a2859: mov    0x8(%rsp),%r11
+    0.00 :   5a285e: mov    (%rsp),%r8
+    0.00 :   5a2862: jmp    5a251a <hash_search_with_hash_value+0x15a>
+         : 428    switch (action)
+    0.08 :   5a2867: cmp    $0x1,%r10d
+    0.00 :   5a286b: je     5a25c2 <hash_search_with_hash_value+0x202>
+    0.04 :   5a2871: jbe    5a273f <hash_search_with_hash_value+0x37f>
+    0.00 :   5a2877: cmp    $0x2,%r10d
+    0.00 :   5a287b: je     5a273f <hash_search_with_hash_value+0x37f>
+    0.00 :   5a2881: cmp    $0x3,%r10d
+    0.00 :   5a2885: je     5a25c2 <hash_search_with_hash_value+0x202>
+    0.00 :   5a288b: jmp    1688e3 <hash_search_with_hash_value.cold+0x8>
+         : 437    hctl->freeList[freelist_idx].freeList = newElement->link;
+    0.00 :   5a2890: mov    %rdx,%rbx
+    0.04 :   5a2893: mov    0x18(%rsp),%rdx
+    0.08 :   5a2898: mov    %rbp,%r8
+    0.00 :   5a289b: mov    %r12,%r11
+    0.00 :   5a289e: mov    (%rbx),%rcx
+    9.10 :   5a28a1: mov    (%rsp),%r12 // /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1331
+    0.20 :   5a28a5: mov    0x8(%rsp),%ebp
+    0.00 :   5a28a9: mov    %rcx,0x10(%r8,%rdx,8)
+         : 446    hctl->freeList[freelist_idx].nentries++;
+    0.00 :   5a28ae: addq   $0x1,0x8(%r11)
+         : 448    if (IS_PARTITIONED(hctl))
+    0.16 :   5a28b3: test   %rax,%rax
+    0.00 :   5a28b6: je     5a2680 <hash_search_with_hash_value+0x2c0>
+         : 451    SpinLockRelease(&hctl->freeList[freelist_idx].mutex);
+    0.00 :   5a28bc: movb   $0x0,(%r11)
+         : 453    if (currBucket == NULL)
+    0.00 :   5a28c0: jmp    5a2680 <hash_search_with_hash_value+0x2c0>
+         : 455    hctl->freeList[borrow_from_idx].freeList = newElement->link;
+    0.00 :   5a28c5: mov    %rdx,%rbx
+    0.00 :   5a28c8: mov    (%rdx),%rdx
+    0.00 :   5a28cb: mov    (%rsp),%r12
+    0.00 :   5a28cf: mov    0x8(%rsp),%r11
+    0.00 :   5a28d4: mov    0x10(%rsp),%r13
+    0.00 :   5a28d9: mov    %rdx,0x10(%rax)
+    0.00 :   5a28dd: mov    0x18(%rsp),%ebp
+         : 463    SpinLockRelease(&(hctl->freeList[borrow_from_idx].mutex));
+    0.00 :   5a28e1: movb   $0x0,(%rax)
+    0.00 :   5a28e4: mov    $0x1,%eax
+    0.00 :   5a28e9: lock xchg %al,(%r11)
+         : 467    SpinLockAcquire(&hctl->freeList[freelist_idx].mutex);
+    0.00 :   5a28ed: test   %al,%al
+    0.00 :   5a28ef: jne    5a2bca <hash_search_with_hash_value+0x80a>
+         : 470    hctl->freeList[freelist_idx].nentries++;
+    0.00 :   5a28f5: addq   $0x1,0x8(%r11)
+         : 472    SpinLockRelease(&hctl->freeList[freelist_idx].mutex);
+    0.00 :   5a28fa: movb   $0x0,(%r11)
+         : 474    if (currBucket == NULL)
+    0.00 :   5a28fe: jmp    5a2680 <hash_search_with_hash_value+0x2c0>
+         : 476    new_segndx = MOD(new_bucket, hashp->ssize);
+    0.00 :   5a2903: mov    0x50(%r15),%rdx
+         : 478    new_bucket = hctl->max_bucket + 1;
+    0.00 :   5a2907: lea    0x1(%rdi),%eax
+         : 480    new_segnum = new_bucket >> hashp->sshift;
+    0.00 :   5a290a: mov    0x58(%r15),%ecx
+    0.00 :   5a290e: mov    %rax,%rsi
+         : 483    new_bucket = hctl->max_bucket + 1;
+    0.00 :   5a2911: mov    %rax,%rbx
+         : 485    new_segndx = MOD(new_bucket, hashp->ssize);
+    0.00 :   5a2914: sub    $0x1,%rdx
+         : 487    new_segnum = new_bucket >> hashp->sshift;
+    0.00 :   5a2918: sar    %cl,%rsi
+         : 489    new_segndx = MOD(new_bucket, hashp->ssize);
+    0.00 :   5a291b: and    %rdx,%rax
+         : 491    new_segnum = new_bucket >> hashp->sshift;
+    0.00 :   5a291e: mov    %rsi,(%rsp)
+         : 493    new_segndx = MOD(new_bucket, hashp->ssize);
+    0.00 :   5a2922: mov    %rax,0x10(%rsp)
+         : 495    if (new_segnum >= hctl->nsegs)
+    0.00 :   5a2927: cmp    0x308(%r8),%rsi
+    0.00 :   5a292e: jge    5a2a1b <hash_search_with_hash_value+0x65b>
+         : 498    new_seg = hashp->dir[new_segnum];
+    0.00 :   5a2934: shl    $0x3,%rsi
+    0.00 :   5a2938: mov    %rsi,%r14
+    0.00 :   5a293b: mov    %ebx,%esi
+         : 502    hctl->max_bucket++;
+    0.00 :   5a293d: mov    0x318(%r8),%edi
+         : 504    if ((uint32) new_bucket > hctl->high_mask)
+    0.00 :   5a2944: mov    0x314(%r8),%eax
+         : 506    hctl->max_bucket++;
+    0.00 :   5a294b: mov    %esi,0x310(%r8)
+         : 508    old_bucket = (new_bucket & hctl->low_mask);
+    0.00 :   5a2952: and    %ebx,%edi
+    0.00 :   5a2954: mov    %edi,%edx
+         : 511    if ((uint32) new_bucket > hctl->high_mask)
+    0.00 :   5a2956: cmp    %ebx,%eax
+    0.00 :   5a2958: jae    5a2971 <hash_search_with_hash_value+0x5b1>
+         : 514    hctl->high_mask = (uint32) new_bucket | hctl->low_mask;
+    0.00 :   5a295a: or     %eax,%ebx
+    0.00 :   5a295c: movd   %eax,%xmm1
+    0.00 :   5a2960: movd   %ebx,%xmm0
+    0.00 :   5a2964: punpckldq %xmm1,%xmm0
+    0.00 :   5a2968: movq   %xmm0,0x314(%r8)
+         : 520    old_segnum = old_bucket >> hashp->sshift;
+    0.00 :   5a2971: mov    0x58(%r15),%ecx
+    0.00 :   5a2975: mov    %rdx,%rax
+         : 523    old_seg = hashp->dir[old_segnum];
+    0.00 :   5a2978: mov    0x8(%r15),%rbx
+         : 525    old_segnum = old_bucket >> hashp->sshift;
+    0.00 :   5a297c: sar    %cl,%rax
+    0.00 :   5a297f: mov    %rax,%rcx
+         : 528    old_segndx = MOD(old_bucket, hashp->ssize);
+    0.00 :   5a2982: mov    0x50(%r15),%rax
+    0.00 :   5a2986: sub    $0x1,%rax
+    0.00 :   5a298a: and    %rdx,%rax
+         : 532    oldlink = &old_seg[old_segndx];
+    0.00 :   5a298d: mov    (%rbx,%rcx,8),%rdx
+         : 534    newlink = &new_seg[new_segndx];
+    0.00 :   5a2991: mov    0x10(%rsp),%rcx
+         : 536    oldlink = &old_seg[old_segndx];
+    0.00 :   5a2996: lea    (%rdx,%rax,8),%r12
+         : 538    newlink = &new_seg[new_segndx];
+    0.00 :   5a299a: mov    (%rbx,%r14,1),%rax
+         : 540    for (currElement = *oldlink;
+    0.00 :   5a299e: mov    (%r12),%rdx
+         : 542    newlink = &new_seg[new_segndx];
+    0.00 :   5a29a2: lea    (%rax,%rcx,8),%rbx
+         : 544    currElement != NULL;
+    0.00 :   5a29a6: test   %rdx,%rdx
+    0.00 :   5a29a9: jne    5a29c5 <hash_search_with_hash_value+0x605>
+    0.00 :   5a29ab: jmp    5a29ea <hash_search_with_hash_value+0x62a>
+    0.00 :   5a29ad: nopl   (%rax)
+         : 549    *newlink = currElement;
+    0.00 :   5a29b0: mov    %rdx,(%rbx)
+         : 551    newlink = &currElement->link;
+    0.00 :   5a29b3: mov    %rdx,%rbx
+         : 553    currElement != NULL;
+    0.00 :   5a29b6: test   %rcx,%rcx
+    0.00 :   5a29b9: je     5a29ea <hash_search_with_hash_value+0x62a>
+         : 556    if (bucket > hctl->max_bucket)
+    0.00 :   5a29bb: mov    0x310(%r8),%esi
+    0.00 :   5a29c2: mov    %rcx,%rdx
+         : 559    bucket = hash_val & hctl->high_mask;
+    0.00 :   5a29c5: mov    0x8(%rdx),%eax
+    0.00 :   5a29c8: and    0x314(%r8),%eax
+         : 562    nextElement = currElement->link;
+    0.00 :   5a29cf: mov    (%rdx),%rcx
+         : 564    if (bucket > hctl->max_bucket)
+    0.00 :   5a29d2: cmp    %eax,%esi
+    0.00 :   5a29d4: jae    5a29dd <hash_search_with_hash_value+0x61d>
+         : 567    bucket = bucket & hctl->low_mask;
+    0.00 :   5a29d6: and    0x318(%r8),%eax
+         : 569    if ((long) calc_bucket(hctl, currElement->hashvalue) == old_bucket)
+    0.00 :   5a29dd: cmp    %eax,%edi
+    0.00 :   5a29df: jne    5a29b0 <hash_search_with_hash_value+0x5f0>
+         : 572    *oldlink = currElement;
+    0.00 :   5a29e1: mov    %rdx,(%r12)
+         : 574    oldlink = &currElement->link;
+    0.00 :   5a29e5: mov    %rdx,%r12
+    0.00 :   5a29e8: jmp    5a29b6 <hash_search_with_hash_value+0x5f6>
+         : 577    *oldlink = NULL;
+    0.00 :   5a29ea: movq   $0x0,(%r12)
+         : 579    *newlink = NULL;
+    0.00 :   5a29f2: movq   $0x0,(%rbx)
+         : 581    HASHHDR    *hctl = hashp->hctl;
+    0.00 :   5a29f9: mov    (%r15),%rsi
+         : 583    segment_ndx = MOD(bucket, hashp->ssize);
+    0.00 :   5a29fc: mov    0x50(%r15),%rax
+         : 585    segment_num = bucket >> hashp->sshift;
+    0.00 :   5a2a00: mov    0x58(%r15),%ecx
+         : 587    if (bucket > hctl->max_bucket)
+    0.00 :   5a2a04: mov    0x310(%rsi),%edi
+         : 589    segment_ndx = MOD(bucket, hashp->ssize);
+    0.00 :   5a2a0a: lea    -0x1(%rax),%rdx
+         : 591    return true;
+    0.00 :   5a2a0e: movl   $0x0,0x20(%rsp)
+    0.00 :   5a2a16: jmp    5a240c <hash_search_with_hash_value+0x4c>
+         : 594    if (new_segnum >= hctl->dsize)
+    0.00 :   5a2a1b: mov    0x300(%r8),%rsi
+    0.00 :   5a2a22: cmp    %rsi,(%rsp)
+    0.00 :   5a2a26: jl     5a2b71 <hash_search_with_hash_value+0x7b1>
+         : 598    if (hashp->hctl->max_dsize != NO_MAX_DSIZE)
+    0.00 :   5a2a2c: cmpq   $0xffffffffffffffff,0x338(%r8)
+    0.00 :   5a2a34: jne    5a2bf2 <hash_search_with_hash_value+0x832>
+         : 601    old_p = hashp->dir;
+    0.00 :   5a2a3a: mov    0x8(%r15),%rax
+         : 603    new_dirsize = new_dsize * sizeof(HASHSEGMENT);
+    0.00 :   5a2a3e: mov    %rsi,%r14
+    0.00 :   5a2a41: mov    %r11,0x38(%rsp)
+    0.00 :   5a2a46: shl    $0x4,%r14
+    0.00 :   5a2a4a: mov    %r10d,0x30(%rsp)
+         : 608    old_p = hashp->dir;
+    0.00 :   5a2a4f: mov    %rax,0x8(%rsp)
+         : 610    new_dsize = hashp->hctl->dsize << 1;
+    0.00 :   5a2a54: lea    (%rsi,%rsi,1),%rax
+         : 612    p = (HASHSEGMENT *) hashp->alloc((Size) new_dirsize);
+    0.00 :   5a2a58: mov    %r14,%rdi
+         : 614    new_dsize = hashp->hctl->dsize << 1;
+    0.00 :   5a2a5b: mov    %rax,0x18(%rsp)
+         : 616    CurrentDynaHashCxt = hashp->hcxt;
+    0.00 :   5a2a60: mov    0x30(%r15),%rax
+    0.00 :   5a2a64: mov    %r8,0x28(%rsp)
+         : 619    new_dirsize = new_dsize * sizeof(HASHSEGMENT);
+    0.00 :   5a2a69: mov    %rsi,0x20(%rsp)
+         : 621    CurrentDynaHashCxt = hashp->hcxt;
+    0.00 :   5a2a6e: mov    %rax,0x443e6b(%rip)        # 9e68e0 <CurrentDynaHashCxt>
+         : 623    p = (HASHSEGMENT *) hashp->alloc((Size) new_dirsize);
+    0.00 :   5a2a75: call   *0x28(%r15)
+         : 625    if (p != NULL)
+    0.00 :   5a2a79: mov    0x20(%rsp),%rsi
+    0.00 :   5a2a7e: mov    0x28(%rsp),%r8
+    0.00 :   5a2a83: test   %rax,%rax
+    0.00 :   5a2a86: mov    0x30(%rsp),%r10d
+    0.00 :   5a2a8b: mov    0x38(%rsp),%r11
+         : 631    p = (HASHSEGMENT *) hashp->alloc((Size) new_dirsize);
+    0.00 :   5a2a90: mov    %rax,%r12
+         : 633    if (p != NULL)
+    0.00 :   5a2a93: je     5a29f9 <hash_search_with_hash_value+0x639>
+         : 635    old_dirsize = hashp->hctl->dsize * sizeof(HASHSEGMENT);
+    0.00 :   5a2a99: lea    0x0(,%rsi,8),%rdx
+         : 637    memcpy(p, old_p, old_dirsize);
+    0.00 :   5a2aa1: mov    0x8(%rsp),%rsi
+    0.00 :   5a2aa6: mov    %rax,%rdi
+    0.00 :   5a2aa9: mov    %r11,0x38(%rsp)
+    0.00 :   5a2aae: mov    %r10d,0x30(%rsp)
+    0.00 :   5a2ab3: mov    %r8,0x28(%rsp)
+    0.00 :   5a2ab8: mov    %rdx,0x20(%rsp)
+    0.00 :   5a2abd: call   e6160 <memcpy@plt>
+         : 645    MemSet(((char *) p) + old_dirsize, 0, new_dirsize - old_dirsize);
+    0.00 :   5a2ac2: mov    0x20(%rsp),%rdx
+    0.00 :   5a2ac7: mov    %r14,%rax
+    0.00 :   5a2aca: mov    0x28(%rsp),%r8
+    0.00 :   5a2acf: mov    0x30(%rsp),%r10d
+    0.00 :   5a2ad4: mov    0x38(%rsp),%r11
+    0.00 :   5a2ad9: sub    %rdx,%rax
+    0.00 :   5a2adc: test   $0x7,%r12b
+    0.00 :   5a2ae0: lea    (%r12,%rdx,1),%rdi
+    0.00 :   5a2ae4: jne    5a2c02 <hash_search_with_hash_value+0x842>
+    0.00 :   5a2aea: cmp    $0x400,%rax
+    0.00 :   5a2af0: ja     5a2c02 <hash_search_with_hash_value+0x842>
+    0.00 :   5a2af6: add    %r12,%r14
+    0.00 :   5a2af9: cmp    %r14,%rdi
+    0.00 :   5a2afc: jae    5a2b36 <hash_search_with_hash_value+0x776>
+    0.00 :   5a2afe: lea    -0x1(%r14),%rax
+    0.00 :   5a2b02: xor    %esi,%esi
+    0.00 :   5a2b04: mov    %r11,0x30(%rsp)
+    0.00 :   5a2b09: sub    %rdi,%rax
+    0.00 :   5a2b0c: mov    %r10d,0x28(%rsp)
+    0.00 :   5a2b11: shr    $0x3,%rax
+    0.00 :   5a2b15: mov    %r8,0x20(%rsp)
+    0.00 :   5a2b1a: lea    0x8(,%rax,8),%rdx
+    0.00 :   5a2b22: call   e46f0 <memset@plt>
+    0.00 :   5a2b27: mov    0x20(%rsp),%r8
+    0.00 :   5a2b2c: mov    0x28(%rsp),%r10d
+    0.00 :   5a2b31: mov    0x30(%rsp),%r11
+         : 672    hashp->hctl->dsize = new_dsize;
+    0.00 :   5a2b36: mov    (%r15),%rax
+    0.00 :   5a2b39: mov    0x18(%rsp),%rcx
+         : 675    hashp->dir = p;
+    0.00 :   5a2b3e: mov    %r12,0x8(%r15)
+         : 677    pfree(old_p);
+    0.00 :   5a2b42: mov    0x8(%rsp),%rdi
+    0.00 :   5a2b47: mov    %r11,0x30(%rsp)
+         : 680    hashp->hctl->dsize = new_dsize;
+    0.00 :   5a2b4c: mov    %rcx,0x300(%rax)
+    0.00 :   5a2b53: mov    %r10d,0x28(%rsp)
+    0.00 :   5a2b58: mov    %r8,0x20(%rsp)
+         : 684    pfree(old_p);
+    0.00 :   5a2b5d: call   5bcd20 <pfree>
+    0.00 :   5a2b62: mov    0x30(%rsp),%r11
+    0.00 :   5a2b67: mov    0x28(%rsp),%r10d
+    0.00 :   5a2b6c: mov    0x20(%rsp),%r8
+         : 689    if (!(hashp->dir[new_segnum] = seg_alloc(hashp)))
+    0.00 :   5a2b71: mov    (%rsp),%r14
+    0.00 :   5a2b75: mov    0x8(%r15),%r12
+    0.00 :   5a2b79: mov    %r15,%rdi
+    0.00 :   5a2b7c: mov    %r11,0x20(%rsp)
+    0.00 :   5a2b81: mov    %r10d,0x18(%rsp)
+    0.00 :   5a2b86: mov    %r8,0x8(%rsp)
+    0.00 :   5a2b8b: shl    $0x3,%r14
+    0.00 :   5a2b8f: call   5a2140 <seg_alloc>
+    0.00 :   5a2b94: add    %r14,%r12
+    0.00 :   5a2b97: mov    0x8(%rsp),%r8
+    0.00 :   5a2b9c: mov    0x18(%rsp),%r10d
+    0.00 :   5a2ba1: test   %rax,%rax
+    0.00 :   5a2ba4: mov    %rax,(%r12)
+    0.00 :   5a2ba8: mov    0x20(%rsp),%r11
+    0.00 :   5a2bad: je     5a29f9 <hash_search_with_hash_value+0x639>
+         : 705    hctl->max_bucket++;
+    0.00 :   5a2bb3: mov    0x310(%r8),%eax
+         : 707    hctl->nsegs++;
+    0.00 :   5a2bba: addq   $0x1,0x308(%r8)
+         : 709    hctl->max_bucket++;
+    0.00 :   5a2bc2: lea    0x1(%rax),%esi
+    0.00 :   5a2bc5: jmp    5a293d <hash_search_with_hash_value+0x57d>
+         : 712    SpinLockAcquire(&hctl->freeList[freelist_idx].mutex);
+    0.00 :   5a2bca: mov    %r11,%rdi
+    0.00 :   5a2bcd: mov    $0x523,%edx
+    0.00 :   5a2bd2: mov    %r11,(%rsp)
+    0.00 :   5a2bd6: lea    0x1a9d9b(%rip),%rcx        # 74c978 <__func__.6>
+    0.00 :   5a2bdd: lea    0x158e84(%rip),%rsi        # 6fba68 <_IO_stdin_used+0x8ba68>
+    0.00 :   5a2be4: call   4649d0 <s_lock>
+    0.00 :   5a2be9: mov    (%rsp),%r11
+    0.00 :   5a2bed: jmp    5a28f5 <hash_search_with_hash_value+0x535>
+    0.00 :   5a2bf2: movl   $0x0,0x20(%rsp)
+    0.00 :   5a2bfa: mov    %r8,%rsi
+    0.00 :   5a2bfd: jmp    5a240c <hash_search_with_hash_value+0x4c>
+         : 724    MemSet(((char *) p) + old_dirsize, 0, new_dirsize - old_dirsize);
+    0.00 :   5a2c02: mov    %rax,%rdx
+    0.00 :   5a2c05: xor    %esi,%esi
+    0.00 :   5a2c07: mov    %r11,0x30(%rsp)
+    0.00 :   5a2c0c: mov    %r10d,0x28(%rsp)
+    0.00 :   5a2c11: mov    %r8,0x20(%rsp)
+    0.00 :   5a2c16: call   e46f0 <memset@plt>
+    0.00 :   5a2c1b: mov    0x30(%rsp),%r11
+    0.00 :   5a2c20: mov    0x28(%rsp),%r10d
+    0.00 :   5a2c25: mov    0x20(%rsp),%r8
+    0.00 :   5a2c2a: jmp    5a2b36 <hash_search_with_hash_value+0x776>
+    0.00 :   5a2c2f: jmp    1688e3 <hash_search_with_hash_value.cold+0x8>
+
+Sorted summary for file /home/markwkm/.local/pgsql-18/bin/postgres
+----------------------------------------------
+
+   84.45 /home/markwkm/postgres/build/../src/include/storage/checksum_impl.h:162
+    0.98 /home/markwkm/postgres/build/../src/include/storage/checksum_impl.h:160
+    0.62 /home/markwkm/postgres/build/../src/include/storage/checksum_impl.h:188
+ Percent |	Source code & Disassembly of /home/markwkm/.local/pgsql-18/bin/postgres for cpu-clock:ppp (1948 samples, percent: local period)
+-----------------------------------------------------------------------------------------------------------------------------------------------
+         :
+         :
+         :
+         : 3      Disassembly of section .text:
+         :
+         : 5      0000000000658340 <pg_checksum_page>:
+         : 6      * calculation isn't affected by the old checksum stored on the page.
+         : 7      * Restore it after, because actually updating the checksum is NOT part of
+         : 8      * the API of this function.
+         : 9      */
+         : 10     save_checksum = cpage->phdr.pd_checksum;
+         : 11     cpage->phdr.pd_checksum = 0;
+    0.26 :   658340: xor    %eax,%eax
+         : 13     {
+    0.62 :   658342: mov    %esi,%ecx // /home/markwkm/postgres/build/../src/include/storage/checksum_impl.h:188
+         : 15     save_checksum = cpage->phdr.pd_checksum;
+    0.05 :   658344: movzwl 0x8(%rdi),%esi
+         : 17     cpage->phdr.pd_checksum = 0;
+    0.15 :   658348: movdqa 0xbbd50(%rip),%xmm0        # 7140a0 <__func__.4+0x698>
+    0.41 :   658350: mov    %ax,0x8(%rdi)
+    0.05 :   658354: movdqa 0xbbd54(%rip),%xmm1        # 7140b0 <__func__.4+0x6a8>
+    0.05 :   65835c: mov    %rdi,%r8
+    0.00 :   65835f: lea    0x2000(%rdi),%rdx
+    0.05 :   658366: movdqa 0xbbd52(%rip),%xmm2        # 7140c0 <__func__.4+0x6b8>
+    0.15 :   65836e: movdqa 0xbbd5a(%rip),%xmm3        # 7140d0 <__func__.4+0x6c8>
+    0.00 :   658376: movdqa 0xbbd62(%rip),%xmm4        # 7140e0 <__func__.4+0x6d8>
+    0.00 :   65837e: movdqa 0xbbd6a(%rip),%xmm5        # 7140f0 <__func__.4+0x6e8>
+    0.05 :   658386: movdqa 0xbbd72(%rip),%xmm6        # 714100 <__func__.4+0x6f8>
+    0.00 :   65838e: movdqa 0xbbd7a(%rip),%xmm7        # 714110 <__func__.4+0x708>
+    0.00 :   658396: cs nopw 0x0(%rax,%rax,1)
+         : 30     CHECKSUM_COMP(sums[j], page->data[i][j]);
+    0.46 :   6583a0: movdqu (%r8),%xmm8
+    8.73 :   6583a5: movdqu 0x10(%r8),%xmm9 // /home/markwkm/postgres/build/../src/include/storage/checksum_impl.h:162
+         : 33     for (i = 0; i < (uint32) (BLCKSZ / (sizeof(uint32) * N_SUMS)); i++)
+    0.98 :   6583ab: sub    $0xffffffffffffff80,%r8 // /home/markwkm/postgres/build/../src/include/storage/checksum_impl.h:160
+         : 35     CHECKSUM_COMP(sums[j], page->data[i][j]);
+    0.26 :   6583af: movdqu -0x60(%r8),%xmm10
+    1.49 :   6583b5: movdqu -0x50(%r8),%xmm11 // /home/markwkm/postgres/build/../src/include/storage/checksum_impl.h:162
+    0.26 :   6583bb: movdqu -0x40(%r8),%xmm12
+    6.11 :   6583c1: pxor   %xmm7,%xmm8
+    0.92 :   6583c6: pxor   %xmm6,%xmm9
+    0.92 :   6583cb: movdqu -0x30(%r8),%xmm13
+    0.87 :   6583d1: movdqu -0x20(%r8),%xmm14
+    0.72 :   6583d7: movdqu -0x10(%r8),%xmm15
+    0.67 :   6583dd: pxor   %xmm5,%xmm10
+    1.59 :   6583e2: pxor   %xmm4,%xmm11
+    0.77 :   6583e7: pxor   %xmm3,%xmm12
+    0.82 :   6583ec: pxor   %xmm2,%xmm13
+    1.03 :   6583f1: movdqa %xmm8,%xmm7
+    0.36 :   6583f6: pxor   %xmm1,%xmm14
+    0.67 :   6583fb: pxor   %xmm0,%xmm15
+    0.87 :   658400: movdqa %xmm9,%xmm6
+    0.51 :   658405: movdqa %xmm10,%xmm5
+    0.21 :   65840a: movdqa %xmm11,%xmm4
+    0.31 :   65840f: movdqa %xmm12,%xmm3
+    0.72 :   658414: movdqa %xmm13,%xmm2
+    0.51 :   658419: movdqa %xmm14,%xmm1
+    0.72 :   65841e: movdqa %xmm15,%xmm0
+    0.46 :   658423: pslld  $0xf,%xmm7
+    0.51 :   658428: pslld  $0xf,%xmm6
+    0.72 :   65842d: pslld  $0xf,%xmm5
+    0.98 :   658432: pslld  $0xf,%xmm4
+    0.41 :   658437: paddd  %xmm8,%xmm7
+    0.36 :   65843c: pslld  $0xf,%xmm3
+    0.82 :   658441: pslld  $0xf,%xmm2
+    0.56 :   658446: paddd  %xmm9,%xmm6
+    0.31 :   65844b: pslld  $0xf,%xmm1
+    0.31 :   658450: pslld  $0xf,%xmm0
+    0.72 :   658455: paddd  %xmm10,%xmm5
+    0.67 :   65845a: paddd  %xmm11,%xmm4
+    0.21 :   65845f: paddd  %xmm12,%xmm3
+    0.46 :   658464: pslld  $0x2,%xmm7
+    0.77 :   658469: paddd  %xmm13,%xmm2
+    0.51 :   65846e: paddd  %xmm14,%xmm1
+    0.41 :   658473: pslld  $0x2,%xmm6
+    0.41 :   658478: paddd  %xmm15,%xmm0
+    0.51 :   65847d: pslld  $0x2,%xmm5
+    1.18 :   658482: psubd  %xmm8,%xmm7
+    0.31 :   658487: pslld  $0x2,%xmm4
+    0.62 :   65848c: pslld  $0x2,%xmm3
+    0.72 :   658491: psubd  %xmm9,%xmm6
+    0.51 :   658496: pslld  $0x2,%xmm2
+    0.51 :   65849b: pslld  $0x2,%xmm1
+    0.51 :   6584a0: psubd  %xmm10,%xmm5
+    0.51 :   6584a5: pslld  $0x2,%xmm0
+    1.03 :   6584aa: psubd  %xmm11,%xmm4
+    0.21 :   6584af: psubd  %xmm12,%xmm3
+    0.56 :   6584b4: psubd  %xmm13,%xmm2
+    0.67 :   6584b9: psubd  %xmm14,%xmm1
+    0.92 :   6584be: pslld  $0x3,%xmm7
+    0.56 :   6584c3: psubd  %xmm15,%xmm0
+    0.92 :   6584c8: pslld  $0x3,%xmm6
+    0.67 :   6584cd: paddd  %xmm8,%xmm7
+    0.72 :   6584d2: pslld  $0x3,%xmm5
+    1.03 :   6584d7: pslld  $0x3,%xmm4
+    0.82 :   6584dc: paddd  %xmm9,%xmm6
+    0.72 :   6584e1: pslld  $0x3,%xmm3
+    1.33 :   6584e6: pslld  $0x3,%xmm2
+    0.62 :   6584eb: paddd  %xmm10,%xmm5
+    0.41 :   6584f0: pslld  $0x3,%xmm1
+    0.82 :   6584f5: pslld  $0x3,%xmm0
+    0.56 :   6584fa: paddd  %xmm11,%xmm4
+    1.08 :   6584ff: paddd  %xmm12,%xmm3
+    0.10 :   658504: paddd  %xmm13,%xmm2
+    0.31 :   658509: pslld  $0x2,%xmm7
+    1.03 :   65850e: paddd  %xmm14,%xmm1
+    0.72 :   658513: paddd  %xmm15,%xmm0
+    0.56 :   658518: pslld  $0x2,%xmm6
+    0.72 :   65851d: pslld  $0x2,%xmm5
+    1.13 :   658522: pslld  $0x2,%xmm4
+    1.13 :   658527: paddd  %xmm8,%xmm7
+    0.51 :   65852c: pslld  $0x2,%xmm3
+    1.18 :   658531: pslld  $0x2,%xmm2
+    0.72 :   658536: paddd  %xmm9,%xmm6
+    0.51 :   65853b: pslld  $0x2,%xmm1
+    0.46 :   658540: pslld  $0x2,%xmm0
+    0.51 :   658545: paddd  %xmm10,%xmm5
+    0.67 :   65854a: paddd  %xmm11,%xmm4
+    0.51 :   65854f: paddd  %xmm12,%xmm3
+    0.72 :   658554: pslld  $0x2,%xmm7
+    1.03 :   658559: paddd  %xmm13,%xmm2
+    0.56 :   65855e: paddd  %xmm14,%xmm1
+    0.51 :   658563: pslld  $0x2,%xmm6
+    0.36 :   658568: paddd  %xmm15,%xmm0
+    0.87 :   65856d: pslld  $0x2,%xmm5
+    1.18 :   658572: psubd  %xmm8,%xmm7
+    0.46 :   658577: pslld  $0x2,%xmm4
+    0.46 :   65857c: pslld  $0x2,%xmm3
+    0.92 :   658581: psubd  %xmm9,%xmm6
+    0.92 :   658586: pslld  $0x2,%xmm2
+    0.67 :   65858b: pslld  $0x2,%xmm1
+    0.62 :   658590: psubd  %xmm10,%xmm5
+    0.72 :   658595: pslld  $0x2,%xmm0
+    0.67 :   65859a: psubd  %xmm11,%xmm4
+    0.51 :   65859f: psubd  %xmm12,%xmm3
+    0.56 :   6585a4: psubd  %xmm13,%xmm2
+    0.56 :   6585a9: psubd  %xmm14,%xmm1
+    1.23 :   6585ae: psrld  $0x11,%xmm8
+    0.72 :   6585b4: psubd  %xmm15,%xmm0
+    0.77 :   6585b9: psrld  $0x11,%xmm9
+    0.77 :   6585bf: pxor   %xmm8,%xmm7
+    0.87 :   6585c4: psrld  $0x11,%xmm10
+    0.92 :   6585ca: psrld  $0x11,%xmm11
+    0.67 :   6585d0: pxor   %xmm9,%xmm6
+    0.21 :   6585d5: psrld  $0x11,%xmm12
+    0.72 :   6585db: pxor   %xmm10,%xmm5
+    0.92 :   6585e0: pxor   %xmm11,%xmm4
+    0.41 :   6585e5: psrld  $0x11,%xmm13
+    0.56 :   6585eb: psrld  $0x11,%xmm14
+    0.92 :   6585f1: pxor   %xmm12,%xmm3
+    0.67 :   6585f6: psrld  $0x11,%xmm15
+    0.72 :   6585fc: pxor   %xmm13,%xmm2
+    0.26 :   658601: pxor   %xmm14,%xmm1
+    0.41 :   658606: pxor   %xmm15,%xmm0
+         : 154    for (i = 0; i < (uint32) (BLCKSZ / (sizeof(uint32) * N_SUMS)); i++)
+    0.41 :   65860b: cmp    %r8,%rdx
+    0.00 :   65860e: jne    6583a0 <pg_checksum_page+0x60>
+         : 157    CHECKSUM_COMP(sums[j], 0);
+    0.05 :   658614: movdqa %xmm7,%xmm8
+    0.00 :   658619: movdqa %xmm5,%xmm10
+    0.05 :   65861e: movdqa %xmm6,%xmm9
+         : 161    checksum = pg_checksum_block(cpage);
+         : 162    cpage->phdr.pd_checksum = save_checksum;
+    0.00 :   658623: mov    %si,0x8(%rdi)
+         : 164    CHECKSUM_COMP(sums[j], 0);
+    0.00 :   658627: pslld  $0xf,%xmm8
+    0.00 :   65862d: pslld  $0xf,%xmm10
+    0.00 :   658633: movdqa %xmm2,%xmm13
+    0.00 :   658638: paddd  %xmm7,%xmm8
+    0.05 :   65863d: paddd  %xmm5,%xmm10
+    0.00 :   658642: movdqa %xmm4,%xmm11
+    0.00 :   658647: pslld  $0x2,%xmm8
+    0.00 :   65864d: pslld  $0x2,%xmm10
+    0.05 :   658653: movdqa %xmm3,%xmm12
+    0.00 :   658658: psubd  %xmm7,%xmm8
+    0.00 :   65865d: psubd  %xmm5,%xmm10
+    0.00 :   658662: pslld  $0xf,%xmm9
+    0.10 :   658668: pslld  $0x3,%xmm8
+    0.05 :   65866e: pslld  $0x3,%xmm10
+    0.00 :   658674: paddd  %xmm6,%xmm9
+    0.00 :   658679: paddd  %xmm7,%xmm8
+    0.00 :   65867e: paddd  %xmm5,%xmm10
+    0.05 :   658683: pslld  $0xf,%xmm13
+    0.00 :   658689: pslld  $0x2,%xmm8
+    0.00 :   65868f: paddd  %xmm2,%xmm13
+    0.00 :   658694: movdqa %xmm0,%xmm14
+    0.00 :   658699: paddd  %xmm7,%xmm8
+    0.00 :   65869e: pslld  $0x2,%xmm10
+    0.00 :   6586a4: paddd  %xmm5,%xmm10
+    0.05 :   6586a9: pslld  $0x2,%xmm8
+    0.00 :   6586af: psubd  %xmm7,%xmm8
+    0.00 :   6586b4: pslld  $0x2,%xmm10
+    0.00 :   6586ba: psrld  $0x11,%xmm7
+    0.00 :   6586bf: psubd  %xmm5,%xmm10
+    0.00 :   6586c4: psrld  $0x11,%xmm5
+    0.00 :   6586c9: pxor   %xmm8,%xmm7
+    0.05 :   6586ce: pxor   %xmm10,%xmm5
+    0.00 :   6586d3: pslld  $0xf,%xmm11
+    0.00 :   6586d9: movdqa %xmm7,%xmm10
+    0.05 :   6586de: paddd  %xmm4,%xmm11
+    0.00 :   6586e3: pslld  $0x2,%xmm9
+    0.00 :   6586e9: movdqa %xmm5,%xmm8
+    0.00 :   6586ee: pslld  $0x2,%xmm13
+    0.00 :   6586f4: pslld  $0xf,%xmm10
+    0.10 :   6586fa: psubd  %xmm6,%xmm9
+    0.00 :   6586ff: psubd  %xmm2,%xmm13
+    0.00 :   658704: paddd  %xmm7,%xmm10
+    0.00 :   658709: pslld  $0x2,%xmm11
+    0.00 :   65870f: psubd  %xmm4,%xmm11
+    0.05 :   658714: pslld  $0x3,%xmm9
+    0.00 :   65871a: pslld  $0x3,%xmm13
+    0.05 :   658720: pslld  $0x2,%xmm10
+    0.00 :   658726: paddd  %xmm6,%xmm9
+    0.00 :   65872b: paddd  %xmm2,%xmm13
+    0.05 :   658730: psubd  %xmm7,%xmm10
+    0.00 :   658735: pslld  $0x3,%xmm11
+    0.00 :   65873b: paddd  %xmm4,%xmm11
+    0.00 :   658740: pslld  $0x2,%xmm9
+    0.00 :   658746: pslld  $0x2,%xmm13
+    0.00 :   65874c: pslld  $0x3,%xmm10
+    0.00 :   658752: paddd  %xmm6,%xmm9
+    0.00 :   658757: paddd  %xmm2,%xmm13
+    0.00 :   65875c: paddd  %xmm7,%xmm10
+    0.00 :   658761: pslld  $0x2,%xmm11
+    0.00 :   658767: paddd  %xmm4,%xmm11
+    0.00 :   65876c: pslld  $0x2,%xmm9
+    0.05 :   658772: pslld  $0x2,%xmm13
+    0.00 :   658778: pslld  $0x2,%xmm10
+    0.00 :   65877e: psubd  %xmm6,%xmm9
+    0.00 :   658783: psubd  %xmm2,%xmm13
+    0.00 :   658788: paddd  %xmm7,%xmm10
+    0.00 :   65878d: psrld  $0x11,%xmm2
+    0.00 :   658792: psrld  $0x11,%xmm6
+    0.00 :   658797: pslld  $0x2,%xmm11
+    0.00 :   65879d: pxor   %xmm2,%xmm13
+    0.00 :   6587a2: pslld  $0xf,%xmm12
+    0.00 :   6587a8: pxor   %xmm9,%xmm6
+    0.00 :   6587ad: movdqa %xmm1,%xmm2
+    0.00 :   6587b1: psubd  %xmm4,%xmm11
+    0.00 :   6587b6: paddd  %xmm3,%xmm12
+    0.00 :   6587bb: psrld  $0x11,%xmm4
+    0.00 :   6587c0: pslld  $0xf,%xmm8
+    0.00 :   6587c6: pslld  $0x2,%xmm10
+    0.00 :   6587cc: pxor   %xmm11,%xmm4
+    0.00 :   6587d1: movdqa %xmm6,%xmm15
+    0.00 :   6587d6: paddd  %xmm5,%xmm8
+    0.00 :   6587db: psubd  %xmm7,%xmm10
+    0.00 :   6587e0: pslld  $0x2,%xmm12
+    0.00 :   6587e6: psrld  $0x11,%xmm7
+    0.00 :   6587eb: pslld  $0xf,%xmm2
+    0.00 :   6587f0: pslld  $0xf,%xmm14
+    0.00 :   6587f6: psubd  %xmm3,%xmm12
+    0.00 :   6587fb: paddd  %xmm1,%xmm2
+    0.00 :   6587ff: paddd  %xmm0,%xmm14
+         : 254    result ^= sums[i];
+    0.00 :   658804: pxor   %xmm7,%xmm10
+         : 256    CHECKSUM_COMP(sums[j], 0);
+    0.00 :   658809: pslld  $0xf,%xmm15
+    0.00 :   65880f: pslld  $0x2,%xmm8
+    0.05 :   658815: movdqa %xmm4,%xmm7
+    0.00 :   658819: paddd  %xmm6,%xmm15
+    0.00 :   65881e: psubd  %xmm5,%xmm8
+    0.00 :   658823: pslld  $0x2,%xmm2
+    0.00 :   658828: pslld  $0x3,%xmm12
+    0.00 :   65882e: pslld  $0x2,%xmm14
+    0.00 :   658834: psubd  %xmm1,%xmm2
+    0.05 :   658838: pslld  $0xf,%xmm7
+    0.00 :   65883d: paddd  %xmm3,%xmm12
+    0.00 :   658842: psubd  %xmm0,%xmm14
+    0.00 :   658847: pslld  $0x2,%xmm15
+    0.00 :   65884d: pslld  $0x3,%xmm8
+    0.00 :   658853: paddd  %xmm4,%xmm7
+    0.00 :   658857: psubd  %xmm6,%xmm15
+    0.00 :   65885c: paddd  %xmm5,%xmm8
+    0.00 :   658861: pslld  $0x3,%xmm2
+    0.00 :   658866: pslld  $0x2,%xmm12
+    0.00 :   65886c: pslld  $0x3,%xmm14
+    0.05 :   658872: paddd  %xmm1,%xmm2
+    0.00 :   658876: pslld  $0x2,%xmm7
+    0.10 :   65887b: paddd  %xmm3,%xmm12
+    0.05 :   658880: paddd  %xmm0,%xmm14
+    0.05 :   658885: pslld  $0x3,%xmm15
+    0.00 :   65888b: pslld  $0x2,%xmm8
+    0.05 :   658891: psubd  %xmm4,%xmm7
+    0.00 :   658895: paddd  %xmm6,%xmm15
+    0.00 :   65889a: paddd  %xmm5,%xmm8
+    0.00 :   65889f: pslld  $0x2,%xmm2
+    0.00 :   6588a4: pslld  $0x2,%xmm12
+    0.05 :   6588aa: pslld  $0x2,%xmm14
+    0.15 :   6588b0: paddd  %xmm1,%xmm2
+    0.00 :   6588b4: pslld  $0x3,%xmm7
+    0.00 :   6588b9: psubd  %xmm3,%xmm12
+    0.00 :   6588be: paddd  %xmm0,%xmm14
+    0.00 :   6588c3: psrld  $0x11,%xmm3
+    0.00 :   6588c8: pslld  $0x2,%xmm15
+    0.00 :   6588ce: paddd  %xmm4,%xmm7
+    0.00 :   6588d2: pslld  $0x2,%xmm8
+    0.00 :   6588d8: pxor   %xmm12,%xmm3
+    0.00 :   6588dd: paddd  %xmm6,%xmm15
+    0.00 :   6588e2: pslld  $0x2,%xmm2
+    0.00 :   6588e7: pslld  $0x2,%xmm14
+    0.05 :   6588ed: psubd  %xmm5,%xmm8
+    0.00 :   6588f2: pslld  $0x2,%xmm7
+    0.00 :   6588f7: psrld  $0x11,%xmm5
+    0.00 :   6588fc: psubd  %xmm1,%xmm2
+    0.05 :   658900: psubd  %xmm0,%xmm14
+    0.00 :   658905: psrld  $0x11,%xmm1
+    0.00 :   65890a: paddd  %xmm4,%xmm7
+    0.00 :   65890e: psrld  $0x11,%xmm0
+         : 309    result ^= sums[i];
+    0.05 :   658913: pxor   %xmm5,%xmm8
+         : 311    CHECKSUM_COMP(sums[j], 0);
+    0.05 :   658918: movdqa %xmm3,%xmm5
+    0.00 :   65891c: pslld  $0x2,%xmm15
+    0.00 :   658922: pxor   %xmm1,%xmm2
+    0.00 :   658926: pxor   %xmm0,%xmm14
+    0.00 :   65892b: psubd  %xmm6,%xmm15
+    0.00 :   658930: movdqa %xmm13,%xmm1
+    0.00 :   658935: movdqa %xmm14,%xmm9
+    0.00 :   65893a: psrld  $0x11,%xmm6
+    0.00 :   65893f: pslld  $0xf,%xmm5
+    0.05 :   658944: movdqa %xmm2,%xmm0
+    0.05 :   658948: pslld  $0x2,%xmm7
+         : 323    result ^= sums[i];
+    0.00 :   65894d: pxor   %xmm6,%xmm15
+         : 325    CHECKSUM_COMP(sums[j], 0);
+    0.00 :   658952: paddd  %xmm3,%xmm5
+    0.00 :   658956: psubd  %xmm4,%xmm7
+    0.00 :   65895a: pslld  $0xf,%xmm1
+    0.00 :   65895f: movdqa %xmm4,%xmm6
+    0.05 :   658963: movdqa %xmm2,%xmm4
+    0.05 :   658967: paddd  %xmm13,%xmm1
+         : 332    result ^= sums[i];
+    0.00 :   65896c: pxor   %xmm7,%xmm10
+         : 334    CHECKSUM_COMP(sums[j], 0);
+    0.10 :   658971: pslld  $0x2,%xmm5
+    0.15 :   658976: pslld  $0xf,%xmm9
+    0.00 :   65897c: pslld  $0xf,%xmm4
+    0.00 :   658981: psubd  %xmm3,%xmm5
+    0.00 :   658985: paddd  %xmm14,%xmm9
+    0.00 :   65898a: pslld  $0x2,%xmm1
+    0.00 :   65898f: pslld  $0x3,%xmm5
+    0.00 :   658994: paddd  %xmm2,%xmm4
+    0.00 :   658998: psubd  %xmm13,%xmm1
+    0.00 :   65899d: pslld  $0x2,%xmm9
+    0.05 :   6589a3: paddd  %xmm3,%xmm5
+    0.00 :   6589a7: pslld  $0x2,%xmm4
+    0.00 :   6589ac: pslld  $0x3,%xmm1
+    0.00 :   6589b1: psubd  %xmm14,%xmm9
+    0.00 :   6589b6: psubd  %xmm2,%xmm4
+    0.00 :   6589ba: paddd  %xmm13,%xmm1
+    0.05 :   6589bf: pslld  $0x2,%xmm5
+    0.00 :   6589c4: pslld  $0x3,%xmm9
+    0.00 :   6589ca: pslld  $0x3,%xmm4
+    0.00 :   6589cf: paddd  %xmm3,%xmm5
+    0.00 :   6589d3: paddd  %xmm14,%xmm9
+    0.00 :   6589d8: paddd  %xmm2,%xmm4
+    0.00 :   6589dc: pslld  $0x2,%xmm1
+    0.05 :   6589e1: pslld  $0x2,%xmm5
+    0.00 :   6589e6: pslld  $0x2,%xmm9
+    0.00 :   6589ec: paddd  %xmm13,%xmm1
+    0.00 :   6589f1: pslld  $0x2,%xmm4
+    0.00 :   6589f6: psubd  %xmm3,%xmm5
+    0.00 :   6589fa: paddd  %xmm14,%xmm9
+    0.00 :   6589ff: psrld  $0x11,%xmm6
+    0.00 :   658a04: paddd  %xmm2,%xmm4
+         : 366    result ^= sums[i];
+    0.05 :   658a08: pxor   %xmm5,%xmm8
+         : 368    CHECKSUM_COMP(sums[j], 0);
+    0.00 :   658a0d: pslld  $0x2,%xmm1
+    0.00 :   658a12: psrld  $0x11,%xmm3
+         : 371    result ^= sums[i];
+    0.00 :   658a17: pxor   %xmm6,%xmm15
+         : 373    CHECKSUM_COMP(sums[j], 0);
+    0.00 :   658a1c: psubd  %xmm13,%xmm1
+    0.00 :   658a21: pslld  $0x2,%xmm9
+         : 376    result ^= sums[i];
+    0.05 :   658a27: pxor   %xmm3,%xmm10
+         : 378    CHECKSUM_COMP(sums[j], 0);
+    0.00 :   658a2c: psrld  $0x11,%xmm13
+    0.00 :   658a32: pslld  $0x2,%xmm4
+    0.00 :   658a37: psubd  %xmm14,%xmm9
+         : 382    result ^= sums[i];
+    0.00 :   658a3c: pxor   %xmm1,%xmm15
+         : 384    CHECKSUM_COMP(sums[j], 0);
+    0.00 :   658a41: psrld  $0x11,%xmm0
+         : 386    result ^= sums[i];
+    0.05 :   658a46: pxor   %xmm13,%xmm8
+         : 388    CHECKSUM_COMP(sums[j], 0);
+    0.00 :   658a4b: psubd  %xmm2,%xmm4
+         : 390    result ^= sums[i];
+    0.00 :   658a4f: pxor   %xmm0,%xmm15
+    0.00 :   658a54: pxor   %xmm9,%xmm8
+    0.00 :   658a59: pxor   %xmm4,%xmm10
+         : 394    CHECKSUM_COMP(sums[j], 0);
+    0.00 :   658a5e: psrld  $0x11,%xmm14
+         : 396    result ^= sums[i];
+    0.00 :   658a64: pxor   %xmm8,%xmm15
+    0.00 :   658a69: pxor   %xmm14,%xmm10
+    0.05 :   658a6e: pxor   %xmm10,%xmm15
+    0.00 :   658a73: movdqa %xmm15,%xmm3
+    0.00 :   658a78: psrldq $0x8,%xmm3
+    0.00 :   658a7d: pxor   %xmm3,%xmm15
+    0.05 :   658a82: movdqa %xmm15,%xmm11
+    0.00 :   658a87: psrldq $0x4,%xmm11
+    0.00 :   658a8d: pxor   %xmm11,%xmm15
+    0.00 :   658a92: movd   %xmm15,%r9d
+         :
+         : 408    /* Mix in the block number to detect transposed pages */
+         : 409    checksum ^= blkno;
+    0.00 :   658a97: xor    %r9d,%ecx
+         :
+         : 412    /*
+         : 413    * Reduce to a uint16 (to fit in the pd_checksum field) with an offset of
+         : 414    * one. That avoids checksums of zero, which seems like a good idea.
+         : 415    */
+         : 416    return (uint16) ((checksum % 65535) + 1);
+    0.00 :   658a9a: mov    %rcx,%r10
+    0.00 :   658a9d: shl    $0x10,%r10
+    0.00 :   658aa1: add    %rcx,%r10
+    0.10 :   658aa4: shl    $0xf,%r10
+    0.00 :   658aa8: add    %rcx,%r10
+    0.00 :   658aab: shr    $0x2f,%r10
+    0.00 :   658aaf: lea    0x1(%rcx,%r10,1),%eax
+         : 424    }
+    0.10 :   658ab4: ret
+
+Sorted summary for file /home/markwkm/.local/pgsql-18/bin/postgres
+----------------------------------------------
+
+   91.27 /home/markwkm/postgres/build/../src/include/port/atomics/generic-gcc.h:236
+    1.23 /home/markwkm/postgres/build/../src/backend/storage/buffer/bufmgr.c:6279
+    0.77 /home/markwkm/postgres/build/../src/include/storage/s_lock.h:747
+    0.77 /home/markwkm/postgres/build/../src/backend/storage/buffer/bufmgr.c:6275
+    0.77 /home/markwkm/postgres/build/../src/backend/storage/buffer/bufmgr.c:6262
+    0.61 /home/markwkm/postgres/build/../src/include/storage/s_lock.h:746
+    0.61 /home/markwkm/postgres/build/../src/backend/storage/buffer/bufmgr.c:6281
+    0.61 /home/markwkm/postgres/build/../src/backend/storage/buffer/bufmgr.c:6280
+ Percent |	Source code & Disassembly of /home/markwkm/.local/pgsql-18/bin/postgres for cpu-clock:ppp (653 samples, percent: local period)
+----------------------------------------------------------------------------------------------------------------------------------------------
+         :
+         :
+         :
+         : 3      Disassembly of section .text:
+         :
+         : 5      0000000000436ab0 <LockBufHdr>:
+         : 6      /*
+         : 7      * Lock buffer header - set BM_LOCKED in buffer state.
+         : 8      */
+         : 9      uint32
+         : 10     LockBufHdr(BufferDesc *desc)
+         : 11     {
+    0.46 :   436ab0: push   %r12
+         : 13     const char *file, int line, const char *func)
+         : 14     {
+         : 15     status->spins = 0;
+         : 16     status->delays = 0;
+         : 17     status->cur_delay = 0;
+         : 18     status->file = file;
+    0.31 :   436ab2: lea    0x2b0b47(%rip),%rax        # 6e7600 <_IO_stdin_used+0x77600>
+    0.00 :   436ab9: push   %rbp
+    0.31 :   436aba: push   %rbx
+    0.77 :   436abb: mov    %rdi,%rbx // /home/markwkm/postgres/build/../src/backend/storage/buffer/bufmgr.c:6262
+    0.15 :   436abe: sub    $0x30,%rsp
+    0.61 :   436ac2: mov    %rax,0x10(%rsp) // /home/markwkm/postgres/build/../src/include/storage/s_lock.h:746
+         : 25     status->line = line;
+         : 26     status->func = func;
+    0.46 :   436ac7: lea    0x2fbeea(%rip),%rax        # 7329b8 <__func__.1>
+    0.00 :   436ace: mov    %rsp,%r12
+         : 29     status->spins = 0;
+    0.00 :   436ad1: movq   $0x0,(%rsp)
+         : 31     status->cur_delay = 0;
+    0.46 :   436ad9: movl   $0x0,0x8(%rsp)
+         : 33     status->line = line;
+    0.77 :   436ae1: movl   $0x187c,0x18(%rsp) // /home/markwkm/postgres/build/../src/include/storage/s_lock.h:747
+         : 35     status->func = func;
+    0.15 :   436ae9: mov    %rax,0x20(%rsp)
+         : 37     }
+    0.31 :   436aee: jmp    436af5 <LockBufHdr+0x45>
+         : 39     /* set BM_LOCKED flag */
+         : 40     old_buf_state = pg_atomic_fetch_or_u32(&desc->state, BM_LOCKED);
+         : 41     /* if it wasn't set before we're OK */
+         : 42     if (!(old_buf_state & BM_LOCKED))
+         : 43     break;
+         : 44     perform_spin_delay(&delayStatus);
+    0.00 :   436af0: call   4648d0 <perform_spin_delay>
+         : 46     #if !defined(PG_HAVE_ATOMIC_FETCH_OR_U32) && defined(HAVE_GCC__SYNC_INT32_CAS)
+         : 47     #define PG_HAVE_ATOMIC_FETCH_OR_U32
+         : 48     static inline uint32
+         : 49     pg_atomic_fetch_or_u32_impl(volatile pg_atomic_uint32 *ptr, uint32 or_)
+         : 50     {
+         : 51     return __sync_fetch_and_or(&ptr->value, or_);
+    0.00 :   436af5: mov    0x18(%rbx),%eax
+   36.91 :   436af8: mov    %eax,%edx // /home/markwkm/postgres/build/../src/include/port/atomics/generic-gcc.h:236
+    0.61 :   436afa: mov    %eax,%ebp
+    0.00 :   436afc: or     $0x400000,%edx
+    0.46 :   436b02: lock cmpxchg %edx,0x18(%rbx)
+   53.75 :   436b07: jne    436af8 <LockBufHdr+0x48>
+         : 58     }
+         : 59     finish_spin_delay(&delayStatus);
+    1.23 :   436b09: mov    %r12,%rdi // /home/markwkm/postgres/build/../src/backend/storage/buffer/bufmgr.c:6279
+         : 61     if (!(old_buf_state & BM_LOCKED))
+    0.77 :   436b0c: test   $0x400000,%ebp // /home/markwkm/postgres/build/../src/backend/storage/buffer/bufmgr.c:6275
+    0.00 :   436b12: jne    436af0 <LockBufHdr+0x40>
+         : 64     finish_spin_delay(&delayStatus);
+    0.00 :   436b14: call   464990 <finish_spin_delay>
+         : 66     return old_buf_state | BM_LOCKED;
+         : 67     }
+    0.61 :   436b19: add    $0x30,%rsp // /home/markwkm/postgres/build/../src/backend/storage/buffer/bufmgr.c:6281
+         : 69     return old_buf_state | BM_LOCKED;
+    0.00 :   436b1d: mov    %ebp,%eax
+         : 71     }
+    0.00 :   436b1f: pop    %rbx
+         : 73     return old_buf_state | BM_LOCKED;
+    0.61 :   436b20: or     $0x400000,%eax // /home/markwkm/postgres/build/../src/backend/storage/buffer/bufmgr.c:6280
+         : 75     }
+    0.31 :   436b25: pop    %rbp
+    0.00 :   436b26: pop    %r12
+    0.00 :   436b28: ret

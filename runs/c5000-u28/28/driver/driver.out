@@ -1,0 +1,60 @@
+dbt5 - Driver Customer Emulator Main
+Using the following settings:
+
+Input files location: /tmp/.mount_dbt5BcFgeo/opt/egen/flat_in
+
+Brokerage House address: localhost
+Brokerage House port: 30000
+
+Configured customer count: 5000
+Active customer count: 5000
+Days of initial trades: 300
+Scale Factor: 500
+
+User Threads: 28
+Sleep between creating users: 2142
+
+Test duration (sec): 3600
+Pacing Delay (msec): 0
+
+Unique ID (seed): 0
+initializing data maintenance...
+
+Running Trade-Cleanup transaction before starting the test...
+Trade-Cleanup transaction completed.
+
+Test is starting at 07:19:10.131
+Estimated duration of ramp-up: 59 seconds
+Estimated end time 08:19:10.131
+>> Start of ramp-up.
+>> Data-Maintenance thread started.
+>> End of ramp-up.
+User thread # 3817383 terminated.
+User thread # 3811888 terminated.
+User thread # 3813245 terminated.
+User thread # 3816053 terminated.
+User thread # 3817697 terminated.
+User thread # 3811881 terminated.
+User thread # 3818758 terminated.
+User thread # 3812797 terminated.
+User thread # 3812599 terminated.
+User thread # 3812226 terminated.
+User thread # 3812084 terminated.
+User thread # 3818025 terminated.
+User thread # 3814366 terminated.
+User thread # 3813013 terminated.
+User thread # 3816396 terminated.
+User thread # 3811906 terminated.
+User thread # 3813781 terminated.
+User thread # 3811990 terminated.
+User thread # 3815377 terminated.
+User thread # 3815037 terminated.
+User thread # 3816712 terminated.
+User thread # 3812396 terminated.
+User thread # 3813500 terminated.
+User thread # 3815723 terminated.
+User thread # 3818419 terminated.
+User thread # 3814687 terminated.
+User thread # 3817046 terminated.
+User thread # 3814080 terminated.
+Data-Maintenance thread stopped.

@@ -1,0 +1,1950 @@
+
+Sorted summary for file /home/markwkm/.local/pgsql-18/bin/postgres
+----------------------------------------------
+
+   38.98 /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1019
+   28.46 /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1022
+   10.67 /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1024
+    9.13 /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1331
+    3.15 /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1774
+    2.72 /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1268
+    0.87 /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1050
+ Percent |	Source code & Disassembly of /home/markwkm/.local/pgsql-18/bin/postgres for cpu-clock:ppp (2540 samples, percent: local period)
+-----------------------------------------------------------------------------------------------------------------------------------------------
+         :
+         :
+         :
+         : 3      Disassembly of section .text:
+         :
+         : 5      00000000005a23c0 <hash_search_with_hash_value>:
+         : 6      hash_search_with_hash_value(HTAB *hashp,
+         : 7      const void *keyPtr,
+         : 8      uint32 hashvalue,
+         : 9      HASHACTION action,
+         : 10     bool *foundPtr)
+         : 11     {
+    0.00 :   5a23c0: push   %r15
+    0.12 :   5a23c2: mov    %r8,%r11
+    0.00 :   5a23c5: mov    %rdi,%r15
+    0.00 :   5a23c8: mov    %ecx,%r10d
+    0.00 :   5a23cb: push   %r14
+    0.04 :   5a23cd: push   %r13
+    0.00 :   5a23cf: mov    %rsi,%r13
+    0.00 :   5a23d2: push   %r12
+    0.04 :   5a23d4: push   %rbp
+    0.00 :   5a23d5: mov    %edx,%ebp
+    0.04 :   5a23d7: push   %rbx
+    0.00 :   5a23d8: sub    $0x48,%rsp
+         : 24     HASHHDR    *hctl = hashp->hctl;
+    0.08 :   5a23dc: mov    (%rdi),%r8
+         : 26     int                     freelist_idx = FREELIST_IDX(hctl, hashvalue);
+    0.04 :   5a23df: cmpq   $0x0,0x330(%r8)
+         : 28     {
+         : 29     /*
+         : 30     * Can't split if running in partitioned mode, nor if frozen, nor if
+         : 31     * table is the subject of any active hash_seq_search scans.
+         : 32     */
+         : 33     if (hctl->freeList[0].nentries > (long) hctl->max_bucket &&
+    0.39 :   5a23e7: mov    0x310(%r8),%edi
+         : 35     int                     freelist_idx = FREELIST_IDX(hctl, hashvalue);
+    0.04 :   5a23ee: je     5a2550 <hash_search_with_hash_value+0x190>
+    0.00 :   5a23f4: mov    %edx,%eax
+         : 38     #ifdef HASH_STATISTICS
+         : 39     hash_expansions++;
+         : 40     #endif
+         :
+         : 42     new_bucket = hctl->max_bucket + 1;
+         : 43     new_segnum = new_bucket >> hashp->sshift;
+    0.00 :   5a23f6: mov    0x58(%r15),%ecx
+         : 45     uint32          bucket;
+         :
+         : 47     bucket = calc_bucket(hctl, hashvalue);
+         :
+         : 49     segment_num = bucket >> hashp->sshift;
+         : 50     segment_ndx = MOD(bucket, hashp->ssize);
+    0.00 :   5a23fa: mov    %r8,%rsi
+    0.04 :   5a23fd: and    $0x1f,%eax
+    0.00 :   5a2400: mov    %eax,0x20(%rsp)
+    0.00 :   5a2404: mov    0x50(%r15),%rax
+    0.00 :   5a2408: lea    -0x1(%rax),%rdx
+         : 56     bucket = hash_val & hctl->high_mask;
+    0.08 :   5a240c: mov    0x314(%rsi),%eax
+    0.00 :   5a2412: and    %ebp,%eax
+         : 59     if (bucket > hctl->max_bucket)
+    0.00 :   5a2414: cmp    %eax,%edi
+    0.00 :   5a2416: jae    5a241e <hash_search_with_hash_value+0x5e>
+         : 62     bucket = bucket & hctl->low_mask;
+    0.08 :   5a2418: and    0x318(%rsi),%eax
+         : 64     segment_ndx = MOD(bucket, hashp->ssize);
+    0.28 :   5a241e: and    %eax,%edx
+         :
+         : 67     segp = hashp->dir[segment_num];
+    0.20 :   5a2420: shr    %cl,%eax
+    0.16 :   5a2422: mov    0x8(%r15),%rcx
+    0.00 :   5a2426: mov    (%rcx,%rax,8),%rax
+         :
+         : 72     if (segp == NULL)
+    3.15 :   5a242a: test   %rax,%rax // /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1774
+    0.00 :   5a242d: je     1688db <hash_search_with_hash_value.cold>
+         : 75     hash_corrupted(hashp);
+         :
+         : 77     *bucketptr = &segp[segment_ndx];
+    0.12 :   5a2433: lea    (%rax,%rdx,8),%r12
+         : 79     keysize = hashp->keysize;       /* ditto */
+    0.04 :   5a2437: mov    0x48(%r15),%r14
+         : 81     match = hashp->match;           /* save one fetch in inner loop */
+    0.00 :   5a243b: mov    0x18(%r15),%rdx
+         : 83     currBucket = *prevBucketPtr;
+    0.00 :   5a243f: mov    (%r12),%rbx
+         : 85     while (currBucket != NULL)
+   38.35 :   5a2443: test   %rbx,%rbx // /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1019
+    0.04 :   5a2446: je     5a2801 <hash_search_with_hash_value+0x441>
+    0.63 :   5a244c: mov    %r15,0x8(%rsp)
+    0.12 :   5a2451: mov    %ebp,%r15d
+    0.00 :   5a2454: mov    %r12,%rbp
+    0.00 :   5a2457: mov    %rbx,%r12
+    0.08 :   5a245a: mov    %r8,(%rsp)
+    0.04 :   5a245e: mov    %rdx,%rbx
+    0.00 :   5a2461: mov    %r10d,0x10(%rsp)
+    0.00 :   5a2466: mov    %r11,0x18(%rsp)
+    0.00 :   5a246b: jmp    5a248c <hash_search_with_hash_value+0xcc>
+    0.00 :   5a246d: data16 cs nopw 0x0(%rax,%rax,1)
+    0.00 :   5a2478: nopl   0x0(%rax,%rax,1)
+         : 99     prevBucketPtr = &(currBucket->link);
+   10.67 :   5a2480: mov    %r12,%rbp // /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1024
+         : 101    currBucket = *prevBucketPtr;
+    0.31 :   5a2483: mov    (%r12),%r12
+         : 103    while (currBucket != NULL)
+    0.20 :   5a2487: test   %r12,%r12
+    0.00 :   5a248a: je     5a24a4 <hash_search_with_hash_value+0xe4>
+         : 106    if (currBucket->hashvalue == hashvalue &&
+    0.16 :   5a248c: cmp    %r15d,0x8(%r12)
+    0.28 :   5a2491: jne    5a2480 <hash_search_with_hash_value+0xc0>
+         : 109    match(ELEMENTKEY(currBucket), keyPtr, keysize) == 0)
+   27.91 :   5a2493: lea    0x10(%r12),%rdi // /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1022
+    0.55 :   5a2498: mov    %r14,%rdx
+    0.04 :   5a249b: mov    %r13,%rsi
+    0.04 :   5a249e: call   *%rbx
+         : 114    if (currBucket->hashvalue == hashvalue &&
+    0.00 :   5a24a0: test   %eax,%eax
+    0.00 :   5a24a2: jne    5a2480 <hash_search_with_hash_value+0xc0>
+    0.16 :   5a24a4: mov    0x18(%rsp),%r11
+         : 118    if (foundPtr)
+    0.08 :   5a24a9: mov    %r12,%rbx
+    0.00 :   5a24ac: mov    (%rsp),%r8
+    0.00 :   5a24b0: mov    %rbp,%r12
+    0.16 :   5a24b3: mov    0x10(%rsp),%r10d
+    0.00 :   5a24b8: mov    %r15d,%ebp
+    0.00 :   5a24bb: mov    0x8(%rsp),%r15
+    0.00 :   5a24c0: test   %r11,%r11
+    0.00 :   5a24c3: je     5a2588 <hash_search_with_hash_value+0x1c8>
+         : 127    *foundPtr = (bool) (currBucket != NULL);
+    0.00 :   5a24c9: test   %rbx,%rbx
+    0.00 :   5a24cc: setne  (%r11)
+         : 130    switch (action)
+    0.04 :   5a24d0: cmp    $0x1,%r10d
+    0.00 :   5a24d4: je     5a25bd <hash_search_with_hash_value+0x1fd>
+    0.00 :   5a24da: jbe    5a2594 <hash_search_with_hash_value+0x1d4>
+    0.00 :   5a24e0: cmp    $0x2,%r10d
+    0.00 :   5a24e4: jne    5a25b3 <hash_search_with_hash_value+0x1f3>
+         : 136    if (currBucket != NULL)
+    0.04 :   5a24ea: test   %rbx,%rbx
+    0.00 :   5a24ed: je     5a273f <hash_search_with_hash_value+0x37f>
+         : 139    if (IS_PARTITIONED(hctl))
+    0.00 :   5a24f3: cmpq   $0x0,0x330(%r8)
+         : 141    SpinLockAcquire(&(hctl->freeList[freelist_idx].mutex));
+    0.08 :   5a24fb: movslq 0x20(%rsp),%r11
+         : 143    if (IS_PARTITIONED(hctl))
+    0.00 :   5a2500: je     5a251a <hash_search_with_hash_value+0x15a>
+         : 145    SpinLockAcquire(&(hctl->freeList[freelist_idx].mutex));
+    0.00 :   5a2502: lea    (%r11,%r11,2),%rax
+    0.00 :   5a2506: lea    (%r8,%rax,8),%rdi
+         : 148    static __inline__ int
+         : 149    tas(volatile slock_t *lock)
+         : 150    {
+         : 151    slock_t         _res = 1;
+         :
+         : 153    __asm__ __volatile__(
+    0.00 :   5a250a: mov    $0x1,%eax
+    0.00 :   5a250f: lock xchg %al,(%rdi)
+    0.87 :   5a2512: test   %al,%al // /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1050
+    0.00 :   5a2514: jne    5a2838 <hash_search_with_hash_value+0x478>
+         : 158    hctl->freeList[freelist_idx].nentries--;
+    0.08 :   5a251a: lea    (%r11,%r11,2),%rax
+    0.00 :   5a251e: lea    (%r8,%rax,8),%rax
+    0.00 :   5a2522: subq   $0x1,0x8(%rax)
+         : 162    *prevBucketPtr = currBucket->link;
+    0.04 :   5a2527: mov    (%rbx),%rdx
+    0.04 :   5a252a: mov    %rdx,(%r12)
+         : 165    currBucket->link = hctl->freeList[freelist_idx].freeList;
+    0.00 :   5a252e: mov    0x10(%rax),%rdx
+    0.04 :   5a2532: mov    %rdx,(%rbx)
+         : 168    hctl->freeList[freelist_idx].freeList = currBucket;
+    0.00 :   5a2535: mov    %rbx,0x10(%rax)
+         : 170    if (IS_PARTITIONED(hctl))
+    0.00 :   5a2539: cmpq   $0x0,0x330(%r8)
+    0.00 :   5a2541: je     5a259d <hash_search_with_hash_value+0x1dd>
+         : 173    SpinLockRelease(&hctl->freeList[freelist_idx].mutex);
+    0.00 :   5a2543: movb   $0x0,(%rax)
+         : 175    return ELEMENTKEY(currBucket);
+    0.00 :   5a2546: jmp    5a259d <hash_search_with_hash_value+0x1dd>
+    0.00 :   5a2548: nopl   0x0(%rax,%rax,1)
+         : 178    if (action == HASH_ENTER || action == HASH_ENTER_NULL)
+    0.00 :   5a2550: mov    %ecx,%eax
+    0.00 :   5a2552: and    $0xfffffffd,%eax
+    0.00 :   5a2555: cmp    $0x1,%eax
+    0.00 :   5a2558: jne    5a2566 <hash_search_with_hash_value+0x1a6>
+         : 183    if (hctl->freeList[0].nentries > (long) hctl->max_bucket &&
+    0.00 :   5a255a: mov    %edi,%eax
+    0.00 :   5a255c: cmp    %rax,0x8(%r8)
+    0.00 :   5a2560: jg     5a26c8 <hash_search_with_hash_value+0x308>
+         : 187    new_segndx = MOD(new_bucket, hashp->ssize);
+    0.00 :   5a2566: mov    0x50(%r15),%rax
+    0.00 :   5a256a: movl   $0x0,0x20(%rsp)
+    0.00 :   5a2572: mov    %r8,%rsi
+         : 191    new_segnum = new_bucket >> hashp->sshift;
+    0.00 :   5a2575: mov    0x58(%r15),%ecx
+         : 193    new_segndx = MOD(new_bucket, hashp->ssize);
+    0.00 :   5a2579: lea    -0x1(%rax),%rdx
+    0.00 :   5a257d: jmp    5a240c <hash_search_with_hash_value+0x4c>
+    0.00 :   5a2582: nopw   0x0(%rax,%rax,1)
+         : 197    switch (action)
+    0.04 :   5a2588: cmp    $0x1,%r10d
+    0.00 :   5a258c: je     5a25bd <hash_search_with_hash_value+0x1fd>
+    0.00 :   5a258e: ja     5a26a8 <hash_search_with_hash_value+0x2e8>
+         : 201    if (currBucket != NULL)
+    0.00 :   5a2594: test   %rbx,%rbx
+    0.00 :   5a2597: je     5a273f <hash_search_with_hash_value+0x37f>
+         : 204    return ELEMENTKEY(currBucket);
+    0.08 :   5a259d: add    $0x10,%rbx
+         : 206    }
+    0.08 :   5a25a1: add    $0x48,%rsp
+    0.00 :   5a25a5: mov    %rbx,%rax
+    0.00 :   5a25a8: pop    %rbx
+    0.08 :   5a25a9: pop    %rbp
+    0.00 :   5a25aa: pop    %r12
+    0.00 :   5a25ac: pop    %r13
+    0.04 :   5a25ae: pop    %r14
+    0.00 :   5a25b0: pop    %r15
+    0.00 :   5a25b2: ret
+         : 216    switch (action)
+    0.00 :   5a25b3: cmp    $0x3,%r10d
+    0.00 :   5a25b7: jne    5a2c2f <hash_search_with_hash_value+0x86f>
+         : 219    if (currBucket != NULL)
+    0.04 :   5a25bd: test   %rbx,%rbx
+    0.00 :   5a25c0: jne    5a259d <hash_search_with_hash_value+0x1dd>
+         : 222    if (hashp->frozen)
+    0.00 :   5a25c2: cmpb   $0x0,0x42(%r15)
+    0.00 :   5a25c7: jne    16891c <hash_search_with_hash_value.cold+0x41>
+         : 225    SpinLockAcquire(&hctl->freeList[freelist_idx].mutex);
+    0.04 :   5a25cd: movslq 0x20(%rsp),%r11
+         : 227    HASHHDR    *hctl = hashp->hctl;
+    0.00 :   5a25d2: mov    (%r15),%r8
+         : 229    SpinLockAcquire(&hctl->freeList[freelist_idx].mutex);
+    0.00 :   5a25d5: mov    %r12,(%rsp)
+    0.00 :   5a25d9: mov    %ebp,0x8(%rsp)
+    0.00 :   5a25dd: lea    (%r11,%r11,2),%rdx
+    0.00 :   5a25e1: mov    %r11,%rbx
+    0.00 :   5a25e4: mov    %r10d,0x10(%rsp)
+    0.04 :   5a25e9: mov    %r8,%rbp
+    0.04 :   5a25ec: lea    (%r8,%rdx,8),%r11
+    0.00 :   5a25f0: mov    %rdx,0x18(%rsp)
+    0.04 :   5a25f5: mov    %r11,%r12
+    0.00 :   5a25f8: jmp    5a2649 <hash_search_with_hash_value+0x289>
+    0.00 :   5a25fa: nopw   0x0(%rax,%rax,1)
+    0.04 :   5a2600: mov    $0x1,%eax
+    0.00 :   5a2605: lock xchg %al,(%r12)
+    2.72 :   5a260a: test   %al,%al // /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1268
+    0.00 :   5a260c: jne    5a2710 <hash_search_with_hash_value+0x350>
+         : 245    newElement = hctl->freeList[freelist_idx].freeList;
+    0.08 :   5a2612: mov    0x10(%r12),%rdx
+         : 247    if (IS_PARTITIONED(hctl))
+    0.20 :   5a2617: mov    0x330(%rbp),%rax
+         : 249    if (newElement != NULL)
+    0.00 :   5a261e: test   %rdx,%rdx
+    0.00 :   5a2621: jne    5a2890 <hash_search_with_hash_value+0x4d0>
+         : 252    if (IS_PARTITIONED(hctl))
+    0.00 :   5a2627: test   %rax,%rax
+    0.00 :   5a262a: je     5a2631 <hash_search_with_hash_value+0x271>
+         : 255    SpinLockRelease(&hctl->freeList[freelist_idx].mutex);
+    0.00 :   5a262c: movb   $0x0,(%r12)
+         : 257    if (!element_alloc(hashp, hctl->nelem_alloc, freelist_idx))
+    0.00 :   5a2631: mov    0x34c(%rbp),%esi
+    0.00 :   5a2637: mov    %ebx,%edx
+    0.00 :   5a2639: mov    %r15,%rdi
+    0.00 :   5a263c: call   5a2220 <element_alloc>
+    0.00 :   5a2641: test   %al,%al
+    0.00 :   5a2643: je     5a2746 <hash_search_with_hash_value+0x386>
+         : 264    if (IS_PARTITIONED(hctl))
+    0.04 :   5a2649: cmpq   $0x0,0x330(%rbp)
+    0.00 :   5a2651: jne    5a2600 <hash_search_with_hash_value+0x240>
+         : 267    newElement = hctl->freeList[freelist_idx].freeList;
+    0.00 :   5a2653: mov    0x10(%r12),%rdx
+         : 269    if (newElement != NULL)
+    0.00 :   5a2658: test   %rdx,%rdx
+    0.00 :   5a265b: je     5a2631 <hash_search_with_hash_value+0x271>
+    0.00 :   5a265d: mov    %rdx,%rbx
+    0.00 :   5a2660: mov    0x18(%rsp),%rdx
+         : 274    hctl->freeList[freelist_idx].freeList = newElement->link;
+    0.00 :   5a2665: mov    %rbp,%r8
+    0.00 :   5a2668: mov    %r12,%r11
+    0.00 :   5a266b: mov    (%rbx),%rax
+    0.04 :   5a266e: mov    (%rsp),%r12
+    0.00 :   5a2672: mov    0x8(%rsp),%ebp
+    0.00 :   5a2676: mov    %rax,0x10(%r8,%rdx,8)
+         : 281    hctl->freeList[freelist_idx].nentries++;
+    0.00 :   5a267b: addq   $0x1,0x8(%r11)
+         : 283    *prevBucketPtr = currBucket;
+    0.00 :   5a2680: mov    %rbx,(%r12)
+         : 285    hashp->keycopy(ELEMENTKEY(currBucket), keyPtr, keysize);
+    0.00 :   5a2684: add    $0x10,%rbx
+    0.00 :   5a2688: mov    %r14,%rdx
+    0.00 :   5a268b: mov    %r13,%rsi
+         : 289    currBucket->link = NULL;
+    0.00 :   5a268e: movq   $0x0,-0x10(%rbx)
+         : 291    currBucket->hashvalue = hashvalue;
+    0.00 :   5a2696: mov    %ebp,-0x8(%rbx)
+         : 293    hashp->keycopy(ELEMENTKEY(currBucket), keyPtr, keysize);
+    0.04 :   5a2699: mov    %rbx,%rdi
+    0.00 :   5a269c: call   *0x20(%r15)
+         : 296    return ELEMENTKEY(currBucket);
+    0.00 :   5a26a0: jmp    5a25a1 <hash_search_with_hash_value+0x1e1>
+    0.00 :   5a26a5: nopl   (%rax)
+         : 299    switch (action)
+    0.04 :   5a26a8: cmp    $0x2,%r10d
+    0.00 :   5a26ac: je     5a24ea <hash_search_with_hash_value+0x12a>
+    0.00 :   5a26b2: cmp    $0x3,%r10d
+    0.00 :   5a26b6: je     5a25bd <hash_search_with_hash_value+0x1fd>
+    0.00 :   5a26bc: jmp    1688e3 <hash_search_with_hash_value.cold+0x8>
+    0.00 :   5a26c1: nopl   0x0(%rax)
+         : 306    !IS_PARTITIONED(hctl) && !hashp->frozen &&
+    0.00 :   5a26c8: cmpb   $0x0,0x42(%r15)
+    0.00 :   5a26cd: jne    5a2566 <hash_search_with_hash_value+0x1a6>
+         : 309    static bool
+         : 310    has_seq_scans(HTAB *hashp)
+         : 311    {
+         : 312    int                     i;
+         :
+         : 314    for (i = 0; i < num_seq_scans; i++)
+    0.00 :   5a26d3: movslq 0x443d26(%rip),%rdx        # 9e6400 <num_seq_scans>
+    0.00 :   5a26da: test   %edx,%edx
+    0.00 :   5a26dc: jle    5a2903 <hash_search_with_hash_value+0x543>
+    0.00 :   5a26e2: lea    0x443ed7(%rip),%rax        # 9e65c0 <seq_scan_tables>
+    0.00 :   5a26e9: lea    (%rax,%rdx,8),%rdx
+    0.00 :   5a26ed: jmp    5a26fd <hash_search_with_hash_value+0x33d>
+    0.00 :   5a26ef: nop
+    0.00 :   5a26f0: add    $0x8,%rax
+    0.00 :   5a26f4: cmp    %rdx,%rax
+    0.00 :   5a26f7: je     5a2903 <hash_search_with_hash_value+0x543>
+         : 325    {
+         : 326    if (seq_scan_tables[i] == hashp)
+    0.00 :   5a26fd: cmp    (%rax),%r15
+    0.00 :   5a2700: jne    5a26f0 <hash_search_with_hash_value+0x330>
+    0.00 :   5a2702: jmp    5a2566 <hash_search_with_hash_value+0x1a6>
+    0.00 :   5a2707: nopw   0x0(%rax,%rax,1)
+         : 331    SpinLockAcquire(&hctl->freeList[freelist_idx].mutex);
+    0.00 :   5a2710: lea    0x1aa261(%rip),%rcx        # 74c978 <__func__.6>
+    0.00 :   5a2717: mov    $0x4f4,%edx
+    0.00 :   5a271c: lea    0x159345(%rip),%rsi        # 6fba68 <_IO_stdin_used+0x8ba68>
+    0.00 :   5a2723: mov    %r12,%rdi
+    0.00 :   5a2726: call   4649d0 <s_lock>
+    0.00 :   5a272b: jmp    5a2612 <hash_search_with_hash_value+0x252>
+    0.00 :   5a2730: mov    0x20(%rsp),%r10d
+         : 339    if (action == HASH_ENTER_NULL)
+    0.00 :   5a2735: cmp    $0x3,%r10d
+    0.00 :   5a2739: jne    168952 <hash_search_with_hash_value.cold+0x77>
+         : 342    return NULL;
+    0.04 :   5a273f: xor    %ebx,%ebx
+    0.04 :   5a2741: jmp    5a25a1 <hash_search_with_hash_value+0x1e1>
+         : 345    if (!IS_PARTITIONED(hctl))
+    0.00 :   5a2746: mov    %rbp,%r8
+    0.00 :   5a2749: mov    0x10(%rsp),%r10d
+    0.00 :   5a274e: mov    0x8(%rsp),%ebp
+    0.00 :   5a2752: cmpq   $0x0,0x330(%r8)
+    0.00 :   5a275a: je     5a2735 <hash_search_with_hash_value+0x375>
+         : 351    borrow_from_idx = (borrow_from_idx + 1) % NUM_FREELISTS;
+    0.00 :   5a275c: mov    0x20(%rsp),%ecx
+    0.00 :   5a2760: lea    0x1(%rcx),%eax
+    0.00 :   5a2763: and    $0x1f,%eax
+         : 355    if (borrow_from_idx == freelist_idx)
+    0.00 :   5a2766: cmp    %ecx,%eax
+    0.00 :   5a2768: je     5a2735 <hash_search_with_hash_value+0x375>
+         : 358    SpinLockAcquire(&(hctl->freeList[borrow_from_idx].mutex));
+    0.00 :   5a276a: mov    %r12,0x8(%rsp)
+    0.00 :   5a276f: mov    %ecx,%ebx
+    0.00 :   5a2771: mov    %eax,%r12d
+    0.00 :   5a2774: mov    %ebp,0x18(%rsp)
+    0.00 :   5a2778: mov    %r8,%rbp
+    0.00 :   5a277b: mov    %r13,0x10(%rsp)
+    0.00 :   5a2780: mov    %r10d,0x20(%rsp)
+    0.00 :   5a2785: jmp    5a27ce <hash_search_with_hash_value+0x40e>
+    0.00 :   5a2787: nopw   0x0(%rax,%rax,1)
+         : 368    newElement = hctl->freeList[borrow_from_idx].freeList;
+    0.00 :   5a2790: lea    0x0(%r13,%r13,2),%rax
+    0.00 :   5a2795: lea    0x0(%rbp,%rax,8),%rax
+    0.00 :   5a279a: mov    0x10(%rax),%rdx
+         : 372    if (newElement != NULL)
+    0.00 :   5a279e: test   %rdx,%rdx
+    0.00 :   5a27a1: jne    5a28c5 <hash_search_with_hash_value+0x505>
+         : 375    borrow_from_idx = (borrow_from_idx + 1) % NUM_FREELISTS;
+    0.00 :   5a27a7: lea    0x1(%r12),%r9d
+         : 377    SpinLockRelease(&(hctl->freeList[borrow_from_idx].mutex));
+    0.00 :   5a27ac: movb   $0x0,(%rax)
+         : 379    borrow_from_idx = (borrow_from_idx + 1) % NUM_FREELISTS;
+    0.00 :   5a27af: mov    %r9d,%eax
+    0.00 :   5a27b2: sar    $0x1f,%eax
+    0.00 :   5a27b5: shr    $0x1b,%eax
+    0.00 :   5a27b8: add    %eax,%r9d
+    0.00 :   5a27bb: and    $0x1f,%r9d
+    0.00 :   5a27bf: sub    %eax,%r9d
+    0.00 :   5a27c2: mov    %r9d,%r12d
+         : 387    if (borrow_from_idx == freelist_idx)
+    0.00 :   5a27c5: cmp    %ebx,%r9d
+    0.00 :   5a27c8: je     5a2730 <hash_search_with_hash_value+0x370>
+         : 390    SpinLockAcquire(&(hctl->freeList[borrow_from_idx].mutex));
+    0.00 :   5a27ce: movslq %r12d,%r13
+    0.00 :   5a27d1: lea    0x0(%r13,%r13,2),%rax
+    0.00 :   5a27d6: lea    0x0(%rbp,%rax,8),%rdi
+    0.00 :   5a27db: mov    $0x1,%eax
+    0.00 :   5a27e0: lock xchg %al,(%rdi)
+    0.00 :   5a27e3: test   %al,%al
+    0.00 :   5a27e5: je     5a2790 <hash_search_with_hash_value+0x3d0>
+    0.00 :   5a27e7: lea    0x1aa18a(%rip),%rcx        # 74c978 <__func__.6>
+    0.00 :   5a27ee: mov    $0x51a,%edx
+    0.00 :   5a27f3: lea    0x15926e(%rip),%rsi        # 6fba68 <_IO_stdin_used+0x8ba68>
+    0.00 :   5a27fa: call   4649d0 <s_lock>
+    0.00 :   5a27ff: jmp    5a2790 <hash_search_with_hash_value+0x3d0>
+         : 403    if (foundPtr)
+    0.39 :   5a2801: test   %r11,%r11
+    0.00 :   5a2804: je     5a2867 <hash_search_with_hash_value+0x4a7>
+         : 406    *foundPtr = (bool) (currBucket != NULL);
+    0.00 :   5a2806: movb   $0x0,(%r11)
+         : 408    switch (action)
+    0.04 :   5a280a: cmp    $0x1,%r10d
+    0.00 :   5a280e: je     5a25c2 <hash_search_with_hash_value+0x202>
+    0.00 :   5a2814: jbe    5a273f <hash_search_with_hash_value+0x37f>
+    0.00 :   5a281a: cmp    $0x2,%r10d
+    0.00 :   5a281e: je     5a273f <hash_search_with_hash_value+0x37f>
+    0.00 :   5a2824: cmp    $0x3,%r10d
+    0.00 :   5a2828: je     5a25c2 <hash_search_with_hash_value+0x202>
+    0.00 :   5a282e: jmp    1688e3 <hash_search_with_hash_value.cold+0x8>
+    0.00 :   5a2833: nopl   0x0(%rax,%rax,1)
+         : 418    SpinLockAcquire(&(hctl->freeList[freelist_idx].mutex));
+    0.00 :   5a2838: lea    0x1aa161(%rip),%rcx        # 74c9a0 <__func__.8>
+    0.00 :   5a283f: mov    $0x41a,%edx
+    0.00 :   5a2844: lea    0x15921d(%rip),%rsi        # 6fba68 <_IO_stdin_used+0x8ba68>
+    0.00 :   5a284b: mov    %r11,0x8(%rsp)
+    0.00 :   5a2850: mov    %r8,(%rsp)
+    0.00 :   5a2854: call   4649d0 <s_lock>
+    0.00 :   5a2859: mov    0x8(%rsp),%r11
+    0.00 :   5a285e: mov    (%rsp),%r8
+    0.00 :   5a2862: jmp    5a251a <hash_search_with_hash_value+0x15a>
+         : 428    switch (action)
+    0.08 :   5a2867: cmp    $0x1,%r10d
+    0.00 :   5a286b: je     5a25c2 <hash_search_with_hash_value+0x202>
+    0.04 :   5a2871: jbe    5a273f <hash_search_with_hash_value+0x37f>
+    0.00 :   5a2877: cmp    $0x2,%r10d
+    0.00 :   5a287b: je     5a273f <hash_search_with_hash_value+0x37f>
+    0.00 :   5a2881: cmp    $0x3,%r10d
+    0.00 :   5a2885: je     5a25c2 <hash_search_with_hash_value+0x202>
+    0.00 :   5a288b: jmp    1688e3 <hash_search_with_hash_value.cold+0x8>
+         : 437    hctl->freeList[freelist_idx].freeList = newElement->link;
+    0.04 :   5a2890: mov    %rdx,%rbx
+    0.00 :   5a2893: mov    0x18(%rsp),%rdx
+    0.04 :   5a2898: mov    %rbp,%r8
+    0.00 :   5a289b: mov    %r12,%r11
+    0.00 :   5a289e: mov    (%rbx),%rcx
+    9.13 :   5a28a1: mov    (%rsp),%r12 // /home/markwkm/postgres/build/../src/backend/utils/hash/dynahash.c:1331
+    0.20 :   5a28a5: mov    0x8(%rsp),%ebp
+    0.00 :   5a28a9: mov    %rcx,0x10(%r8,%rdx,8)
+         : 446    hctl->freeList[freelist_idx].nentries++;
+    0.00 :   5a28ae: addq   $0x1,0x8(%r11)
+         : 448    if (IS_PARTITIONED(hctl))
+    0.31 :   5a28b3: test   %rax,%rax
+    0.00 :   5a28b6: je     5a2680 <hash_search_with_hash_value+0x2c0>
+         : 451    SpinLockRelease(&hctl->freeList[freelist_idx].mutex);
+    0.00 :   5a28bc: movb   $0x0,(%r11)
+         : 453    if (currBucket == NULL)
+    0.00 :   5a28c0: jmp    5a2680 <hash_search_with_hash_value+0x2c0>
+         : 455    hctl->freeList[borrow_from_idx].freeList = newElement->link;
+    0.00 :   5a28c5: mov    %rdx,%rbx
+    0.00 :   5a28c8: mov    (%rdx),%rdx
+    0.00 :   5a28cb: mov    (%rsp),%r12
+    0.00 :   5a28cf: mov    0x8(%rsp),%r11
+    0.00 :   5a28d4: mov    0x10(%rsp),%r13
+    0.00 :   5a28d9: mov    %rdx,0x10(%rax)
+    0.00 :   5a28dd: mov    0x18(%rsp),%ebp
+         : 463    SpinLockRelease(&(hctl->freeList[borrow_from_idx].mutex));
+    0.00 :   5a28e1: movb   $0x0,(%rax)
+    0.00 :   5a28e4: mov    $0x1,%eax
+    0.00 :   5a28e9: lock xchg %al,(%r11)
+         : 467    SpinLockAcquire(&hctl->freeList[freelist_idx].mutex);
+    0.00 :   5a28ed: test   %al,%al
+    0.00 :   5a28ef: jne    5a2bca <hash_search_with_hash_value+0x80a>
+         : 470    hctl->freeList[freelist_idx].nentries++;
+    0.00 :   5a28f5: addq   $0x1,0x8(%r11)
+         : 472    SpinLockRelease(&hctl->freeList[freelist_idx].mutex);
+    0.00 :   5a28fa: movb   $0x0,(%r11)
+         : 474    if (currBucket == NULL)
+    0.00 :   5a28fe: jmp    5a2680 <hash_search_with_hash_value+0x2c0>
+         : 476    new_segndx = MOD(new_bucket, hashp->ssize);
+    0.00 :   5a2903: mov    0x50(%r15),%rdx
+         : 478    new_bucket = hctl->max_bucket + 1;
+    0.00 :   5a2907: lea    0x1(%rdi),%eax
+         : 480    new_segnum = new_bucket >> hashp->sshift;
+    0.00 :   5a290a: mov    0x58(%r15),%ecx
+    0.00 :   5a290e: mov    %rax,%rsi
+         : 483    new_bucket = hctl->max_bucket + 1;
+    0.00 :   5a2911: mov    %rax,%rbx
+         : 485    new_segndx = MOD(new_bucket, hashp->ssize);
+    0.00 :   5a2914: sub    $0x1,%rdx
+         : 487    new_segnum = new_bucket >> hashp->sshift;
+    0.00 :   5a2918: sar    %cl,%rsi
+         : 489    new_segndx = MOD(new_bucket, hashp->ssize);
+    0.00 :   5a291b: and    %rdx,%rax
+         : 491    new_segnum = new_bucket >> hashp->sshift;
+    0.00 :   5a291e: mov    %rsi,(%rsp)
+         : 493    new_segndx = MOD(new_bucket, hashp->ssize);
+    0.00 :   5a2922: mov    %rax,0x10(%rsp)
+         : 495    if (new_segnum >= hctl->nsegs)
+    0.00 :   5a2927: cmp    0x308(%r8),%rsi
+    0.00 :   5a292e: jge    5a2a1b <hash_search_with_hash_value+0x65b>
+         : 498    new_seg = hashp->dir[new_segnum];
+    0.00 :   5a2934: shl    $0x3,%rsi
+    0.00 :   5a2938: mov    %rsi,%r14
+    0.00 :   5a293b: mov    %ebx,%esi
+         : 502    hctl->max_bucket++;
+    0.00 :   5a293d: mov    0x318(%r8),%edi
+         : 504    if ((uint32) new_bucket > hctl->high_mask)
+    0.00 :   5a2944: mov    0x314(%r8),%eax
+         : 506    hctl->max_bucket++;
+    0.00 :   5a294b: mov    %esi,0x310(%r8)
+         : 508    old_bucket = (new_bucket & hctl->low_mask);
+    0.00 :   5a2952: and    %ebx,%edi
+    0.00 :   5a2954: mov    %edi,%edx
+         : 511    if ((uint32) new_bucket > hctl->high_mask)
+    0.00 :   5a2956: cmp    %ebx,%eax
+    0.00 :   5a2958: jae    5a2971 <hash_search_with_hash_value+0x5b1>
+         : 514    hctl->high_mask = (uint32) new_bucket | hctl->low_mask;
+    0.00 :   5a295a: or     %eax,%ebx
+    0.00 :   5a295c: movd   %eax,%xmm1
+    0.00 :   5a2960: movd   %ebx,%xmm0
+    0.00 :   5a2964: punpckldq %xmm1,%xmm0
+    0.00 :   5a2968: movq   %xmm0,0x314(%r8)
+         : 520    old_segnum = old_bucket >> hashp->sshift;
+    0.00 :   5a2971: mov    0x58(%r15),%ecx
+    0.00 :   5a2975: mov    %rdx,%rax
+         : 523    old_seg = hashp->dir[old_segnum];
+    0.00 :   5a2978: mov    0x8(%r15),%rbx
+         : 525    old_segnum = old_bucket >> hashp->sshift;
+    0.00 :   5a297c: sar    %cl,%rax
+    0.00 :   5a297f: mov    %rax,%rcx
+         : 528    old_segndx = MOD(old_bucket, hashp->ssize);
+    0.00 :   5a2982: mov    0x50(%r15),%rax
+    0.00 :   5a2986: sub    $0x1,%rax
+    0.00 :   5a298a: and    %rdx,%rax
+         : 532    oldlink = &old_seg[old_segndx];
+    0.00 :   5a298d: mov    (%rbx,%rcx,8),%rdx
+         : 534    newlink = &new_seg[new_segndx];
+    0.00 :   5a2991: mov    0x10(%rsp),%rcx
+         : 536    oldlink = &old_seg[old_segndx];
+    0.00 :   5a2996: lea    (%rdx,%rax,8),%r12
+         : 538    newlink = &new_seg[new_segndx];
+    0.00 :   5a299a: mov    (%rbx,%r14,1),%rax
+         : 540    for (currElement = *oldlink;
+    0.00 :   5a299e: mov    (%r12),%rdx
+         : 542    newlink = &new_seg[new_segndx];
+    0.00 :   5a29a2: lea    (%rax,%rcx,8),%rbx
+         : 544    currElement != NULL;
+    0.00 :   5a29a6: test   %rdx,%rdx
+    0.00 :   5a29a9: jne    5a29c5 <hash_search_with_hash_value+0x605>
+    0.00 :   5a29ab: jmp    5a29ea <hash_search_with_hash_value+0x62a>
+    0.00 :   5a29ad: nopl   (%rax)
+         : 549    *newlink = currElement;
+    0.00 :   5a29b0: mov    %rdx,(%rbx)
+         : 551    newlink = &currElement->link;
+    0.00 :   5a29b3: mov    %rdx,%rbx
+         : 553    currElement != NULL;
+    0.00 :   5a29b6: test   %rcx,%rcx
+    0.00 :   5a29b9: je     5a29ea <hash_search_with_hash_value+0x62a>
+         : 556    if (bucket > hctl->max_bucket)
+    0.00 :   5a29bb: mov    0x310(%r8),%esi
+    0.00 :   5a29c2: mov    %rcx,%rdx
+         : 559    bucket = hash_val & hctl->high_mask;
+    0.00 :   5a29c5: mov    0x8(%rdx),%eax
+    0.00 :   5a29c8: and    0x314(%r8),%eax
+         : 562    nextElement = currElement->link;
+    0.00 :   5a29cf: mov    (%rdx),%rcx
+         : 564    if (bucket > hctl->max_bucket)
+    0.00 :   5a29d2: cmp    %eax,%esi
+    0.00 :   5a29d4: jae    5a29dd <hash_search_with_hash_value+0x61d>
+         : 567    bucket = bucket & hctl->low_mask;
+    0.00 :   5a29d6: and    0x318(%r8),%eax
+         : 569    if ((long) calc_bucket(hctl, currElement->hashvalue) == old_bucket)
+    0.00 :   5a29dd: cmp    %eax,%edi
+    0.00 :   5a29df: jne    5a29b0 <hash_search_with_hash_value+0x5f0>
+         : 572    *oldlink = currElement;
+    0.00 :   5a29e1: mov    %rdx,(%r12)
+         : 574    oldlink = &currElement->link;
+    0.00 :   5a29e5: mov    %rdx,%r12
+    0.00 :   5a29e8: jmp    5a29b6 <hash_search_with_hash_value+0x5f6>
+         : 577    *oldlink = NULL;
+    0.00 :   5a29ea: movq   $0x0,(%r12)
+         : 579    *newlink = NULL;
+    0.00 :   5a29f2: movq   $0x0,(%rbx)
+         : 581    HASHHDR    *hctl = hashp->hctl;
+    0.00 :   5a29f9: mov    (%r15),%rsi
+         : 583    segment_ndx = MOD(bucket, hashp->ssize);
+    0.00 :   5a29fc: mov    0x50(%r15),%rax
+         : 585    segment_num = bucket >> hashp->sshift;
+    0.00 :   5a2a00: mov    0x58(%r15),%ecx
+         : 587    if (bucket > hctl->max_bucket)
+    0.00 :   5a2a04: mov    0x310(%rsi),%edi
+         : 589    segment_ndx = MOD(bucket, hashp->ssize);
+    0.00 :   5a2a0a: lea    -0x1(%rax),%rdx
+         : 591    return true;
+    0.00 :   5a2a0e: movl   $0x0,0x20(%rsp)
+    0.00 :   5a2a16: jmp    5a240c <hash_search_with_hash_value+0x4c>
+         : 594    if (new_segnum >= hctl->dsize)
+    0.00 :   5a2a1b: mov    0x300(%r8),%rsi
+    0.00 :   5a2a22: cmp    %rsi,(%rsp)
+    0.00 :   5a2a26: jl     5a2b71 <hash_search_with_hash_value+0x7b1>
+         : 598    if (hashp->hctl->max_dsize != NO_MAX_DSIZE)
+    0.00 :   5a2a2c: cmpq   $0xffffffffffffffff,0x338(%r8)
+    0.00 :   5a2a34: jne    5a2bf2 <hash_search_with_hash_value+0x832>
+         : 601    old_p = hashp->dir;
+    0.00 :   5a2a3a: mov    0x8(%r15),%rax
+         : 603    new_dirsize = new_dsize * sizeof(HASHSEGMENT);
+    0.00 :   5a2a3e: mov    %rsi,%r14
+    0.00 :   5a2a41: mov    %r11,0x38(%rsp)
+    0.00 :   5a2a46: shl    $0x4,%r14
+    0.00 :   5a2a4a: mov    %r10d,0x30(%rsp)
+         : 608    old_p = hashp->dir;
+    0.00 :   5a2a4f: mov    %rax,0x8(%rsp)
+         : 610    new_dsize = hashp->hctl->dsize << 1;
+    0.00 :   5a2a54: lea    (%rsi,%rsi,1),%rax
+         : 612    p = (HASHSEGMENT *) hashp->alloc((Size) new_dirsize);
+    0.00 :   5a2a58: mov    %r14,%rdi
+         : 614    new_dsize = hashp->hctl->dsize << 1;
+    0.00 :   5a2a5b: mov    %rax,0x18(%rsp)
+         : 616    CurrentDynaHashCxt = hashp->hcxt;
+    0.00 :   5a2a60: mov    0x30(%r15),%rax
+    0.00 :   5a2a64: mov    %r8,0x28(%rsp)
+         : 619    new_dirsize = new_dsize * sizeof(HASHSEGMENT);
+    0.00 :   5a2a69: mov    %rsi,0x20(%rsp)
+         : 621    CurrentDynaHashCxt = hashp->hcxt;
+    0.00 :   5a2a6e: mov    %rax,0x443e6b(%rip)        # 9e68e0 <CurrentDynaHashCxt>
+         : 623    p = (HASHSEGMENT *) hashp->alloc((Size) new_dirsize);
+    0.00 :   5a2a75: call   *0x28(%r15)
+         : 625    if (p != NULL)
+    0.00 :   5a2a79: mov    0x20(%rsp),%rsi
+    0.00 :   5a2a7e: mov    0x28(%rsp),%r8
+    0.00 :   5a2a83: test   %rax,%rax
+    0.00 :   5a2a86: mov    0x30(%rsp),%r10d
+    0.00 :   5a2a8b: mov    0x38(%rsp),%r11
+         : 631    p = (HASHSEGMENT *) hashp->alloc((Size) new_dirsize);
+    0.00 :   5a2a90: mov    %rax,%r12
+         : 633    if (p != NULL)
+    0.00 :   5a2a93: je     5a29f9 <hash_search_with_hash_value+0x639>
+         : 635    old_dirsize = hashp->hctl->dsize * sizeof(HASHSEGMENT);
+    0.00 :   5a2a99: lea    0x0(,%rsi,8),%rdx
+         : 637    memcpy(p, old_p, old_dirsize);
+    0.00 :   5a2aa1: mov    0x8(%rsp),%rsi
+    0.00 :   5a2aa6: mov    %rax,%rdi
+    0.00 :   5a2aa9: mov    %r11,0x38(%rsp)
+    0.00 :   5a2aae: mov    %r10d,0x30(%rsp)
+    0.00 :   5a2ab3: mov    %r8,0x28(%rsp)
+    0.00 :   5a2ab8: mov    %rdx,0x20(%rsp)
+    0.00 :   5a2abd: call   e6160 <memcpy@plt>
+         : 645    MemSet(((char *) p) + old_dirsize, 0, new_dirsize - old_dirsize);
+    0.00 :   5a2ac2: mov    0x20(%rsp),%rdx
+    0.00 :   5a2ac7: mov    %r14,%rax
+    0.00 :   5a2aca: mov    0x28(%rsp),%r8
+    0.00 :   5a2acf: mov    0x30(%rsp),%r10d
+    0.00 :   5a2ad4: mov    0x38(%rsp),%r11
+    0.00 :   5a2ad9: sub    %rdx,%rax
+    0.00 :   5a2adc: test   $0x7,%r12b
+    0.00 :   5a2ae0: lea    (%r12,%rdx,1),%rdi
+    0.00 :   5a2ae4: jne    5a2c02 <hash_search_with_hash_value+0x842>
+    0.00 :   5a2aea: cmp    $0x400,%rax
+    0.00 :   5a2af0: ja     5a2c02 <hash_search_with_hash_value+0x842>
+    0.00 :   5a2af6: add    %r12,%r14
+    0.00 :   5a2af9: cmp    %r14,%rdi
+    0.00 :   5a2afc: jae    5a2b36 <hash_search_with_hash_value+0x776>
+    0.00 :   5a2afe: lea    -0x1(%r14),%rax
+    0.00 :   5a2b02: xor    %esi,%esi
+    0.00 :   5a2b04: mov    %r11,0x30(%rsp)
+    0.00 :   5a2b09: sub    %rdi,%rax
+    0.00 :   5a2b0c: mov    %r10d,0x28(%rsp)
+    0.00 :   5a2b11: shr    $0x3,%rax
+    0.00 :   5a2b15: mov    %r8,0x20(%rsp)
+    0.00 :   5a2b1a: lea    0x8(,%rax,8),%rdx
+    0.00 :   5a2b22: call   e46f0 <memset@plt>
+    0.00 :   5a2b27: mov    0x20(%rsp),%r8
+    0.00 :   5a2b2c: mov    0x28(%rsp),%r10d
+    0.00 :   5a2b31: mov    0x30(%rsp),%r11
+         : 672    hashp->hctl->dsize = new_dsize;
+    0.00 :   5a2b36: mov    (%r15),%rax
+    0.00 :   5a2b39: mov    0x18(%rsp),%rcx
+         : 675    hashp->dir = p;
+    0.00 :   5a2b3e: mov    %r12,0x8(%r15)
+         : 677    pfree(old_p);
+    0.00 :   5a2b42: mov    0x8(%rsp),%rdi
+    0.00 :   5a2b47: mov    %r11,0x30(%rsp)
+         : 680    hashp->hctl->dsize = new_dsize;
+    0.00 :   5a2b4c: mov    %rcx,0x300(%rax)
+    0.00 :   5a2b53: mov    %r10d,0x28(%rsp)
+    0.00 :   5a2b58: mov    %r8,0x20(%rsp)
+         : 684    pfree(old_p);
+    0.00 :   5a2b5d: call   5bcd20 <pfree>
+    0.00 :   5a2b62: mov    0x30(%rsp),%r11
+    0.00 :   5a2b67: mov    0x28(%rsp),%r10d
+    0.00 :   5a2b6c: mov    0x20(%rsp),%r8
+         : 689    if (!(hashp->dir[new_segnum] = seg_alloc(hashp)))
+    0.00 :   5a2b71: mov    (%rsp),%r14
+    0.00 :   5a2b75: mov    0x8(%r15),%r12
+    0.00 :   5a2b79: mov    %r15,%rdi
+    0.00 :   5a2b7c: mov    %r11,0x20(%rsp)
+    0.00 :   5a2b81: mov    %r10d,0x18(%rsp)
+    0.00 :   5a2b86: mov    %r8,0x8(%rsp)
+    0.00 :   5a2b8b: shl    $0x3,%r14
+    0.00 :   5a2b8f: call   5a2140 <seg_alloc>
+    0.00 :   5a2b94: add    %r14,%r12
+    0.00 :   5a2b97: mov    0x8(%rsp),%r8
+    0.00 :   5a2b9c: mov    0x18(%rsp),%r10d
+    0.00 :   5a2ba1: test   %rax,%rax
+    0.00 :   5a2ba4: mov    %rax,(%r12)
+    0.00 :   5a2ba8: mov    0x20(%rsp),%r11
+    0.00 :   5a2bad: je     5a29f9 <hash_search_with_hash_value+0x639>
+         : 705    hctl->max_bucket++;
+    0.00 :   5a2bb3: mov    0x310(%r8),%eax
+         : 707    hctl->nsegs++;
+    0.00 :   5a2bba: addq   $0x1,0x308(%r8)
+         : 709    hctl->max_bucket++;
+    0.00 :   5a2bc2: lea    0x1(%rax),%esi
+    0.00 :   5a2bc5: jmp    5a293d <hash_search_with_hash_value+0x57d>
+         : 712    SpinLockAcquire(&hctl->freeList[freelist_idx].mutex);
+    0.00 :   5a2bca: mov    %r11,%rdi
+    0.00 :   5a2bcd: mov    $0x523,%edx
+    0.00 :   5a2bd2: mov    %r11,(%rsp)
+    0.00 :   5a2bd6: lea    0x1a9d9b(%rip),%rcx        # 74c978 <__func__.6>
+    0.00 :   5a2bdd: lea    0x158e84(%rip),%rsi        # 6fba68 <_IO_stdin_used+0x8ba68>
+    0.00 :   5a2be4: call   4649d0 <s_lock>
+    0.00 :   5a2be9: mov    (%rsp),%r11
+    0.00 :   5a2bed: jmp    5a28f5 <hash_search_with_hash_value+0x535>
+    0.00 :   5a2bf2: movl   $0x0,0x20(%rsp)
+    0.00 :   5a2bfa: mov    %r8,%rsi
+    0.00 :   5a2bfd: jmp    5a240c <hash_search_with_hash_value+0x4c>
+         : 724    MemSet(((char *) p) + old_dirsize, 0, new_dirsize - old_dirsize);
+    0.00 :   5a2c02: mov    %rax,%rdx
+    0.00 :   5a2c05: xor    %esi,%esi
+    0.00 :   5a2c07: mov    %r11,0x30(%rsp)
+    0.00 :   5a2c0c: mov    %r10d,0x28(%rsp)
+    0.00 :   5a2c11: mov    %r8,0x20(%rsp)
+    0.00 :   5a2c16: call   e46f0 <memset@plt>
+    0.00 :   5a2c1b: mov    0x30(%rsp),%r11
+    0.00 :   5a2c20: mov    0x28(%rsp),%r10d
+    0.00 :   5a2c25: mov    0x20(%rsp),%r8
+    0.00 :   5a2c2a: jmp    5a2b36 <hash_search_with_hash_value+0x776>
+    0.00 :   5a2c2f: jmp    1688e3 <hash_search_with_hash_value.cold+0x8>
+
+Sorted summary for file /home/markwkm/.local/pgsql-18/bin/postgres
+----------------------------------------------
+
+   81.65 /home/markwkm/postgres/build/../src/include/storage/checksum_impl.h:162
+    1.06 /home/markwkm/postgres/build/../src/include/storage/checksum_impl.h:160
+ Percent |	Source code & Disassembly of /home/markwkm/.local/pgsql-18/bin/postgres for cpu-clock:ppp (1891 samples, percent: local period)
+-----------------------------------------------------------------------------------------------------------------------------------------------
+         :
+         :
+         :
+         : 3      Disassembly of section .text:
+         :
+         : 5      0000000000658340 <pg_checksum_page>:
+         : 6      * calculation isn't affected by the old checksum stored on the page.
+         : 7      * Restore it after, because actually updating the checksum is NOT part of
+         : 8      * the API of this function.
+         : 9      */
+         : 10     save_checksum = cpage->phdr.pd_checksum;
+         : 11     cpage->phdr.pd_checksum = 0;
+    0.11 :   658340: xor    %eax,%eax
+         : 13     {
+    0.48 :   658342: mov    %esi,%ecx
+         : 15     save_checksum = cpage->phdr.pd_checksum;
+    0.00 :   658344: movzwl 0x8(%rdi),%esi
+         : 17     cpage->phdr.pd_checksum = 0;
+    0.05 :   658348: movdqa 0xbbd50(%rip),%xmm0        # 7140a0 <__func__.4+0x698>
+    0.32 :   658350: mov    %ax,0x8(%rdi)
+    0.00 :   658354: movdqa 0xbbd54(%rip),%xmm1        # 7140b0 <__func__.4+0x6a8>
+    0.05 :   65835c: mov    %rdi,%r8
+    0.00 :   65835f: lea    0x2000(%rdi),%rdx
+    0.00 :   658366: movdqa 0xbbd52(%rip),%xmm2        # 7140c0 <__func__.4+0x6b8>
+    0.00 :   65836e: movdqa 0xbbd5a(%rip),%xmm3        # 7140d0 <__func__.4+0x6c8>
+    0.00 :   658376: movdqa 0xbbd62(%rip),%xmm4        # 7140e0 <__func__.4+0x6d8>
+    0.00 :   65837e: movdqa 0xbbd6a(%rip),%xmm5        # 7140f0 <__func__.4+0x6e8>
+    0.00 :   658386: movdqa 0xbbd72(%rip),%xmm6        # 714100 <__func__.4+0x6f8>
+    0.00 :   65838e: movdqa 0xbbd7a(%rip),%xmm7        # 714110 <__func__.4+0x708>
+    0.00 :   658396: cs nopw 0x0(%rax,%rax,1)
+         : 30     CHECKSUM_COMP(sums[j], page->data[i][j]);
+    0.63 :   6583a0: movdqu (%r8),%xmm8 // /home/markwkm/postgres/build/../src/include/storage/checksum_impl.h:162
+    8.94 :   6583a5: movdqu 0x10(%r8),%xmm9
+         : 33     for (i = 0; i < (uint32) (BLCKSZ / (sizeof(uint32) * N_SUMS)); i++)
+    1.06 :   6583ab: sub    $0xffffffffffffff80,%r8 // /home/markwkm/postgres/build/../src/include/storage/checksum_impl.h:160
+         : 35     CHECKSUM_COMP(sums[j], page->data[i][j]);
+    0.16 :   6583af: movdqu -0x60(%r8),%xmm10
+    1.27 :   6583b5: movdqu -0x50(%r8),%xmm11 // /home/markwkm/postgres/build/../src/include/storage/checksum_impl.h:162
+    0.48 :   6583bb: movdqu -0x40(%r8),%xmm12
+    7.88 :   6583c1: pxor   %xmm7,%xmm8
+    0.74 :   6583c6: pxor   %xmm6,%xmm9
+    0.53 :   6583cb: movdqu -0x30(%r8),%xmm13
+    1.16 :   6583d1: movdqu -0x20(%r8),%xmm14
+    0.85 :   6583d7: movdqu -0x10(%r8),%xmm15
+    0.69 :   6583dd: pxor   %xmm5,%xmm10
+    1.43 :   6583e2: pxor   %xmm4,%xmm11
+    0.74 :   6583e7: pxor   %xmm3,%xmm12
+    1.00 :   6583ec: pxor   %xmm2,%xmm13
+    0.74 :   6583f1: movdqa %xmm8,%xmm7
+    0.32 :   6583f6: pxor   %xmm1,%xmm14
+    0.53 :   6583fb: pxor   %xmm0,%xmm15
+    1.22 :   658400: movdqa %xmm9,%xmm6
+    0.48 :   658405: movdqa %xmm10,%xmm5
+    0.16 :   65840a: movdqa %xmm11,%xmm4
+    0.32 :   65840f: movdqa %xmm12,%xmm3
+    0.58 :   658414: movdqa %xmm13,%xmm2
+    0.37 :   658419: movdqa %xmm14,%xmm1
+    0.48 :   65841e: movdqa %xmm15,%xmm0
+    0.37 :   658423: pslld  $0xf,%xmm7
+    0.53 :   658428: pslld  $0xf,%xmm6
+    0.58 :   65842d: pslld  $0xf,%xmm5
+    0.53 :   658432: pslld  $0xf,%xmm4
+    0.79 :   658437: paddd  %xmm8,%xmm7
+    0.58 :   65843c: pslld  $0xf,%xmm3
+    0.37 :   658441: pslld  $0xf,%xmm2
+    0.74 :   658446: paddd  %xmm9,%xmm6
+    0.37 :   65844b: pslld  $0xf,%xmm1
+    0.58 :   658450: pslld  $0xf,%xmm0
+    0.42 :   658455: paddd  %xmm10,%xmm5
+    0.69 :   65845a: paddd  %xmm11,%xmm4
+    0.42 :   65845f: paddd  %xmm12,%xmm3
+    0.74 :   658464: pslld  $0x2,%xmm7
+    1.06 :   658469: paddd  %xmm13,%xmm2
+    0.37 :   65846e: paddd  %xmm14,%xmm1
+    0.42 :   658473: pslld  $0x2,%xmm6
+    0.69 :   658478: paddd  %xmm15,%xmm0
+    0.48 :   65847d: pslld  $0x2,%xmm5
+    0.58 :   658482: psubd  %xmm8,%xmm7
+    0.58 :   658487: pslld  $0x2,%xmm4
+    0.79 :   65848c: pslld  $0x2,%xmm3
+    1.00 :   658491: psubd  %xmm9,%xmm6
+    0.90 :   658496: pslld  $0x2,%xmm2
+    0.69 :   65849b: pslld  $0x2,%xmm1
+    0.48 :   6584a0: psubd  %xmm10,%xmm5
+    0.69 :   6584a5: pslld  $0x2,%xmm0
+    0.69 :   6584aa: psubd  %xmm11,%xmm4
+    0.63 :   6584af: psubd  %xmm12,%xmm3
+    0.69 :   6584b4: psubd  %xmm13,%xmm2
+    0.74 :   6584b9: psubd  %xmm14,%xmm1
+    0.90 :   6584be: pslld  $0x3,%xmm7
+    0.79 :   6584c3: psubd  %xmm15,%xmm0
+    0.90 :   6584c8: pslld  $0x3,%xmm6
+    0.85 :   6584cd: paddd  %xmm8,%xmm7
+    0.69 :   6584d2: pslld  $0x3,%xmm5
+    0.90 :   6584d7: pslld  $0x3,%xmm4
+    0.32 :   6584dc: paddd  %xmm9,%xmm6
+    0.37 :   6584e1: pslld  $0x3,%xmm3
+    0.90 :   6584e6: pslld  $0x3,%xmm2
+    0.79 :   6584eb: paddd  %xmm10,%xmm5
+    0.42 :   6584f0: pslld  $0x3,%xmm1
+    0.37 :   6584f5: pslld  $0x3,%xmm0
+    0.42 :   6584fa: paddd  %xmm11,%xmm4
+    0.79 :   6584ff: paddd  %xmm12,%xmm3
+    0.16 :   658504: paddd  %xmm13,%xmm2
+    0.48 :   658509: pslld  $0x2,%xmm7
+    0.79 :   65850e: paddd  %xmm14,%xmm1
+    0.85 :   658513: paddd  %xmm15,%xmm0
+    0.48 :   658518: pslld  $0x2,%xmm6
+    1.27 :   65851d: pslld  $0x2,%xmm5
+    0.79 :   658522: pslld  $0x2,%xmm4
+    0.85 :   658527: paddd  %xmm8,%xmm7
+    0.26 :   65852c: pslld  $0x2,%xmm3
+    0.74 :   658531: pslld  $0x2,%xmm2
+    0.63 :   658536: paddd  %xmm9,%xmm6
+    0.63 :   65853b: pslld  $0x2,%xmm1
+    0.26 :   658540: pslld  $0x2,%xmm0
+    0.85 :   658545: paddd  %xmm10,%xmm5
+    1.06 :   65854a: paddd  %xmm11,%xmm4
+    0.63 :   65854f: paddd  %xmm12,%xmm3
+    0.58 :   658554: pslld  $0x2,%xmm7
+    0.90 :   658559: paddd  %xmm13,%xmm2
+    0.74 :   65855e: paddd  %xmm14,%xmm1
+    0.32 :   658563: pslld  $0x2,%xmm6
+    0.90 :   658568: paddd  %xmm15,%xmm0
+    0.74 :   65856d: pslld  $0x2,%xmm5
+    1.32 :   658572: psubd  %xmm8,%xmm7
+    0.53 :   658577: pslld  $0x2,%xmm4
+    0.63 :   65857c: pslld  $0x2,%xmm3
+    0.79 :   658581: psubd  %xmm9,%xmm6
+    0.69 :   658586: pslld  $0x2,%xmm2
+    0.58 :   65858b: pslld  $0x2,%xmm1
+    0.37 :   658590: psubd  %xmm10,%xmm5
+    0.53 :   658595: pslld  $0x2,%xmm0
+    0.63 :   65859a: psubd  %xmm11,%xmm4
+    0.53 :   65859f: psubd  %xmm12,%xmm3
+    0.95 :   6585a4: psubd  %xmm13,%xmm2
+    0.90 :   6585a9: psubd  %xmm14,%xmm1
+    0.79 :   6585ae: psrld  $0x11,%xmm8
+    0.69 :   6585b4: psubd  %xmm15,%xmm0
+    0.63 :   6585b9: psrld  $0x11,%xmm9
+    0.53 :   6585bf: pxor   %xmm8,%xmm7
+    0.79 :   6585c4: psrld  $0x11,%xmm10
+    0.63 :   6585ca: psrld  $0x11,%xmm11
+    0.48 :   6585d0: pxor   %xmm9,%xmm6
+    0.48 :   6585d5: psrld  $0x11,%xmm12
+    1.32 :   6585db: pxor   %xmm10,%xmm5
+    0.53 :   6585e0: pxor   %xmm11,%xmm4
+    0.42 :   6585e5: psrld  $0x11,%xmm13
+    0.79 :   6585eb: psrld  $0x11,%xmm14
+    0.85 :   6585f1: pxor   %xmm12,%xmm3
+    0.53 :   6585f6: psrld  $0x11,%xmm15
+    0.58 :   6585fc: pxor   %xmm13,%xmm2
+    0.26 :   658601: pxor   %xmm14,%xmm1
+    0.42 :   658606: pxor   %xmm15,%xmm0
+         : 154    for (i = 0; i < (uint32) (BLCKSZ / (sizeof(uint32) * N_SUMS)); i++)
+    0.32 :   65860b: cmp    %r8,%rdx
+    0.00 :   65860e: jne    6583a0 <pg_checksum_page+0x60>
+         : 157    CHECKSUM_COMP(sums[j], 0);
+    0.00 :   658614: movdqa %xmm7,%xmm8
+    0.00 :   658619: movdqa %xmm5,%xmm10
+    0.00 :   65861e: movdqa %xmm6,%xmm9
+         : 161    checksum = pg_checksum_block(cpage);
+         : 162    cpage->phdr.pd_checksum = save_checksum;
+    0.00 :   658623: mov    %si,0x8(%rdi)
+         : 164    CHECKSUM_COMP(sums[j], 0);
+    0.11 :   658627: pslld  $0xf,%xmm8
+    0.00 :   65862d: pslld  $0xf,%xmm10
+    0.11 :   658633: movdqa %xmm2,%xmm13
+    0.00 :   658638: paddd  %xmm7,%xmm8
+    0.00 :   65863d: paddd  %xmm5,%xmm10
+    0.05 :   658642: movdqa %xmm4,%xmm11
+    0.00 :   658647: pslld  $0x2,%xmm8
+    0.00 :   65864d: pslld  $0x2,%xmm10
+    0.00 :   658653: movdqa %xmm3,%xmm12
+    0.05 :   658658: psubd  %xmm7,%xmm8
+    0.00 :   65865d: psubd  %xmm5,%xmm10
+    0.00 :   658662: pslld  $0xf,%xmm9
+    0.05 :   658668: pslld  $0x3,%xmm8
+    0.00 :   65866e: pslld  $0x3,%xmm10
+    0.00 :   658674: paddd  %xmm6,%xmm9
+    0.05 :   658679: paddd  %xmm7,%xmm8
+    0.05 :   65867e: paddd  %xmm5,%xmm10
+    0.00 :   658683: pslld  $0xf,%xmm13
+    0.00 :   658689: pslld  $0x2,%xmm8
+    0.00 :   65868f: paddd  %xmm2,%xmm13
+    0.00 :   658694: movdqa %xmm0,%xmm14
+    0.00 :   658699: paddd  %xmm7,%xmm8
+    0.00 :   65869e: pslld  $0x2,%xmm10
+    0.00 :   6586a4: paddd  %xmm5,%xmm10
+    0.00 :   6586a9: pslld  $0x2,%xmm8
+    0.00 :   6586af: psubd  %xmm7,%xmm8
+    0.00 :   6586b4: pslld  $0x2,%xmm10
+    0.05 :   6586ba: psrld  $0x11,%xmm7
+    0.00 :   6586bf: psubd  %xmm5,%xmm10
+    0.00 :   6586c4: psrld  $0x11,%xmm5
+    0.00 :   6586c9: pxor   %xmm8,%xmm7
+    0.00 :   6586ce: pxor   %xmm10,%xmm5
+    0.00 :   6586d3: pslld  $0xf,%xmm11
+    0.00 :   6586d9: movdqa %xmm7,%xmm10
+    0.00 :   6586de: paddd  %xmm4,%xmm11
+    0.05 :   6586e3: pslld  $0x2,%xmm9
+    0.00 :   6586e9: movdqa %xmm5,%xmm8
+    0.00 :   6586ee: pslld  $0x2,%xmm13
+    0.00 :   6586f4: pslld  $0xf,%xmm10
+    0.00 :   6586fa: psubd  %xmm6,%xmm9
+    0.05 :   6586ff: psubd  %xmm2,%xmm13
+    0.00 :   658704: paddd  %xmm7,%xmm10
+    0.00 :   658709: pslld  $0x2,%xmm11
+    0.05 :   65870f: psubd  %xmm4,%xmm11
+    0.00 :   658714: pslld  $0x3,%xmm9
+    0.05 :   65871a: pslld  $0x3,%xmm13
+    0.00 :   658720: pslld  $0x2,%xmm10
+    0.00 :   658726: paddd  %xmm6,%xmm9
+    0.05 :   65872b: paddd  %xmm2,%xmm13
+    0.00 :   658730: psubd  %xmm7,%xmm10
+    0.00 :   658735: pslld  $0x3,%xmm11
+    0.05 :   65873b: paddd  %xmm4,%xmm11
+    0.11 :   658740: pslld  $0x2,%xmm9
+    0.11 :   658746: pslld  $0x2,%xmm13
+    0.00 :   65874c: pslld  $0x3,%xmm10
+    0.00 :   658752: paddd  %xmm6,%xmm9
+    0.05 :   658757: paddd  %xmm2,%xmm13
+    0.00 :   65875c: paddd  %xmm7,%xmm10
+    0.00 :   658761: pslld  $0x2,%xmm11
+    0.00 :   658767: paddd  %xmm4,%xmm11
+    0.00 :   65876c: pslld  $0x2,%xmm9
+    0.00 :   658772: pslld  $0x2,%xmm13
+    0.00 :   658778: pslld  $0x2,%xmm10
+    0.00 :   65877e: psubd  %xmm6,%xmm9
+    0.00 :   658783: psubd  %xmm2,%xmm13
+    0.00 :   658788: paddd  %xmm7,%xmm10
+    0.00 :   65878d: psrld  $0x11,%xmm2
+    0.00 :   658792: psrld  $0x11,%xmm6
+    0.00 :   658797: pslld  $0x2,%xmm11
+    0.00 :   65879d: pxor   %xmm2,%xmm13
+    0.00 :   6587a2: pslld  $0xf,%xmm12
+    0.05 :   6587a8: pxor   %xmm9,%xmm6
+    0.00 :   6587ad: movdqa %xmm1,%xmm2
+    0.00 :   6587b1: psubd  %xmm4,%xmm11
+    0.00 :   6587b6: paddd  %xmm3,%xmm12
+    0.00 :   6587bb: psrld  $0x11,%xmm4
+    0.00 :   6587c0: pslld  $0xf,%xmm8
+    0.00 :   6587c6: pslld  $0x2,%xmm10
+    0.00 :   6587cc: pxor   %xmm11,%xmm4
+    0.00 :   6587d1: movdqa %xmm6,%xmm15
+    0.00 :   6587d6: paddd  %xmm5,%xmm8
+    0.05 :   6587db: psubd  %xmm7,%xmm10
+    0.00 :   6587e0: pslld  $0x2,%xmm12
+    0.11 :   6587e6: psrld  $0x11,%xmm7
+    0.00 :   6587eb: pslld  $0xf,%xmm2
+    0.00 :   6587f0: pslld  $0xf,%xmm14
+    0.00 :   6587f6: psubd  %xmm3,%xmm12
+    0.00 :   6587fb: paddd  %xmm1,%xmm2
+    0.00 :   6587ff: paddd  %xmm0,%xmm14
+         : 254    result ^= sums[i];
+    0.00 :   658804: pxor   %xmm7,%xmm10
+         : 256    CHECKSUM_COMP(sums[j], 0);
+    0.00 :   658809: pslld  $0xf,%xmm15
+    0.00 :   65880f: pslld  $0x2,%xmm8
+    0.05 :   658815: movdqa %xmm4,%xmm7
+    0.00 :   658819: paddd  %xmm6,%xmm15
+    0.00 :   65881e: psubd  %xmm5,%xmm8
+    0.00 :   658823: pslld  $0x2,%xmm2
+    0.00 :   658828: pslld  $0x3,%xmm12
+    0.00 :   65882e: pslld  $0x2,%xmm14
+    0.05 :   658834: psubd  %xmm1,%xmm2
+    0.00 :   658838: pslld  $0xf,%xmm7
+    0.00 :   65883d: paddd  %xmm3,%xmm12
+    0.00 :   658842: psubd  %xmm0,%xmm14
+    0.05 :   658847: pslld  $0x2,%xmm15
+    0.05 :   65884d: pslld  $0x3,%xmm8
+    0.00 :   658853: paddd  %xmm4,%xmm7
+    0.00 :   658857: psubd  %xmm6,%xmm15
+    0.00 :   65885c: paddd  %xmm5,%xmm8
+    0.00 :   658861: pslld  $0x3,%xmm2
+    0.00 :   658866: pslld  $0x2,%xmm12
+    0.00 :   65886c: pslld  $0x3,%xmm14
+    0.00 :   658872: paddd  %xmm1,%xmm2
+    0.00 :   658876: pslld  $0x2,%xmm7
+    0.05 :   65887b: paddd  %xmm3,%xmm12
+    0.00 :   658880: paddd  %xmm0,%xmm14
+    0.00 :   658885: pslld  $0x3,%xmm15
+    0.00 :   65888b: pslld  $0x2,%xmm8
+    0.00 :   658891: psubd  %xmm4,%xmm7
+    0.00 :   658895: paddd  %xmm6,%xmm15
+    0.00 :   65889a: paddd  %xmm5,%xmm8
+    0.00 :   65889f: pslld  $0x2,%xmm2
+    0.00 :   6588a4: pslld  $0x2,%xmm12
+    0.00 :   6588aa: pslld  $0x2,%xmm14
+    0.00 :   6588b0: paddd  %xmm1,%xmm2
+    0.00 :   6588b4: pslld  $0x3,%xmm7
+    0.00 :   6588b9: psubd  %xmm3,%xmm12
+    0.00 :   6588be: paddd  %xmm0,%xmm14
+    0.00 :   6588c3: psrld  $0x11,%xmm3
+    0.00 :   6588c8: pslld  $0x2,%xmm15
+    0.00 :   6588ce: paddd  %xmm4,%xmm7
+    0.00 :   6588d2: pslld  $0x2,%xmm8
+    0.00 :   6588d8: pxor   %xmm12,%xmm3
+    0.00 :   6588dd: paddd  %xmm6,%xmm15
+    0.00 :   6588e2: pslld  $0x2,%xmm2
+    0.00 :   6588e7: pslld  $0x2,%xmm14
+    0.05 :   6588ed: psubd  %xmm5,%xmm8
+    0.00 :   6588f2: pslld  $0x2,%xmm7
+    0.00 :   6588f7: psrld  $0x11,%xmm5
+    0.05 :   6588fc: psubd  %xmm1,%xmm2
+    0.00 :   658900: psubd  %xmm0,%xmm14
+    0.05 :   658905: psrld  $0x11,%xmm1
+    0.00 :   65890a: paddd  %xmm4,%xmm7
+    0.00 :   65890e: psrld  $0x11,%xmm0
+         : 309    result ^= sums[i];
+    0.11 :   658913: pxor   %xmm5,%xmm8
+         : 311    CHECKSUM_COMP(sums[j], 0);
+    0.05 :   658918: movdqa %xmm3,%xmm5
+    0.00 :   65891c: pslld  $0x2,%xmm15
+    0.00 :   658922: pxor   %xmm1,%xmm2
+    0.00 :   658926: pxor   %xmm0,%xmm14
+    0.00 :   65892b: psubd  %xmm6,%xmm15
+    0.00 :   658930: movdqa %xmm13,%xmm1
+    0.05 :   658935: movdqa %xmm14,%xmm9
+    0.00 :   65893a: psrld  $0x11,%xmm6
+    0.00 :   65893f: pslld  $0xf,%xmm5
+    0.00 :   658944: movdqa %xmm2,%xmm0
+    0.00 :   658948: pslld  $0x2,%xmm7
+         : 323    result ^= sums[i];
+    0.00 :   65894d: pxor   %xmm6,%xmm15
+         : 325    CHECKSUM_COMP(sums[j], 0);
+    0.00 :   658952: paddd  %xmm3,%xmm5
+    0.00 :   658956: psubd  %xmm4,%xmm7
+    0.00 :   65895a: pslld  $0xf,%xmm1
+    0.00 :   65895f: movdqa %xmm4,%xmm6
+    0.00 :   658963: movdqa %xmm2,%xmm4
+    0.00 :   658967: paddd  %xmm13,%xmm1
+         : 332    result ^= sums[i];
+    0.00 :   65896c: pxor   %xmm7,%xmm10
+         : 334    CHECKSUM_COMP(sums[j], 0);
+    0.00 :   658971: pslld  $0x2,%xmm5
+    0.00 :   658976: pslld  $0xf,%xmm9
+    0.05 :   65897c: pslld  $0xf,%xmm4
+    0.00 :   658981: psubd  %xmm3,%xmm5
+    0.00 :   658985: paddd  %xmm14,%xmm9
+    0.00 :   65898a: pslld  $0x2,%xmm1
+    0.00 :   65898f: pslld  $0x3,%xmm5
+    0.00 :   658994: paddd  %xmm2,%xmm4
+    0.05 :   658998: psubd  %xmm13,%xmm1
+    0.00 :   65899d: pslld  $0x2,%xmm9
+    0.00 :   6589a3: paddd  %xmm3,%xmm5
+    0.00 :   6589a7: pslld  $0x2,%xmm4
+    0.00 :   6589ac: pslld  $0x3,%xmm1
+    0.00 :   6589b1: psubd  %xmm14,%xmm9
+    0.00 :   6589b6: psubd  %xmm2,%xmm4
+    0.00 :   6589ba: paddd  %xmm13,%xmm1
+    0.00 :   6589bf: pslld  $0x2,%xmm5
+    0.05 :   6589c4: pslld  $0x3,%xmm9
+    0.00 :   6589ca: pslld  $0x3,%xmm4
+    0.00 :   6589cf: paddd  %xmm3,%xmm5
+    0.00 :   6589d3: paddd  %xmm14,%xmm9
+    0.00 :   6589d8: paddd  %xmm2,%xmm4
+    0.16 :   6589dc: pslld  $0x2,%xmm1
+    0.00 :   6589e1: pslld  $0x2,%xmm5
+    0.05 :   6589e6: pslld  $0x2,%xmm9
+    0.05 :   6589ec: paddd  %xmm13,%xmm1
+    0.00 :   6589f1: pslld  $0x2,%xmm4
+    0.05 :   6589f6: psubd  %xmm3,%xmm5
+    0.00 :   6589fa: paddd  %xmm14,%xmm9
+    0.11 :   6589ff: psrld  $0x11,%xmm6
+    0.05 :   658a04: paddd  %xmm2,%xmm4
+         : 366    result ^= sums[i];
+    0.00 :   658a08: pxor   %xmm5,%xmm8
+         : 368    CHECKSUM_COMP(sums[j], 0);
+    0.00 :   658a0d: pslld  $0x2,%xmm1
+    0.00 :   658a12: psrld  $0x11,%xmm3
+         : 371    result ^= sums[i];
+    0.05 :   658a17: pxor   %xmm6,%xmm15
+         : 373    CHECKSUM_COMP(sums[j], 0);
+    0.05 :   658a1c: psubd  %xmm13,%xmm1
+    0.00 :   658a21: pslld  $0x2,%xmm9
+         : 376    result ^= sums[i];
+    0.00 :   658a27: pxor   %xmm3,%xmm10
+         : 378    CHECKSUM_COMP(sums[j], 0);
+    0.00 :   658a2c: psrld  $0x11,%xmm13
+    0.05 :   658a32: pslld  $0x2,%xmm4
+    0.00 :   658a37: psubd  %xmm14,%xmm9
+         : 382    result ^= sums[i];
+    0.05 :   658a3c: pxor   %xmm1,%xmm15
+         : 384    CHECKSUM_COMP(sums[j], 0);
+    0.00 :   658a41: psrld  $0x11,%xmm0
+         : 386    result ^= sums[i];
+    0.00 :   658a46: pxor   %xmm13,%xmm8
+         : 388    CHECKSUM_COMP(sums[j], 0);
+    0.00 :   658a4b: psubd  %xmm2,%xmm4
+         : 390    result ^= sums[i];
+    0.05 :   658a4f: pxor   %xmm0,%xmm15
+    0.00 :   658a54: pxor   %xmm9,%xmm8
+    0.00 :   658a59: pxor   %xmm4,%xmm10
+         : 394    CHECKSUM_COMP(sums[j], 0);
+    0.00 :   658a5e: psrld  $0x11,%xmm14
+         : 396    result ^= sums[i];
+    0.00 :   658a64: pxor   %xmm8,%xmm15
+    0.00 :   658a69: pxor   %xmm14,%xmm10
+    0.05 :   658a6e: pxor   %xmm10,%xmm15
+    0.00 :   658a73: movdqa %xmm15,%xmm3
+    0.00 :   658a78: psrldq $0x8,%xmm3
+    0.00 :   658a7d: pxor   %xmm3,%xmm15
+    0.00 :   658a82: movdqa %xmm15,%xmm11
+    0.00 :   658a87: psrldq $0x4,%xmm11
+    0.00 :   658a8d: pxor   %xmm11,%xmm15
+    0.00 :   658a92: movd   %xmm15,%r9d
+         :
+         : 408    /* Mix in the block number to detect transposed pages */
+         : 409    checksum ^= blkno;
+    0.05 :   658a97: xor    %r9d,%ecx
+         :
+         : 412    /*
+         : 413    * Reduce to a uint16 (to fit in the pd_checksum field) with an offset of
+         : 414    * one. That avoids checksums of zero, which seems like a good idea.
+         : 415    */
+         : 416    return (uint16) ((checksum % 65535) + 1);
+    0.00 :   658a9a: mov    %rcx,%r10
+    0.00 :   658a9d: shl    $0x10,%r10
+    0.00 :   658aa1: add    %rcx,%r10
+    0.11 :   658aa4: shl    $0xf,%r10
+    0.00 :   658aa8: add    %rcx,%r10
+    0.00 :   658aab: shr    $0x2f,%r10
+    0.00 :   658aaf: lea    0x1(%rcx,%r10,1),%eax
+         : 424    }
+    0.16 :   658ab4: ret
+
+Sorted summary for file /home/markwkm/.local/pgsql-18/bin/postgres
+----------------------------------------------
+
+   23.35 /home/markwkm/postgres/build/../src/include/access/htup_details.h:745
+   14.68 /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1067
+   13.22 /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1087
+    6.61 /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1055
+    6.46 /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:752
+    3.38 /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1033
+    2.94 /home/markwkm/postgres/build/../src/include/access/tupmacs.h:55
+    2.64 /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1131
+    1.76 /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1207
+    1.32 /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1085
+    1.32 /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1053
+    1.03 /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1202
+    0.88 /home/markwkm/postgres/build/../src/include/access/tupmacs.h:67
+    0.88 /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1079
+    0.88 /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1026
+    0.73 /home/markwkm/postgres/build/../src/include/access/tupmacs.h:64
+    0.73 /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1050
+    0.59 /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1204
+ Percent |	Source code & Disassembly of /home/markwkm/.local/pgsql-18/bin/postgres for cpu-clock:ppp (681 samples, percent: local period)
+----------------------------------------------------------------------------------------------------------------------------------------------
+         :
+         :
+         :
+         : 3      Disassembly of section .text:
+         :
+         : 5      00000000002ef560 <tts_buffer_heap_getsomeattrs>:
+         : 6      bslot->buffer = InvalidBuffer;
+         : 7      }
+         :
+         : 9      static void
+         : 10     tts_buffer_heap_getsomeattrs(TupleTableSlot *slot, int natts)
+         : 11     {
+    3.82 :   2ef560: push   %r15 // /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:752
+    1.76 :   2ef562: push   %r14
+    0.44 :   2ef564: mov    %rdi,%r14
+    0.00 :   2ef567: push   %r13
+    0.88 :   2ef569: push   %r12
+    0.29 :   2ef56b: push   %rbp
+    0.44 :   2ef56c: push   %rbx
+    0.15 :   2ef56d: sub    $0x38,%rsp
+         : 20     BufferHeapTupleTableSlot *bslot = (BufferHeapTupleTableSlot *) slot;
+         :
+         : 22     Assert(!TTS_EMPTY(slot));
+         :
+         : 24     slot_deform_heap_tuple(slot, bslot->base.tuple, &bslot->base.off, natts);
+    0.00 :   2ef571: mov    0x40(%rdi),%r15
+         :
+         : 27     /*
+         : 28     * Check whether the first call for this tuple, and initialize or restore
+         : 29     * loop state.
+         : 30     */
+         : 31     attnum = slot->tts_nvalid;
+    0.15 :   2ef575: movswl 0x6(%rdi),%ebx
+         : 33     */
+         :
+         : 35     static inline bool
+         : 36     HeapTupleHasNulls(const HeapTupleData *tuple)
+         : 37     {
+         : 38     return (tuple->t_data->t_infomask & HEAP_HASNULL) != 0;
+    0.29 :   2ef579: mov    0x10(%r15),%r8
+    0.00 :   2ef57d: mov    %ebx,%edx
+         : 41     natts = Min(HeapTupleHeaderGetNatts(tuple->t_data), natts);
+    0.00 :   2ef57f: movzwl 0x12(%r8),%r12d
+   23.35 :   2ef584: movzbl 0x14(%r8),%r13d // /home/markwkm/postgres/build/../src/include/access/htup_details.h:745
+    2.64 :   2ef589: and    $0x7ff,%r12d // /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1131
+    0.00 :   2ef590: and    $0x1,%r13d
+    0.44 :   2ef594: cmp    %esi,%r12d
+    0.29 :   2ef597: cmovg  %esi,%r12d
+         : 48     if (attnum == 0)
+    0.15 :   2ef59b: test   %ebx,%ebx
+    0.00 :   2ef59d: je     2ef680 <tts_buffer_heap_getsomeattrs+0x120>
+         : 51     }
+         : 52     else
+         : 53     {
+         : 54     /* Restore state from previous execution */
+         : 55     off = *offp;
+         : 56     slow = TTS_SLOW(slot);
+    0.00 :   2ef5a3: movzwl 0x4(%rdi),%eax
+         : 58     off = *offp;
+    0.00 :   2ef5a7: mov    0x48(%rdi),%ebp
+         : 60     * Because this is performance critical, we inline
+         : 61     * slot_deform_heap_tuple_internal passing the 'slow' and 'hasnull'
+         : 62     * parameters as constants to allow the compiler to emit specialized code
+         : 63     * with the known-const false comparisons and subsequent branches removed.
+         : 64     */
+         : 65     if (!slow)
+    0.00 :   2ef5aa: test   $0x8,%al
+    0.00 :   2ef5ac: jne    2ef830 <tts_buffer_heap_getsomeattrs+0x2d0>
+         : 68     TupleDesc       tupleDesc = slot->tts_tupleDescriptor;
+    0.29 :   2ef5b2: mov    0x10(%r14),%rcx
+         : 70     Datum      *values = slot->tts_values;
+    0.00 :   2ef5b6: mov    0x18(%r14),%r10
+         : 72     bool       *isnull = slot->tts_isnull;
+    0.00 :   2ef5ba: mov    0x20(%r14),%r9
+         : 74     tp = (char *) tup + tup->t_hoff;
+    0.44 :   2ef5be: movzbl 0x16(%r8),%r11d
+         : 76     {
+         : 77     /* Tuple without any NULLs? We can skip doing any NULL checking */
+         : 78     if (!hasnulls)
+    0.44 :   2ef5c3: test   %r13b,%r13b
+    0.00 :   2ef5c6: jne    2ef690 <tts_buffer_heap_getsomeattrs+0x130>
+         : 81     for (; attnum < natts; attnum++)
+    0.00 :   2ef5cc: cmp    %ebx,%r12d
+    0.00 :   2ef5cf: jle    2ef663 <tts_buffer_heap_getsomeattrs+0x103>
+    0.00 :   2ef5d5: movswq %dx,%rsi
+    0.00 :   2ef5d9: mov    %rsi,%rax
+    0.00 :   2ef5dc: lea    (%r9,%rsi,1),%rdx
+    0.00 :   2ef5e0: shl    $0x4,%rax
+    0.00 :   2ef5e4: lea    0x18(%rcx,%rax,1),%rax
+    0.29 :   2ef5e9: lea    (%r10,%rsi,8),%rcx
+    0.15 :   2ef5ed: nopl   (%rax)
+         : 91     isnull[attnum] = false;
+    0.00 :   2ef5f0: movb   $0x0,(%rdx)
+         : 93     if (!slow && thisatt->attcacheoff >= 0)
+    0.29 :   2ef5f3: mov    (%rax),%esi
+    1.32 :   2ef5f5: test   %esi,%esi // /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1053
+    0.00 :   2ef5f7: js     2ef928 <tts_buffer_heap_getsomeattrs+0x3c8>
+         : 97     *offp = thisatt->attcacheoff;
+    0.15 :   2ef5fd: mov    %esi,%ebp
+         : 99     values[attnum] = fetchatt(thisatt, tp + *offp);
+    0.00 :   2ef5ff: mov    %ebp,%edi
+    0.00 :   2ef601: add    %r11,%rdi
+    0.15 :   2ef604: add    %r8,%rdi
+         : 103    * Same, but work from byval/len parameters rather than Form_pg_attribute.
+         : 104    */
+         : 105    static inline Datum
+         : 106    fetch_att(const void *T, bool attbyval, int attlen)
+         : 107    {
+         : 108    if (attbyval)
+    0.59 :   2ef607: cmpb   $0x0,0x6(%rax) // /home/markwkm/postgres/build/../src/include/access/tupmacs.h:55
+    0.29 :   2ef60b: je     2ef718 <tts_buffer_heap_getsomeattrs+0x1b8>
+    0.29 :   2ef611: movzwl 0x4(%rax),%esi
+         : 112    {
+         : 113    switch (attlen)
+    0.15 :   2ef615: cmp    $0x4,%si
+    0.00 :   2ef619: je     2ef970 <tts_buffer_heap_getsomeattrs+0x410>
+    0.15 :   2ef61f: jg     2ef990 <tts_buffer_heap_getsomeattrs+0x430>
+    0.00 :   2ef625: cmp    $0x1,%si
+    0.00 :   2ef629: je     2ef980 <tts_buffer_heap_getsomeattrs+0x420>
+    0.00 :   2ef62f: cmp    $0x2,%si
+    0.00 :   2ef633: jne    2efd41 <tts_buffer_heap_getsomeattrs+0x7e1>
+         : 121    *               Returns datum representation for a 16-bit integer.
+         : 122    */
+         : 123    static inline Datum
+         : 124    Int16GetDatum(int16 X)
+         : 125    {
+         : 126    return (Datum) X;
+    0.00 :   2ef639: movswq (%rdi),%rsi
+    0.00 :   2ef63d: mov    %rsi,(%rcx)
+         : 129    *offp = att_addlength_pointer(*offp, thisatt->attlen, tp + *offp);
+    0.44 :   2ef640: movswl 0x4(%rax),%esi
+         : 131    for (; attnum < natts; attnum++)
+    0.15 :   2ef644: add    $0x1,%ebx
+         : 133    *offp = att_addlength_pointer(*offp, thisatt->attlen, tp + *offp);
+    0.00 :   2ef647: test   %si,%si
+    0.00 :   2ef64a: jle    2ef72b <tts_buffer_heap_getsomeattrs+0x1cb>
+    0.15 :   2ef650: add    %esi,%ebp
+         : 137    for (; attnum < natts; attnum++)
+    0.00 :   2ef652: add    $0x1,%rdx
+    0.00 :   2ef656: add    $0x10,%rax
+    0.00 :   2ef65a: add    $0x8,%rcx
+    0.29 :   2ef65e: cmp    %ebx,%r12d
+    0.00 :   2ef661: jne    2ef5f0 <tts_buffer_heap_getsomeattrs+0x90>
+         : 143    slot->tts_nvalid = attnum;
+         : 144    *offp = off;
+         : 145    if (slow)
+         : 146    slot->tts_flags |= TTS_FLAG_SLOW;
+         : 147    else
+         : 148    slot->tts_flags &= ~TTS_FLAG_SLOW;
+    0.15 :   2ef663: movzwl 0x4(%r14),%eax
+         : 150    slot->tts_nvalid = attnum;
+    0.29 :   2ef668: mov    %r12w,0x6(%r14)
+         : 152    *offp = off;
+    0.00 :   2ef66d: mov    %ebp,0x48(%r14)
+         : 154    slot->tts_flags &= ~TTS_FLAG_SLOW;
+    0.00 :   2ef671: and    $0xfffffff7,%eax
+    0.00 :   2ef674: jmp    2ef701 <tts_buffer_heap_getsomeattrs+0x1a1>
+    0.00 :   2ef679: nopl   0x0(%rax)
+         : 158    off = 0;
+    0.00 :   2ef680: xor    %ebp,%ebp
+    0.00 :   2ef682: jmp    2ef5b2 <tts_buffer_heap_getsomeattrs+0x52>
+    0.00 :   2ef687: nopw   0x0(%rax,%rax,1)
+         : 162    bits8      *bp = tup->t_bits;   /* ptr to null bitmap in tuple */
+    0.00 :   2ef690: lea    0x17(%r8),%rax
+    0.00 :   2ef694: mov    %rax,(%rsp)
+         : 165    for (; attnum < natts; attnum++)
+    0.00 :   2ef698: cmp    %ebx,%r12d
+    0.00 :   2ef69b: jle    2ef663 <tts_buffer_heap_getsomeattrs+0x103>
+    0.00 :   2ef69d: movswq %dx,%rax
+    0.00 :   2ef6a1: lea    (%r10,%rax,8),%rdx
+    0.00 :   2ef6a5: mov    %rdx,0x8(%rsp)
+    0.00 :   2ef6aa: mov    %rax,%rdx
+    0.00 :   2ef6ad: shl    $0x4,%rdx
+    0.00 :   2ef6b1: lea    0x18(%rcx,%rdx,1),%rdx
+         : 174    return !(BITS[ATT >> 3] & (1 << (ATT & 0x07)));
+    0.00 :   2ef6b6: mov    %eax,%ecx
+    0.00 :   2ef6b8: mov    (%rsp),%rsi
+    0.00 :   2ef6bc: sar    $0x3,%ecx
+    0.00 :   2ef6bf: movslq %ecx,%rcx
+    0.00 :   2ef6c2: movzbl (%rsi,%rcx,1),%esi
+    0.00 :   2ef6c6: mov    %eax,%ecx
+    0.00 :   2ef6c8: and    $0x7,%ecx
+    0.00 :   2ef6cb: bt     %ecx,%esi
+    0.00 :   2ef6ce: setae  %cl
+         : 184    if (hasnulls && att_isnull(attnum, bp))
+    0.00 :   2ef6d1: test   %cl,%cl
+    0.00 :   2ef6d3: je     2efaa0 <tts_buffer_heap_getsomeattrs+0x540>
+         : 187    values[attnum] = (Datum) 0;
+    0.00 :   2ef6d9: movq   $0x0,(%r10,%rax,8)
+         : 189    return attnum + 1;
+    0.00 :   2ef6e1: lea    0x1(%rax),%ebx
+         : 191    isnull[attnum] = true;
+    0.00 :   2ef6e4: movb   $0x1,(%r9,%rax,1)
+         : 193    if (attnum < natts)
+    0.15 :   2ef6e9: cmp    %ebx,%r12d
+    0.00 :   2ef6ec: jg     2ef743 <tts_buffer_heap_getsomeattrs+0x1e3>
+    0.00 :   2ef6ee: xchg   %ax,%ax
+         : 197    slot->tts_nvalid = attnum;
+    0.00 :   2ef6f0: mov    %bx,0x6(%r14)
+         : 199    slot->tts_flags |= TTS_FLAG_SLOW;
+    0.29 :   2ef6f5: movzwl 0x4(%r14),%eax
+         : 201    *offp = off;
+    0.00 :   2ef6fa: mov    %ebp,0x48(%r14)
+         : 203    slot->tts_flags |= TTS_FLAG_SLOW;
+    0.00 :   2ef6fe: or     $0x8,%eax
+    0.15 :   2ef701: mov    %ax,0x4(%r14)
+         : 206    }
+    0.29 :   2ef706: add    $0x38,%rsp
+    0.00 :   2ef70a: pop    %rbx
+    0.15 :   2ef70b: pop    %rbp
+    0.15 :   2ef70c: pop    %r12
+    0.00 :   2ef70e: pop    %r13
+    0.00 :   2ef710: pop    %r14
+    0.15 :   2ef712: pop    %r15
+    0.44 :   2ef714: ret
+    0.00 :   2ef715: nopl   (%rax)
+         : 216    values[attnum] = fetchatt(thisatt, tp + *offp);
+    0.00 :   2ef718: mov    %rdi,(%rcx)
+         : 218    *offp = att_addlength_pointer(*offp, thisatt->attlen, tp + *offp);
+    0.59 :   2ef71b: movswl 0x4(%rax),%esi // /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1087
+         : 220    for (; attnum < natts; attnum++)
+    0.00 :   2ef71f: add    $0x1,%ebx
+         : 222    *offp = att_addlength_pointer(*offp, thisatt->attlen, tp + *offp);
+    0.00 :   2ef722: test   %si,%si
+    0.00 :   2ef725: jg     2ef650 <tts_buffer_heap_getsomeattrs+0xf0>
+    0.00 :   2ef72b: cmp    $0xffff,%si
+    0.00 :   2ef72f: je     2ef9a8 <tts_buffer_heap_getsomeattrs+0x448>
+    0.00 :   2ef735: call   e48d0 <strlen@plt>
+    0.00 :   2ef73a: lea    0x1(%rbp,%rax,1),%ebp
+         : 229    if (attnum < natts)
+    0.00 :   2ef73e: cmp    %ebx,%r12d
+    0.00 :   2ef741: jle    2ef6f0 <tts_buffer_heap_getsomeattrs+0x190>
+         : 232    HeapTupleHeader tup = tuple->t_data;
+    0.88 :   2ef743: mov    0x10(%r15),%r8 // /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1026
+         : 234    Datum      *values = slot->tts_values;
+    0.15 :   2ef747: mov    0x18(%r14),%rcx
+         : 236    tp = (char *) tup + tup->t_hoff;
+    0.00 :   2ef74b: movzbl 0x16(%r8),%eax
+    0.00 :   2ef750: movslq %ebx,%rbx
+         : 239    bits8      *bp = tup->t_bits;   /* ptr to null bitmap in tuple */
+    0.15 :   2ef753: lea    0x17(%r8),%rsi
+    0.00 :   2ef757: mov    %rbx,%r15
+    0.00 :   2ef75a: mov    %r14,0x18(%rsp)
+         : 243    bool       *isnull = slot->tts_isnull;
+    0.15 :   2ef75f: mov    0x20(%r14),%rdx
+         : 245    tp = (char *) tup + tup->t_hoff;
+    0.29 :   2ef763: shl    $0x4,%r15
+    0.15 :   2ef767: add    %rax,%r8
+         : 248    for (; attnum < natts; attnum++)
+    0.00 :   2ef76a: add    0x10(%r14),%r15
+    0.59 :   2ef76e: mov    %r13d,%r14d // /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1033
+    0.00 :   2ef771: mov    %rcx,%r13
+    0.00 :   2ef774: data16 cs nopw 0x0(%rax,%rax,1)
+    0.00 :   2ef77f: nop
+         : 254    if (hasnulls && att_isnull(attnum, bp))
+    0.00 :   2ef780: test   %r14b,%r14b
+    0.00 :   2ef783: jne    2ef880 <tts_buffer_heap_getsomeattrs+0x320>
+         : 257    isnull[attnum] = false;
+    0.73 :   2ef789: movb   $0x0,(%rdx,%rbx,1) // /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1050
+         : 259    else if (thisatt->attlen == -1)
+    6.61 :   2ef78d: movzwl 0x1c(%r15),%r9d // /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1055
+         : 261    values[attnum] = fetchatt(thisatt, tp + *offp);
+    0.44 :   2ef792: movzbl 0x1e(%r15),%r10d
+         : 263    else if (thisatt->attlen == -1)
+    0.44 :   2ef797: cmp    $0xffff,%r9w
+    0.00 :   2ef79c: je     2ef8c0 <tts_buffer_heap_getsomeattrs+0x360>
+         : 266    *offp = att_nominal_alignby(*offp, thisatt->attalignby);
+    0.00 :   2ef7a2: movzbl 0x24(%r15),%eax
+    0.88 :   2ef7a7: lea    -0x1(%rax,%rbp,1),%ebp // /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1079
+    0.29 :   2ef7ab: neg    %eax
+    0.00 :   2ef7ad: and    %eax,%ebp
+         : 271    values[attnum] = fetchatt(thisatt, tp + *offp);
+    0.29 :   2ef7af: mov    %ebp,%edi
+    0.00 :   2ef7b1: add    %r8,%rdi
+         : 274    if (attbyval)
+    0.44 :   2ef7b4: test   %r10b,%r10b
+    0.00 :   2ef7b7: je     2ef8e5 <tts_buffer_heap_getsomeattrs+0x385>
+         : 277    switch (attlen)
+    0.00 :   2ef7bd: cmp    $0x4,%r9w
+    0.00 :   2ef7c2: je     2ef8f0 <tts_buffer_heap_getsomeattrs+0x390>
+    0.00 :   2ef7c8: jg     2ef910 <tts_buffer_heap_getsomeattrs+0x3b0>
+    0.00 :   2ef7ce: cmp    $0x1,%r9w
+    0.00 :   2ef7d3: je     2ef900 <tts_buffer_heap_getsomeattrs+0x3a0>
+    0.00 :   2ef7d9: cmp    $0x2,%r9w
+    0.00 :   2ef7de: jne    2efd3c <tts_buffer_heap_getsomeattrs+0x7dc>
+    0.00 :   2ef7e4: movswq (%rdi),%rax
+    0.00 :   2ef7e8: nopl   0x0(%rax,%rax,1)
+    1.32 :   2ef7f0: mov    %rax,0x0(%r13,%rbx,8) // /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1085
+         : 288    *offp = att_addlength_pointer(*offp, thisatt->attlen, tp + *offp);
+    2.94 :   2ef7f5: movswl 0x1c(%r15),%eax // /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1087
+    0.59 :   2ef7fa: test   %ax,%ax
+    0.00 :   2ef7fd: jle    2ef840 <tts_buffer_heap_getsomeattrs+0x2e0>
+    0.00 :   2ef7ff: add    %eax,%ebp
+         : 293    for (; attnum < natts; attnum++)
+    0.73 :   2ef801: add    $0x1,%rbx // /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1033
+    2.06 :   2ef805: add    $0x10,%r15
+    0.00 :   2ef809: cmp    %ebx,%r12d
+    0.00 :   2ef80c: jg     2ef780 <tts_buffer_heap_getsomeattrs+0x220>
+    0.15 :   2ef812: mov    0x18(%rsp),%r14
+         : 299    slot->tts_nvalid = attnum;
+    1.03 :   2ef817: mov    %r12w,0x6(%r14) // /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1202
+         : 301    slot->tts_flags &= ~TTS_FLAG_SLOW;
+    1.76 :   2ef81c: movzwl 0x4(%r14),%eax // /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1207
+         : 303    *offp = off;
+    0.00 :   2ef821: mov    %ebp,0x48(%r14)
+         : 305    if (slow)
+    0.59 :   2ef825: jmp    2ef6fe <tts_buffer_heap_getsomeattrs+0x19e> // /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1204
+    0.00 :   2ef82a: nopw   0x0(%rax,%rax,1)
+         : 308    if (attnum < natts)
+    0.15 :   2ef830: cmp    %ebx,%r12d
+    0.00 :   2ef833: jg     2ef747 <tts_buffer_heap_getsomeattrs+0x1e7>
+    0.00 :   2ef839: jmp    2ef6fe <tts_buffer_heap_getsomeattrs+0x19e>
+    0.00 :   2ef83e: xchg   %ax,%ax
+         : 313    *offp = att_addlength_pointer(*offp, thisatt->attlen, tp + *offp);
+    1.03 :   2ef840: cmp    $0xffff,%ax // /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1087
+    0.00 :   2ef844: je     2ef950 <tts_buffer_heap_getsomeattrs+0x3f0>
+    0.00 :   2ef84a: mov    %rdx,0x10(%rsp)
+    0.00 :   2ef84f: mov    %rsi,0x8(%rsp)
+    0.00 :   2ef854: mov    %r8,(%rsp)
+    0.00 :   2ef858: call   e48d0 <strlen@plt>
+    0.00 :   2ef85d: mov    0x10(%rsp),%rdx
+    0.00 :   2ef862: mov    0x8(%rsp),%rsi
+    0.00 :   2ef867: mov    (%rsp),%r8
+    0.00 :   2ef86b: lea    0x1(%rbp,%rax,1),%ebp
+    0.00 :   2ef86f: jmp    2ef801 <tts_buffer_heap_getsomeattrs+0x2a1>
+    0.00 :   2ef871: data16 cs nopw 0x0(%rax,%rax,1)
+    0.00 :   2ef87c: nopl   0x0(%rax)
+         : 327    return !(BITS[ATT >> 3] & (1 << (ATT & 0x07)));
+    0.00 :   2ef880: mov    %ebx,%edi
+    0.00 :   2ef882: mov    %ebx,%eax
+    0.00 :   2ef884: sar    $0x3,%edi
+    0.00 :   2ef887: and    $0x7,%eax
+    0.00 :   2ef88a: movslq %edi,%rdi
+    0.00 :   2ef88d: movzbl (%rsi,%rdi,1),%edi
+         : 334    if (hasnulls && att_isnull(attnum, bp))
+    0.00 :   2ef891: bt     %eax,%edi
+    0.00 :   2ef894: jb     2ef789 <tts_buffer_heap_getsomeattrs+0x229>
+         : 337    values[attnum] = (Datum) 0;
+    0.00 :   2ef89a: movq   $0x0,0x0(%r13,%rbx,8)
+         : 339    for (; attnum < natts; attnum++)
+    0.00 :   2ef8a3: add    $0x10,%r15
+         : 341    isnull[attnum] = true;
+    0.00 :   2ef8a7: movb   $0x1,(%rdx,%rbx,1)
+         : 343    for (; attnum < natts; attnum++)
+    0.00 :   2ef8ab: add    $0x1,%rbx
+    0.00 :   2ef8af: cmp    %ebx,%r12d
+    0.00 :   2ef8b2: jg     2ef880 <tts_buffer_heap_getsomeattrs+0x320>
+    0.00 :   2ef8b4: jmp    2ef812 <tts_buffer_heap_getsomeattrs+0x2b2>
+    0.00 :   2ef8b9: nopl   0x0(%rax)
+         : 349    *offp = att_pointer_alignby(*offp,
+    1.03 :   2ef8c0: mov    %ebp,%edi // /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1067
+    0.59 :   2ef8c2: add    %r8,%rdi
+    0.29 :   2ef8c5: cmpb   $0x0,(%rdi)
+   13.07 :   2ef8c8: jne    2ef8dc <tts_buffer_heap_getsomeattrs+0x37c>
+    0.00 :   2ef8ca: movzbl 0x24(%r15),%eax
+    0.00 :   2ef8cf: lea    -0x1(%rax,%rbp,1),%ebp
+    0.00 :   2ef8d3: neg    %eax
+    0.00 :   2ef8d5: and    %eax,%ebp
+         : 358    values[attnum] = fetchatt(thisatt, tp + *offp);
+    0.00 :   2ef8d7: mov    %ebp,%edi
+    0.00 :   2ef8d9: add    %r8,%rdi
+         : 361    if (attbyval)
+    2.35 :   2ef8dc: test   %r10b,%r10b // /home/markwkm/postgres/build/../src/include/access/tupmacs.h:55
+    0.00 :   2ef8df: jne    2efd55 <tts_buffer_heap_getsomeattrs+0x7f5>
+         : 364    *               Returns datum representation for a pointer.
+         : 365    */
+         : 366    static inline Datum
+         : 367    PointerGetDatum(const void *X)
+         : 368    {
+         : 369    return (Datum) X;
+    0.44 :   2ef8e5: mov    %rdi,%rax
+         : 371    elog(ERROR, "unsupported byval length: %d", attlen);
+         : 372    return 0;
+         : 373    }
+         : 374    }
+         : 375    else
+         : 376    return PointerGetDatum(T);
+    0.00 :   2ef8e8: jmp    2ef7f0 <tts_buffer_heap_getsomeattrs+0x290>
+    0.00 :   2ef8ed: nopl   (%rax)
+         : 379    return (Datum) X;
+    0.00 :   2ef8f0: movslq (%rdi),%rax
+         : 381    return Int32GetDatum(*((const int32 *) T));
+    0.73 :   2ef8f3: jmp    2ef7f0 <tts_buffer_heap_getsomeattrs+0x290> // /home/markwkm/postgres/build/../src/include/access/tupmacs.h:64
+    0.00 :   2ef8f8: nopl   0x0(%rax,%rax,1)
+         : 384    return (Datum) X;
+    0.15 :   2ef900: movsbq (%rdi),%rax
+         : 386    return CharGetDatum(*((const char *) T));
+    0.44 :   2ef904: jmp    2ef7f0 <tts_buffer_heap_getsomeattrs+0x290>
+    0.00 :   2ef909: nopl   0x0(%rax)
+         : 389    switch (attlen)
+    0.00 :   2ef910: cmp    $0x8,%r9w
+    0.00 :   2ef915: jne    2efd32 <tts_buffer_heap_getsomeattrs+0x7d2>
+         : 392    return *((const Datum *) T);
+    0.15 :   2ef91b: mov    (%rdi),%rax
+    0.44 :   2ef91e: jmp    2ef7f0 <tts_buffer_heap_getsomeattrs+0x290>
+    0.00 :   2ef923: nopl   0x0(%rax,%rax,1)
+         : 396    else if (thisatt->attlen == -1)
+    0.00 :   2ef928: cmpw   $0xffff,0x4(%rax)
+         : 398    if (!slow && *offp == att_nominal_alignby(*offp, thisatt->attalignby))
+    0.00 :   2ef92d: movzbl 0xc(%rax),%esi
+         : 400    else if (thisatt->attlen == -1)
+    0.00 :   2ef931: je     2ef9d0 <tts_buffer_heap_getsomeattrs+0x470>
+         : 402    *offp = att_nominal_alignby(*offp, thisatt->attalignby);
+    0.00 :   2ef937: lea    -0x1(%rsi,%rbp,1),%ebp
+    0.00 :   2ef93b: neg    %esi
+    0.00 :   2ef93d: and    %esi,%ebp
+         : 406    thisatt->attcacheoff = *offp;
+    0.00 :   2ef93f: mov    %ebp,(%rax)
+    0.00 :   2ef941: jmp    2ef5ff <tts_buffer_heap_getsomeattrs+0x9f>
+    0.00 :   2ef946: cs nopw 0x0(%rax,%rax,1)
+         : 410    *offp = att_addlength_pointer(*offp, thisatt->attlen, tp + *offp);
+    1.03 :   2ef950: movzbl (%rdi),%eax // /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1087
+    1.17 :   2ef953: cmp    $0x1,%al
+    0.00 :   2ef955: je     2efa50 <tts_buffer_heap_getsomeattrs+0x4f0>
+    0.29 :   2ef95b: test   $0x1,%al
+    0.00 :   2ef95d: je     2efa90 <tts_buffer_heap_getsomeattrs+0x530>
+    1.47 :   2ef963: shr    $1,%al
+    2.35 :   2ef965: movzbl %al,%eax
+    0.29 :   2ef968: jmp    2ef7ff <tts_buffer_heap_getsomeattrs+0x29f>
+    0.00 :   2ef96d: nopl   (%rax)
+         : 420    return (Datum) X;
+    0.00 :   2ef970: movslq (%rdi),%rsi
+    0.00 :   2ef973: jmp    2ef63d <tts_buffer_heap_getsomeattrs+0xdd>
+    0.00 :   2ef978: nopl   0x0(%rax,%rax,1)
+         : 424    return (Datum) X;
+    0.00 :   2ef980: movsbq (%rdi),%rsi
+    0.00 :   2ef984: jmp    2ef63d <tts_buffer_heap_getsomeattrs+0xdd>
+    0.00 :   2ef989: nopl   0x0(%rax)
+         : 428    switch (attlen)
+    0.44 :   2ef990: cmp    $0x8,%si
+    0.00 :   2ef994: jne    2efd37 <tts_buffer_heap_getsomeattrs+0x7d7>
+         : 431    return *((const Datum *) T);
+    0.00 :   2ef99a: mov    (%rdi),%rsi
+    0.88 :   2ef99d: jmp    2ef63d <tts_buffer_heap_getsomeattrs+0xdd> // /home/markwkm/postgres/build/../src/include/access/tupmacs.h:67
+    0.00 :   2ef9a2: nopw   0x0(%rax,%rax,1)
+    0.44 :   2ef9a8: movzbl (%rdi),%eax
+    1.47 :   2ef9ab: cmp    $0x1,%al // /home/markwkm/postgres/build/../src/backend/executor/execTuples.c:1087
+    0.00 :   2ef9ad: je     2efb30 <tts_buffer_heap_getsomeattrs+0x5d0>
+    0.59 :   2ef9b3: test   $0x1,%al
+    0.00 :   2ef9b5: je     2efb80 <tts_buffer_heap_getsomeattrs+0x620>
+    0.44 :   2ef9bb: shr    $1,%al
+    0.44 :   2ef9bd: movzbl %al,%eax
+    0.00 :   2ef9c0: add    %eax,%ebp
+         : 443    if (slownext || thisatt->attlen <= 0)
+    0.29 :   2ef9c2: jmp    2ef6e9 <tts_buffer_heap_getsomeattrs+0x189>
+    0.00 :   2ef9c7: nopw   0x0(%rax,%rax,1)
+         : 446    if (!slow && *offp == att_nominal_alignby(*offp, thisatt->attalignby))
+    0.00 :   2ef9d0: lea    -0x1(%rsi),%r10d
+    0.00 :   2ef9d4: mov    %ebp,%r9d
+    0.00 :   2ef9d7: movslq %r10d,%r10
+         : 450    *offp = att_pointer_alignby(*offp,
+    0.00 :   2ef9da: lea    (%r9,%r11,1),%rdi
+         : 452    if (!slow && *offp == att_nominal_alignby(*offp, thisatt->attalignby))
+    0.00 :   2ef9de: add    %r9,%r10
+         : 454    *offp = att_pointer_alignby(*offp,
+    0.00 :   2ef9e1: add    %r8,%rdi
+         : 456    if (!slow && *offp == att_nominal_alignby(*offp, thisatt->attalignby))
+    0.00 :   2ef9e4: mov    %r10,(%rsp)
+    0.00 :   2ef9e8: mov    %esi,%r10d
+    0.00 :   2ef9eb: neg    %r10d
+    0.00 :   2ef9ee: mov    %r10d,0x8(%rsp)
+    0.00 :   2ef9f3: movslq %r10d,%r10
+    0.00 :   2ef9f6: and    (%rsp),%r10
+    0.00 :   2ef9fa: cmp    %r10,%r9
+    0.00 :   2ef9fd: je     2efb70 <tts_buffer_heap_getsomeattrs+0x610>
+         : 465    *offp = att_pointer_alignby(*offp,
+    0.00 :   2efa03: cmpb   $0x0,(%rdi)
+         : 467    slownext = true;
+    0.00 :   2efa06: mov    $0x1,%r9d
+         : 469    *offp = att_pointer_alignby(*offp,
+    0.00 :   2efa0c: jne    2efa20 <tts_buffer_heap_getsomeattrs+0x4c0>
+    0.00 :   2efa0e: lea    -0x1(%rsi,%rbp,1),%ebp
+    0.00 :   2efa12: mov    0x8(%rsp),%esi
+    0.00 :   2efa16: and    %esi,%ebp
+         : 474    values[attnum] = fetchatt(thisatt, tp + *offp);
+    0.00 :   2efa18: mov    %ebp,%edi
+    0.00 :   2efa1a: add    %r11,%rdi
+    0.00 :   2efa1d: add    %r8,%rdi
+         : 478    if (attbyval)
+    0.00 :   2efa20: cmpb   $0x0,0x6(%rax)
+    0.00 :   2efa24: jne    2efd50 <tts_buffer_heap_getsomeattrs+0x7f0>
+    0.00 :   2efa2a: mov    %rdi,(%rcx)
+         : 482    *offp = att_addlength_pointer(*offp, thisatt->attlen, tp + *offp);
+    0.00 :   2efa2d: movswl 0x4(%rax),%esi
+         : 484    for (; attnum < natts; attnum++)
+    0.00 :   2efa31: add    $0x1,%ebx
+         : 486    *offp = att_addlength_pointer(*offp, thisatt->attlen, tp + *offp);
+    0.00 :   2efa34: test   %si,%si
+    0.00 :   2efa37: jle    2ef72b <tts_buffer_heap_getsomeattrs+0x1cb>
+    0.00 :   2efa3d: add    %esi,%ebp
+         : 490    if (slownext || thisatt->attlen <= 0)
+    0.00 :   2efa3f: test   %r9b,%r9b
+    0.00 :   2efa42: je     2ef652 <tts_buffer_heap_getsomeattrs+0xf2>
+    0.00 :   2efa48: jmp    2ef6e9 <tts_buffer_heap_getsomeattrs+0x189>
+    0.00 :   2efa4d: nopl   (%rax)
+         : 495    *offp = att_addlength_pointer(*offp, thisatt->attlen, tp + *offp);
+    0.00 :   2efa50: movzbl 0x1(%rdi),%edi
+    0.00 :   2efa54: mov    $0xa,%eax
+    0.00 :   2efa59: cmp    $0x1,%dil
+    0.00 :   2efa5d: je     2ef7ff <tts_buffer_heap_getsomeattrs+0x29f>
+    0.00 :   2efa63: mov    %edi,%r9d
+    0.00 :   2efa66: and    $0xfe,%r9d
+    0.00 :   2efa6d: cmp    $0x2,%r9d
+    0.00 :   2efa71: je     2ef7ff <tts_buffer_heap_getsomeattrs+0x29f>
+    0.00 :   2efa77: cmp    $0x12,%dil
+    0.00 :   2efa7b: mov    $0x12,%eax
+    0.00 :   2efa80: mov    $0x2,%edi
+    0.00 :   2efa85: cmovne %edi,%eax
+    0.00 :   2efa88: jmp    2ef7ff <tts_buffer_heap_getsomeattrs+0x29f>
+    0.00 :   2efa8d: nopl   (%rax)
+    0.00 :   2efa90: mov    (%rdi),%eax
+    0.00 :   2efa92: shr    $0x2,%eax
+    0.00 :   2efa95: jmp    2ef7ff <tts_buffer_heap_getsomeattrs+0x29f>
+    0.00 :   2efa9a: nopw   0x0(%rax,%rax,1)
+         : 514    isnull[attnum] = false;
+    0.00 :   2efaa0: movb   $0x0,(%r9,%rax,1)
+         : 516    if (!slow && thisatt->attcacheoff >= 0)
+    0.00 :   2efaa5: mov    (%rdx),%esi
+    0.00 :   2efaa7: mov    %eax,0x10(%rsp)
+    0.00 :   2efaab: test   %esi,%esi
+    0.00 :   2efaad: js     2efb8c <tts_buffer_heap_getsomeattrs+0x62c>
+         : 521    *offp = thisatt->attcacheoff;
+    0.00 :   2efab3: mov    %esi,%ebp
+         : 523    values[attnum] = fetchatt(thisatt, tp + *offp);
+    0.00 :   2efab5: mov    %ebp,%ecx
+    0.00 :   2efab7: add    %r11,%rcx
+    0.00 :   2efaba: cmpb   $0x0,0x6(%rdx)
+    0.00 :   2efabe: lea    (%r8,%rcx,1),%rsi
+    0.00 :   2efac2: je     2efbaa <tts_buffer_heap_getsomeattrs+0x64a>
+    0.00 :   2efac8: movzwl 0x4(%rdx),%ecx
+         : 530    switch (attlen)
+    0.00 :   2efacc: cmp    $0x4,%cx
+    0.00 :   2efad0: je     2efbff <tts_buffer_heap_getsomeattrs+0x69f>
+    0.00 :   2efad6: jg     2efc10 <tts_buffer_heap_getsomeattrs+0x6b0>
+    0.00 :   2efadc: cmp    $0x1,%cx
+    0.00 :   2efae0: je     2efc07 <tts_buffer_heap_getsomeattrs+0x6a7>
+    0.00 :   2efae6: cmp    $0x2,%cx
+    0.00 :   2efaea: jne    2efd2d <tts_buffer_heap_getsomeattrs+0x7cd>
+         : 538    return (Datum) X;
+    0.00 :   2efaf0: movswq (%rsi),%rcx
+    0.00 :   2efaf4: mov    0x8(%rsp),%rdi
+    0.00 :   2efaf9: mov    %rcx,(%rdi)
+         : 542    *offp = att_addlength_pointer(*offp, thisatt->attlen, tp + *offp);
+    0.00 :   2efafc: movswl 0x4(%rdx),%edi
+    0.00 :   2efb00: test   %di,%di
+    0.00 :   2efb03: jle    2efbbf <tts_buffer_heap_getsomeattrs+0x65f>
+    0.00 :   2efb09: add    %edi,%ebp
+         : 547    for (; attnum < natts; attnum++)
+    0.00 :   2efb0b: add    $0x1,%rax
+    0.00 :   2efb0f: addq   $0x8,0x8(%rsp)
+    0.00 :   2efb15: add    $0x10,%rdx
+    0.00 :   2efb19: cmp    %eax,%r12d
+    0.00 :   2efb1c: jg     2ef6b6 <tts_buffer_heap_getsomeattrs+0x156>
+    0.00 :   2efb22: jmp    2ef663 <tts_buffer_heap_getsomeattrs+0x103>
+    0.00 :   2efb27: nopw   0x0(%rax,%rax,1)
+         : 555    *offp = att_addlength_pointer(*offp, thisatt->attlen, tp + *offp);
+    0.00 :   2efb30: movzbl 0x1(%rdi),%edx
+    0.00 :   2efb34: mov    $0xa,%eax
+    0.00 :   2efb39: cmp    $0x1,%dl
+    0.00 :   2efb3c: je     2ef9c0 <tts_buffer_heap_getsomeattrs+0x460>
+    0.00 :   2efb42: mov    %edx,%ecx
+    0.00 :   2efb44: and    $0xfe,%ecx
+    0.00 :   2efb4a: cmp    $0x2,%ecx
+    0.00 :   2efb4d: je     2ef9c0 <tts_buffer_heap_getsomeattrs+0x460>
+    0.00 :   2efb53: cmp    $0x12,%dl
+    0.00 :   2efb56: mov    $0x12,%eax
+    0.00 :   2efb5b: mov    $0x2,%edx
+    0.00 :   2efb60: cmovne %edx,%eax
+    0.00 :   2efb63: add    %eax,%ebp
+         : 569    if (slownext || thisatt->attlen <= 0)
+    0.00 :   2efb65: jmp    2ef6e9 <tts_buffer_heap_getsomeattrs+0x189>
+    0.00 :   2efb6a: nopw   0x0(%rax,%rax,1)
+         : 572    thisatt->attcacheoff = *offp;
+    0.00 :   2efb70: mov    %ebp,(%rax)
+    0.00 :   2efb72: xor    %r9d,%r9d
+    0.00 :   2efb75: jmp    2efa20 <tts_buffer_heap_getsomeattrs+0x4c0>
+    0.00 :   2efb7a: nopw   0x0(%rax,%rax,1)
+         : 577    *offp = att_addlength_pointer(*offp, thisatt->attlen, tp + *offp);
+    0.00 :   2efb80: mov    (%rdi),%eax
+    0.00 :   2efb82: shr    $0x2,%eax
+    0.00 :   2efb85: add    %eax,%ebp
+         : 581    if (slownext || thisatt->attlen <= 0)
+    0.00 :   2efb87: jmp    2ef6e9 <tts_buffer_heap_getsomeattrs+0x189>
+         : 583    else if (thisatt->attlen == -1)
+    0.00 :   2efb8c: cmpw   $0xffff,0x4(%rdx)
+         : 585    if (!slow && *offp == att_nominal_alignby(*offp, thisatt->attalignby))
+    0.00 :   2efb91: movzbl 0xc(%rdx),%esi
+         : 587    else if (thisatt->attlen == -1)
+    0.00 :   2efb95: je     2efc3e <tts_buffer_heap_getsomeattrs+0x6de>
+         : 589    *offp = att_nominal_alignby(*offp, thisatt->attalignby);
+    0.00 :   2efb9b: lea    -0x1(%rsi,%rbp,1),%ebp
+    0.00 :   2efb9f: neg    %esi
+    0.00 :   2efba1: and    %esi,%ebp
+         : 593    thisatt->attcacheoff = *offp;
+    0.00 :   2efba3: mov    %ebp,(%rdx)
+    0.00 :   2efba5: jmp    2efab5 <tts_buffer_heap_getsomeattrs+0x555>
+         : 596    values[attnum] = fetchatt(thisatt, tp + *offp);
+    0.00 :   2efbaa: mov    0x8(%rsp),%rcx
+    0.00 :   2efbaf: mov    %rsi,(%rcx)
+         : 599    *offp = att_addlength_pointer(*offp, thisatt->attlen, tp + *offp);
+    0.00 :   2efbb2: movswl 0x4(%rdx),%edi
+    0.00 :   2efbb6: test   %di,%di
+    0.00 :   2efbb9: jg     2efb09 <tts_buffer_heap_getsomeattrs+0x5a9>
+    0.00 :   2efbbf: mov    0x10(%rsp),%ebx
+    0.00 :   2efbc3: mov    %rsi,%rcx
+    0.00 :   2efbc6: lea    0x1(%rbx),%esi
+         : 606    return attnum + 1;
+    0.00 :   2efbc9: mov    %esi,%ebx
+         : 608    *offp = att_addlength_pointer(*offp, thisatt->attlen, tp + *offp);
+    0.00 :   2efbcb: cmp    $0xffff,%di
+    0.00 :   2efbcf: je     2efc22 <tts_buffer_heap_getsomeattrs+0x6c2>
+    0.00 :   2efbd1: mov    %rcx,%rdi
+    0.00 :   2efbd4: mov    %esi,(%rsp)
+    0.00 :   2efbd7: call   e48d0 <strlen@plt>
+    0.00 :   2efbdc: mov    (%rsp),%esi
+    0.00 :   2efbdf: lea    0x1(%rbp,%rax,1),%ebp
+         : 616    if (attnum < natts)
+    0.00 :   2efbe3: cmp    %esi,%r12d
+    0.00 :   2efbe6: jg     2ef743 <tts_buffer_heap_getsomeattrs+0x1e3>
+         : 619    slot->tts_nvalid = attnum;
+    0.00 :   2efbec: mov    %si,0x6(%r14)
+         : 621    slot->tts_flags |= TTS_FLAG_SLOW;
+    0.00 :   2efbf1: movzwl 0x4(%r14),%eax
+         : 623    *offp = off;
+    0.00 :   2efbf6: mov    %ebp,0x48(%r14)
+         : 625    if (slow)
+    0.00 :   2efbfa: jmp    2ef6fe <tts_buffer_heap_getsomeattrs+0x19e>
+         : 627    return (Datum) X;
+    0.00 :   2efbff: movslq (%rsi),%rcx
+    0.00 :   2efc02: jmp    2efaf4 <tts_buffer_heap_getsomeattrs+0x594>
+         : 630    return (Datum) X;
+    0.00 :   2efc07: movsbq (%rsi),%rcx
+    0.00 :   2efc0b: jmp    2efaf4 <tts_buffer_heap_getsomeattrs+0x594>
+    0.00 :   2efc10: cmp    $0x8,%cx
+    0.00 :   2efc14: jne    2efd46 <tts_buffer_heap_getsomeattrs+0x7e6>
+         : 635    return *((const Datum *) T);
+    0.00 :   2efc1a: mov    (%rsi),%rcx
+    0.00 :   2efc1d: jmp    2efaf4 <tts_buffer_heap_getsomeattrs+0x594>
+         : 638    *offp = att_addlength_pointer(*offp, thisatt->attlen, tp + *offp);
+    0.00 :   2efc22: movzbl (%rcx),%eax
+    0.00 :   2efc25: cmp    $0x1,%al
+    0.00 :   2efc27: je     2efcf3 <tts_buffer_heap_getsomeattrs+0x793>
+    0.00 :   2efc2d: test   $0x1,%al
+    0.00 :   2efc2f: je     2efce7 <tts_buffer_heap_getsomeattrs+0x787>
+    0.00 :   2efc35: shr    $1,%al
+    0.00 :   2efc37: movzbl %al,%eax
+    0.00 :   2efc3a: add    %eax,%ebp
+         : 647    if (slownext || thisatt->attlen <= 0)
+    0.00 :   2efc3c: jmp    2efbe3 <tts_buffer_heap_getsomeattrs+0x683>
+         : 649    if (!slow && *offp == att_nominal_alignby(*offp, thisatt->attalignby))
+    0.00 :   2efc3e: mov    %ebp,%edi
+    0.00 :   2efc40: mov    %esi,0x10(%rsp)
+         : 652    *offp = att_pointer_alignby(*offp,
+    0.00 :   2efc44: mov    %rdi,%rbx
+    0.00 :   2efc47: lea    (%rdi,%r11,1),%rsi
+         : 655    if (!slow && *offp == att_nominal_alignby(*offp, thisatt->attalignby))
+    0.00 :   2efc4b: mov    0x10(%rsp),%edi
+    0.00 :   2efc4f: mov    %rbx,0x18(%rsp)
+         : 658    *offp = att_pointer_alignby(*offp,
+    0.00 :   2efc54: add    %r8,%rsi
+         : 660    if (!slow && *offp == att_nominal_alignby(*offp, thisatt->attalignby))
+    0.00 :   2efc57: sub    $0x1,%edi
+    0.00 :   2efc5a: movslq %edi,%rdi
+    0.00 :   2efc5d: add    %rbx,%rdi
+    0.00 :   2efc60: mov    %rdi,0x20(%rsp)
+    0.00 :   2efc65: mov    0x10(%rsp),%edi
+    0.00 :   2efc69: neg    %edi
+    0.00 :   2efc6b: mov    %edi,0x2c(%rsp)
+    0.00 :   2efc6f: movslq %edi,%rdi
+    0.00 :   2efc72: mov    %rdi,%rbx
+    0.00 :   2efc75: mov    0x20(%rsp),%rdi
+    0.00 :   2efc7a: and    %rbx,%rdi
+    0.00 :   2efc7d: cmp    %rdi,0x18(%rsp)
+    0.00 :   2efc82: je     2efce3 <tts_buffer_heap_getsomeattrs+0x783>
+         : 674    *offp = att_pointer_alignby(*offp,
+    0.00 :   2efc84: cmpb   $0x0,(%rsi)
+         : 676    slownext = true;
+    0.00 :   2efc87: mov    %r13d,%ecx
+         : 678    *offp = att_pointer_alignby(*offp,
+    0.00 :   2efc8a: jne    2efca2 <tts_buffer_heap_getsomeattrs+0x742>
+    0.00 :   2efc8c: mov    0x10(%rsp),%esi
+    0.00 :   2efc90: lea    -0x1(%rsi,%rbp,1),%ebp
+    0.00 :   2efc94: mov    0x2c(%rsp),%esi
+    0.00 :   2efc98: and    %esi,%ebp
+         : 684    values[attnum] = fetchatt(thisatt, tp + *offp);
+    0.00 :   2efc9a: mov    %ebp,%esi
+    0.00 :   2efc9c: add    %r11,%rsi
+    0.00 :   2efc9f: add    %r8,%rsi
+         : 688    if (attbyval)
+    0.00 :   2efca2: cmpb   $0x0,0x6(%rdx)
+    0.00 :   2efca6: jne    2efd4b <tts_buffer_heap_getsomeattrs+0x7eb>
+    0.00 :   2efcac: mov    0x8(%rsp),%rdi
+    0.00 :   2efcb1: mov    %eax,%ebx
+    0.00 :   2efcb3: add    $0x1,%ebx
+    0.00 :   2efcb6: mov    %rsi,(%rdi)
+         : 695    *offp = att_addlength_pointer(*offp, thisatt->attlen, tp + *offp);
+    0.00 :   2efcb9: movswl 0x4(%rdx),%edi
+    0.00 :   2efcbd: mov    %ebx,0x10(%rsp)
+    0.00 :   2efcc1: test   %di,%di
+    0.00 :   2efcc4: jle    2efcd7 <tts_buffer_heap_getsomeattrs+0x777>
+    0.00 :   2efcc6: add    %edi,%ebp
+         : 701    if (slownext || thisatt->attlen <= 0)
+    0.00 :   2efcc8: test   %cl,%cl
+    0.00 :   2efcca: je     2efb0b <tts_buffer_heap_getsomeattrs+0x5ab>
+    0.00 :   2efcd0: mov    %ebx,%esi
+    0.00 :   2efcd2: jmp    2efbe3 <tts_buffer_heap_getsomeattrs+0x683>
+    0.00 :   2efcd7: mov    %rsi,%rcx
+    0.00 :   2efcda: mov    0x10(%rsp),%esi
+    0.00 :   2efcde: jmp    2efbcb <tts_buffer_heap_getsomeattrs+0x66b>
+         : 709    thisatt->attcacheoff = *offp;
+    0.00 :   2efce3: mov    %ebp,(%rdx)
+    0.00 :   2efce5: jmp    2efca2 <tts_buffer_heap_getsomeattrs+0x742>
+         : 712    *offp = att_addlength_pointer(*offp, thisatt->attlen, tp + *offp);
+    0.00 :   2efce7: mov    (%rcx),%eax
+    0.00 :   2efce9: shr    $0x2,%eax
+    0.00 :   2efcec: add    %eax,%ebp
+         : 716    if (slownext || thisatt->attlen <= 0)
+    0.00 :   2efcee: jmp    2efbe3 <tts_buffer_heap_getsomeattrs+0x683>
+         : 718    *offp = att_addlength_pointer(*offp, thisatt->attlen, tp + *offp);
+    0.00 :   2efcf3: movzbl 0x1(%rcx),%edx
+    0.00 :   2efcf7: mov    $0xa,%eax
+    0.00 :   2efcfc: cmp    $0x1,%dl
+    0.00 :   2efcff: je     2efc3a <tts_buffer_heap_getsomeattrs+0x6da>
+    0.00 :   2efd05: mov    %edx,%ecx
+    0.00 :   2efd07: and    $0xfe,%ecx
+    0.00 :   2efd0d: cmp    $0x2,%ecx
+    0.00 :   2efd10: je     2efc3a <tts_buffer_heap_getsomeattrs+0x6da>
+    0.00 :   2efd16: cmp    $0x12,%dl
+    0.00 :   2efd19: mov    $0x12,%eax
+    0.00 :   2efd1e: mov    $0x2,%edx
+    0.00 :   2efd23: cmovne %edx,%eax
+    0.00 :   2efd26: add    %eax,%ebp
+         : 732    if (slownext || thisatt->attlen <= 0)
+    0.00 :   2efd28: jmp    2efbe3 <tts_buffer_heap_getsomeattrs+0x683>
+    0.00 :   2efd2d: jmp    1222fc <tts_buffer_heap_getsomeattrs.cold+0x75>
+    0.00 :   2efd32: jmp    122287 <tts_buffer_heap_getsomeattrs.cold>
+    0.00 :   2efd37: jmp    1222c5 <tts_buffer_heap_getsomeattrs.cold+0x3e>
+    0.00 :   2efd3c: jmp    122287 <tts_buffer_heap_getsomeattrs.cold>
+    0.00 :   2efd41: jmp    1222c5 <tts_buffer_heap_getsomeattrs.cold+0x3e>
+    0.00 :   2efd46: jmp    1222fc <tts_buffer_heap_getsomeattrs.cold+0x75>
+    0.00 :   2efd4b: jmp    122333 <tts_buffer_heap_getsomeattrs.cold+0xac>
+    0.00 :   2efd50: jmp    122338 <tts_buffer_heap_getsomeattrs.cold+0xb1>
+    0.00 :   2efd55: jmp    122287 <tts_buffer_heap_getsomeattrs.cold>

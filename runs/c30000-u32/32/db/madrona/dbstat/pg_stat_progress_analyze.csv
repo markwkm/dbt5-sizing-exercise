@@ -1,0 +1,5 @@
+ctime,pid,datid,datname,relid,phase,sample_blks_total,sample_blks_scanned,ext_stats_total,ext_stats_computed,child_tables_total,child_tables_done,current_child_table_relid,delay_time
+1789023055.364162,1237640,2188084,dbt5,2188122,acquiring sample rows,2245,50,0,0,0,0,0,0
+1789023416.466233,1265310,2188084,dbt5,2188333,computing statistics,213,213,0,0,0,0,0,0
+1789023595.796342,1279097,2188084,dbt5,2188156,acquiring sample rows,10295,9847,0,0,0,0,0,0
+1789024915.195392,1380544,2188084,dbt5,2188333,computing statistics,213,213,0,0,0,0,0,0

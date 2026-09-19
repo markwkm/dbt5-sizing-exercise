@@ -1,0 +1,68 @@
+dbt5 - Driver Customer Emulator Main
+Using the following settings:
+
+Input files location: /tmp/.mount_dbt5EhFeeO/opt/egen/flat_in
+
+Brokerage House address: localhost
+Brokerage House port: 30000
+
+Configured customer count: 30000
+Active customer count: 30000
+Days of initial trades: 300
+Scale Factor: 500
+
+User Threads: 36
+Sleep between creating users: 1666
+
+Test duration (sec): 3600
+Pacing Delay (msec): 0
+
+Unique ID (seed): 0
+initializing data maintenance...
+
+Running Trade-Cleanup transaction before starting the test...
+Trade-Cleanup transaction completed.
+
+Test is starting at 08:00:11.670
+Estimated duration of ramp-up: 59 seconds
+Estimated end time 09:00:11.670
+>> Start of ramp-up.
+>> Data-Maintenance thread started.
+>> End of ramp-up.
+User thread # 1451011 terminated.
+User thread # 1454820 terminated.
+User thread # 1452379 terminated.
+User thread # 1453920 terminated.
+User thread # 1455116 terminated.
+User thread # 1451147 terminated.
+User thread # 1450838 terminated.
+User thread # 1451078 terminated.
+User thread # 1455007 terminated.
+User thread # 1450956 terminated.
+User thread # 1454142 terminated.
+User thread # 1453389 terminated.
+User thread # 1452509 terminated.
+User thread # 1450853 terminated.
+User thread # 1453492 terminated.
+User thread # 1455225 terminated.
+User thread # 1453287 terminated.
+User thread # 1453097 terminated.
+User thread # 1454607 terminated.
+User thread # 1452617 terminated.
+User thread # 1453813 terminated.
+User thread # 1450830 terminated.
+User thread # 1452907 terminated.
+User thread # 1451231 terminated.
+User thread # 1451474 terminated.
+User thread # 1454336 terminated.
+User thread # 1453202 terminated.
+User thread # 1454235 terminated.
+User thread # 1452711 terminated.
+User thread # 1453010 terminated.
+User thread # 1453704 terminated.
+User thread # 1452806 terminated.
+User thread # 1454040 terminated.
+User thread # 1454712 terminated.
+User thread # 1453609 terminated.
+User thread # 1450825 terminated.
+Data-Maintenance thread stopped.

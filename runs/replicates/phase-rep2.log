@@ -1,0 +1,18 @@
+=== 2026-09-13T01:32:15+00:00 replicate 2 of the answer point: 32000 customers, 18 users, into replicates/ ===
+database already holds 32000 customers, skipping rebuild
+c32000 already smoke tested, skipping
+Sweeping users 18..18 step 1 at 32000
+customers, 3600 s per test, into /home/markwkm/claude-tests/scaling2/replicates/c32000-u18
+
+ceiling at 32000 customers: 65.28 trtps (1.02 x 32000/500)
+  18 users     62.53 trtps
+
+=== phase c32000 complete ===
+ CUSTOMERS BEST_TRTPS   CEILING  USERS  SECONDS   RATIO VERDICT  STABILITY
+     30000      66.81      61.2     24     3600    1.09 over     stable
+     32000      62.57      65.3     18     3600    0.96 under    stable
+
+ CUSTOMERS   CEILING       u16       u18       u24
+     30000      61.2    50.97s         -     66.81
+     32000      65.3    55.12s     62.57         -
+=== 2026-09-13T02:34:46+00:00 replicate 2 exit 0 ===

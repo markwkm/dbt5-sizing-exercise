@@ -1,0 +1,72 @@
+dbt5 - Driver Customer Emulator Main
+Using the following settings:
+
+Input files location: /tmp/.mount_dbt5CEGHfe/opt/egen/flat_in
+
+Brokerage House address: localhost
+Brokerage House port: 30000
+
+Configured customer count: 30000
+Active customer count: 30000
+Days of initial trades: 300
+Scale Factor: 500
+
+User Threads: 40
+Sleep between creating users: 1500
+
+Test duration (sec): 3600
+Pacing Delay (msec): 0
+
+Unique ID (seed): 0
+initializing data maintenance...
+
+Running Trade-Cleanup transaction before starting the test...
+Trade-Cleanup transaction completed.
+
+Test is starting at 09:02:43.715
+Estimated duration of ramp-up: 60 seconds
+Estimated end time 10:03:43.715
+>> Start of ramp-up.
+>> Data-Maintenance thread started.
+>> End of ramp-up.
+User thread # 1733225 terminated.
+User thread # 1733051 terminated.
+User thread # 1732648 terminated.
+User thread # 1733625 terminated.
+User thread # 1731381 terminated.
+User thread # 1733138 terminated.
+User thread # 1731710 terminated.
+User thread # 1731241 terminated.
+User thread # 1732008 terminated.
+User thread # 1732822 terminated.
+User thread # 1731256 terminated.
+User thread # 1731784 terminated.
+User thread # 1731469 terminated.
+User thread # 1731278 terminated.
+User thread # 1732906 terminated.
+User thread # 1732244 terminated.
+User thread # 1731639 terminated.
+User thread # 1731928 terminated.
+User thread # 1732982 terminated.
+User thread # 1731583 terminated.
+User thread # 1733459 terminated.
+User thread # 1731263 terminated.
+User thread # 1731302 terminated.
+User thread # 1733546 terminated.
+User thread # 1732103 terminated.
+User thread # 1731416 terminated.
+User thread # 1733804 terminated.
+User thread # 1732577 terminated.
+User thread # 1733888 terminated.
+User thread # 1732399 terminated.
+User thread # 1731531 terminated.
+User thread # 1733380 terminated.
+User thread # 1731856 terminated.
+User thread # 1732488 terminated.
+User thread # 1731247 terminated.
+User thread # 1732737 terminated.
+User thread # 1732164 terminated.
+User thread # 1733301 terminated.
+User thread # 1732328 terminated.
+User thread # 1731344 terminated.
+Data-Maintenance thread stopped.
