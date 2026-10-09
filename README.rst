@@ -132,16 +132,17 @@ gnuplot draws the charts from ``throughput-<customers>.dat``:
 ``throughput-5000.png``
     A bar chart of the phase 0 sweep.
 
-``throughput-survey-<seq>.png``
+``throughput-survey-podo.png``
     A line chart of every customer count measured, each with its
     limit line.
 
-``throughput-crossing-<seq>.png``
+``throughput-crossing-podo.png``
     The same for the customer counts around the crossing, 30000 to
     35000, with the replicate runs of the answer point.
 
-``<seq>`` is the gnuplot color sequence, ``podo`` or ``default``,
-and the ``.gnuplot`` files of the same names draw them.
+The images are not kept in the repository.  To draw them, run
+``make SEQ=podo`` in this directory, which needs gnuplot with the
+``pngcairo`` terminal.  ``make SEQ=podo clean`` removes them.
 
 Reading the profiles
 ====================
