@@ -1,21 +1,13 @@
 #!/bin/sh
-# Shared environment for the profiled rerun of the DBT-5 scale factor
-# search.  Source this, do not execute it.
+# Shared environment for the profiled DBT-5 customer and user sizing
+# exercise.  Source this, do not execute it.
 #
 # Every setting below can be overridden from the environment, so the
 # same scripts serve both short shakedowns and the real runs:
 #
 #     DURATION=1200 ./phase.sh 5000 1 2 3 4
 #
-# Differences from ../scaling/env.sh:
-#
-# * results live next to these scripts rather than in ~/claude-tests
-# * every test passes --profile, so dbt5 run captures a perf profile
-#   at the middle of the measurement interval
-# * "dbt5" is no longer in the collector kill pattern.  The wrapper
-#   leak it was there for is fixed, and a live "dbt5 test-user-scaling"
-#   command line names this results tree, so matching it would kill
-#   the test in progress along with its AppImage mount
+# Results, smoke tests and build logs live next to these scripts.
 
 # Use the locally built PostgreSQL 18, not the packaged 17.  dbt5
 # pgsql-load-stored-procs resolves the C function .sql files through
@@ -24,10 +16,10 @@ PGBIN="${PGBIN:-${HOME}/.local/pgsql-18/bin}"
 PATH="${PGBIN}:${HOME}/.local/bin:${PATH}"
 export PATH
 
-# The dbt5 AppImage this campaign runs, ahead of the one in
+# The dbt5 AppImage this exercise runs, ahead of the one in
 # ~/.local/bin.  It is built from the dbt5 branch
 # mee-deliver-concurrently, which lets the Market Exchange deliver
-# Trade Results over several connections; see README.rst.
+# Trade Results over several connections.  See FIXES.rst.
 HERE="$(cd "$(dirname "${0}")" && pwd)"
 PATH="${HERE}/bin:${PATH}"
 
@@ -69,9 +61,12 @@ export PARALLELISM RESULTS BUILDLOGS SMOKERESULTS CEILING_MARGIN
 export PROFILE PROFILE_ARG
 
 # Collectors from a finished test.  Only processes whose command line
-# names this campaign's results tree are considered, and the program
+# names this exercise's results tree are considered, and the program
 # name has to be the executable rather than merely a word appearing in
-# the arguments, so an unrelated process is never signaled.
+# the arguments, so an unrelated process is never signaled.  dbt5 is
+# deliberately not in the pattern.  A live "dbt5 test-user-scaling"
+# command line names this results tree, so matching it would kill the
+# test in progress along with its AppImage mount.
 COLLECTORS='^(sar|sadc|sadf|spar|pidstat|iostat|ts-pgsql-stat)$'
 
 stop_collectors()

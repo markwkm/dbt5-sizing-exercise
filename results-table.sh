@@ -55,7 +55,7 @@ rst_table()
 	}'
 }
 
-# The search as it stands: collect.sh's verdict summary and the
+# The exercise as it stands: collect.sh's verdict summary and the
 # users-by-customers matrix, as a literal block.
 echo "::"
 echo

@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Report the campaign's results: the best run at each customer count
+# Report the exercise's results: the best run at each customer count
 # against its ceiling, then every user count tested at every customer
 # count.
 #
@@ -55,7 +55,7 @@ emit_rows()
 	done
 }
 
-# The search bisects on the ratio of throughput to ceiling, not on
+# The exercise bisects on the ratio of throughput to ceiling, not on
 # throughput, so lead with it.  The stability column says whether the
 # run behind each number actually reached a steady rate.  A number from
 # a run that never settled is not evidence of anything.

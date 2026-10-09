@@ -33,7 +33,7 @@ if [ $(( CUSTOMERS % 5000 )) -ne 0 ]; then
 	echo "warning: ${CUSTOMERS} is not a multiple of 5000"
 fi
 
-# The search may return to a customer count after the database has
+# The exercise may return to a customer count after the database has
 # been replaced, so keep old build logs rather than refusing to rebuild.
 if [ -e "${LOG}" ]; then
 	N=1
