@@ -1,11 +1,11 @@
-==================================================
- Finding the optimal TPC-E scale factor with DBT-5
-==================================================
+=============================================
+ Sizing TPC-E customers and users with DBT-5
+=============================================
 
 A procedure for determining, on any system, the customer count and
 emulated user count that give the highest Trade-Result throughput
 that the TPC-E scaling rule permits.  Worked examples come from the
-machine this search ran on, an Amazon Web Services r5b.4xlarge
+machine this exercise ran on, an Amazon Web Services r5b.4xlarge
 instance.  ``RESULTS.rst`` holds its numbers and ``JOURNAL.rst`` the
 steps the plan produced.
 
@@ -60,7 +60,7 @@ Bounds that the specification and practicality impose:
 
 * ``C`` is at least 5000 and a multiple of 1000.  Multiples of 5000
   are a convenient grid for the coarse phases.
-* ``U`` needs an upper bound chosen in advance, or a search that
+* ``U`` needs an upper bound chosen in advance, or a sweep that
   keeps finding a higher peak never ends.  The bound here is 32,
   twice the logical processor count, extended past 32 only by the
   edge rule.
@@ -74,9 +74,9 @@ Bounds that the specification and practicality impose:
 Before you start
 ================
 
-The following change the answer rather than the running time, so
-they are settled before the first build and not touched during the
-search.
+The following change the answer rather than the running time, so they
+are settled before the first build and not touched during the
+exercise.
 
 **Which stored function implementation.**  DBT-5 ships the
 transactions as both PL/pgSQL and C functions.  Their performance
@@ -88,14 +88,17 @@ database as built unless all 24 are present.  The customer table is
 loaded early in a build, and a build that died after loading it
 once passed a check that counted only customers.
 
-**Database server configuration.**  Fix it before starting and do
-not change it during the search.  Every result is relative to it,
-and a parameter changed part way through invalidates the
-comparison.  The number of connections grows with the user count,
-so the connection limit must accommodate the largest user count
-planned.  This search reverted the server to the first search's
-settings, verified against the ``pg_settings`` capture inside an
-original run.  ``pg-settings-start.txt`` is the record.
+**Database server configuration.**  Fix it before starting and do not
+change it during the exercise.  Every result is relative to it, and a
+parameter changed part way through invalidates the comparison.  The
+number of connections grows with the user count, so the connection
+limit must accommodate the largest user count planned.  PostgreSQL's
+default settings are sized to start on almost any machine, not to run
+a workload like this one well.  The starting values here come from
+long-standing rules of thumb for sizing PostgreSQL, some of them
+about 20 years old, which may or may not have been measured recently.
+They are a rough starting point, not tuned values.
+``pg-settings-start.txt`` records them.
 
 **The harness.**  Validate it at the smallest scale with a short run
 before spending hours on measurements, and validate it again after
@@ -104,8 +107,8 @@ tenths of a percent of Trade Order in the transaction mix, when few
 Trade Results are given up on after serialization retries, and when
 the machine's task count stays flat through the run.  A harness that
 fails any of these reports its own limit rather than the database's.
-The defects this search found by these checks are described in
-``FIXES.rst``.
+``FIXES.rst`` describes the defects that these checks found in this
+exercise.
 
 A defect found in the harness or in these scripts is fixed, not
 worked around.  Fix it on a branch, record it in ``FIXES.rst``,
@@ -114,7 +117,7 @@ before continuing.  Then treat every earlier result the defect could
 have affected as suspect: repeat it on the fixed harness, move the
 old run to ``unused/`` under an ``.invalid-<reason>`` suffix, where
 no table is read from, and reason only from the repeated run.  Every
-measurement the search reports must come from one and the same
+measurement the exercise reports must come from one and the same
 harness.  A result from before a fix and a result from after it are
 not comparable, even when the defect appears unrelated to the scale
 in question.
@@ -123,8 +126,8 @@ in question.
 rebuilds, but the largest configuration must fit with room for the
 write-ahead log.  Estimate from the size of the first build, which
 is close to linear in customer count: 12 GB per 1000 customers on
-this machine.  The spot check is the largest database of the search
-and sets the disk requirement.
+this machine.  The spot check is the largest database of the
+exercise and sets the disk requirement.
 
 Then set the shared values in ``env.sh``: the data directory, the
 database name, the durations, the ceiling margin, and the directory
@@ -138,12 +141,12 @@ finished test's statistics collectors before the next test starts.
 Which regime the system is in
 =============================
 
-The shape of the search follows from one question, and a single
+The shape of the procedure follows from one question, and a single
 short run answers it.  Build the smallest legal database, 5000
 customers, and measure it.
 
 **Hardware limited.**  The achievable rate is below the limit even
-at 5000 customers.  The constraint never applies.  The search is
+at 5000 customers.  The constraint never applies.  The problem is
 then a plain maximization: find where throughput peaks and report
 it.
 
@@ -154,8 +157,8 @@ this case, which is the case for any reasonably fast machine.  Here
 5000 customers gave 193.59 trtps against a limit of 10.2, nineteen
 times over.
 
-Why the search variable is the ratio
-====================================
+Why the bisection variable is the ratio
+=======================================
 
 Throughput is **not** monotone in customer count.  Two effects
 compete: a larger database spreads row and index contention over
@@ -185,12 +188,12 @@ the smallest ``C`` whose ratio is at or below 1.0.
 Procedure
 =========
 
-The search is a sequence of phases.  A phase is one customer count:
-drop and rebuild the database at that size, load the chosen stored
-functions and verify them, run a short test to warm the cache and
-confirm the setup, then measure one or more user counts against
-that one database.  Rebuilding is by far the most expensive step,
-so every user count wanted at a given size is measured while that
+The procedure is a sequence of phases.  A phase is one customer
+count: drop and rebuild the database at that size, load the chosen
+stored functions and verify them, run a short test to warm the cache
+and confirm the setup, then measure one or more user counts against
+that one database.  Rebuilding is by far the most expensive step, so
+every user count wanted at a given size is measured while that
 database exists.
 
 Where to start the user sweep: the peak is near the logical
@@ -204,11 +207,11 @@ Phase 0, the baseline
 ---------------------
 
 5000 customers, every user count from 1 to 32, each a full 3600
-second run.  This is the baseline from which the rest of the search
+second run.  This is the baseline from which the rest of the exercise
 extrapolates, and it is measured completely for that reason.  It
 gives two things the later steps need: the peak rate ``trtps_max``
-the machine reaches with the whole database in memory, which sets
-the spot check of phase 1, and the shape of throughput against
+the machine reaches with the whole database in memory, which sets the
+spot check of phase 1, and the shape of throughput against
 concurrency before database size has any effect, with a profile at
 each point, against which every larger scale is compared.
 
@@ -252,25 +255,25 @@ hundred.
 Measure one point at 16 users first, and decide from its margin
 whether the scale needs more.  The verdicts are asymmetric.  A count
 is over as soon as one user count exceeds the limit, but it is under
-only if its best user count stays below the limit, so an "under" is
-a statement about the peak, and the peak is normally found by
-sweeping.  The sweep can be skipped when the one point is under by
-more than any peak could recover.  A system limited by storage does
-reach its peak at a higher user count than a system with the
-database in memory, because more concurrent requests keep the
-storage busier, but the gain is tens of percent: the first search's
-50000 customer point rose from 2.5 to 3.4 trtps between 8 and 16
-users.  A point one hundred times under, or twenty times under, is
-under at every user count, and sweeping it would characterize the
-scale at a cost of about eight hours without affecting the verdict.
-Measure a second point, at 32 users, only if the first is within a
-factor of two of its limit, where the peak could decide the verdict.
-The sweeps are reserved for the scales near the crossing, where the
+only if its best user count stays below the limit, so an "under" is a
+statement about the peak, and the peak is normally found by sweeping.
+The sweep can be skipped when the one point is under by more than any
+peak could recover.  A system limited by storage does reach its peak
+at a higher user count than a system with the database in memory,
+because more concurrent requests keep the storage busier, but the
+gain is tens of percent.  In earlier measurements on this machine,
+50000 customers rose from 2.5 to 3.4 trtps between 8 and 16 users.  A
+point one hundred times under, or twenty times under, is under at
+every user count, and sweeping it would characterize the scale at a
+cost of about eight hours without affecting the verdict.  Measure a
+second point, at 32 users, only if the first is within a factor of
+two of its limit, where the peak could decide the verdict.  The
+sweeps are reserved for the scales near the crossing, where the
 verdict is close and the number is reported.
 
 Phase 1 also serves as the disk and time check: it is the largest
-build the search will do, so it establishes both extrapolations in
-the cost model.
+build the exercise will do, so it establishes both extrapolations
+in the cost model.
 
 Phase 2 onward, bisect
 ----------------------
@@ -282,16 +285,16 @@ refinements reduce the number of phases needed:
   bracket ends and probe near the predicted crossing rather than the
   midpoint.  The curve is steep in places and this saves whole
   phases.
-* Prefer a probe that can end the search outright.  If the lower
+* Prefer a probe that can end the bisection outright.  If the lower
   end of the bracket is over and the probe is the next grid point
   above it, an "under" verdict makes the probe itself the answer.
 
 Use the 5000 grid until the bracket is one grid step wide, then
 multiples of 1000 inside it.  Choose probes from measured margins,
-not from a theory about the hardware, and not from an earlier
-search's results.  The probe this search's margins named after the
-spot check was 45000.  A probe taken from the first search's answer
-instead had to be justified afterwards.  A search that narrows on
+not from a theory about the hardware, and not from results measured
+outside the exercise.  Here the margins named 45000 as the probe
+after the spot check.  A probe taken from earlier measurements
+instead has to be justified afterwards.  A bisection that narrows on
 its own measurements is part of the deliverable.
 
 The number of user counts a probe receives follows the rule stated
@@ -317,7 +320,7 @@ build, and expect the gain to be modest.
 When to stop
 ------------
 
-The search ends when one of these holds, so that "optimal" is a
+The exercise ends when one of these holds, so that "optimal" is a
 measured claim rather than a judgment:
 
 * The bracket has narrowed to adjacent Load Units, and the lower one
@@ -332,16 +335,16 @@ measured claim rather than a judgment:
 * The bracket reaches the upper bound set for ``C`` still over.
   Report that the limit cannot be satisfied within the bound.
 
-Record the result as it stands after each phase, so that the search
+Record the result as it stands after each phase, so that the exercise
 can be stopped early and still yield the best pair found so far.
-Once the search is closed, repeat the answer point: two repeated
-runs on a fresh build gave a run to run spread of 2 percent here,
-which is the figure every "within 3 percent" below relies on.
+Once the answer is found, repeat the answer point: two repeated runs
+on a fresh build gave a run to run spread of 2 percent here, which is
+the figure every "within 3 percent" below relies on.
 
 Measurement rules
 =================
 
-These are the rules the search needed.  Each was learned by getting
+These are the rules the exercise needed.  Each was learned by getting
 something wrong without it.
 
 Check that the run settled before believing it
@@ -402,12 +405,12 @@ Use the report as a gate on evidence:
 Choose the duration from the measured ramp and from the checkpoints
 -------------------------------------------------------------------
 
-The ramp is the reason short runs mislead.  The first search's 300
-and 600 second runs never settled, and their error grew with
-database size, which is why every measured point in this search is
-3600 seconds, bracketing probes included.  Shorter runs serve only
-to validate scripts and warm caches, and they carry a duration
-suffix in their directory names so that they cannot be mistaken for
+The ramp is the reason short runs mislead.  Earlier 300 and 600
+second runs on this machine never settled, and their error grew with
+database size, so every measured point in this exercise is 3600
+seconds, bracketing probes included.  Shorter runs serve only to
+validate scripts and warm caches, and they carry a duration suffix in
+their directory names so that they cannot be mistaken for
 measurements.
 
 3600 seconds was chosen for a second reason: checkpoints.  A
@@ -451,7 +454,7 @@ The ratio is defined on the maximum over user counts, so:
   Otherwise sweep user counts until the best is interior, with lower
   values on either side.
 
-This asymmetry is what makes the search affordable.  Bracketing
+This asymmetry is what makes the exercise affordable.  Bracketing
 phases cost one point each, and only the deciding phases pay for a
 full sweep.
 
@@ -510,8 +513,8 @@ the summary before believing it:
 
 The reported throughput is a single number summarizing tens of
 thousands of transactions, and it discards everything about how
-they were distributed over the run.  Each mistake found in these
-searches was found by returning to that discarded detail.
+they were distributed over the run.  Each mistake found in this
+exercise was found by returning to that discarded detail.
 
 Cost model
 ==========
@@ -535,7 +538,7 @@ by index and foreign key creation on the largest tables rather than
 by the data load, which ran at about 12 GB per minute.  A measured
 point costs 62 minutes.  A phase is one build, a smoke test and one
 to ten points, and the sweeps at the deciding scales are the bulk of
-the search.
+the cost.
 
 Rebuilding for every customer count appears to be the obvious cost
 to cut, and it cannot be cut.  The workload can be driven with fewer
@@ -577,7 +580,7 @@ phases run detached from the session harness (``setsid nohup``),
 because the harness has killed background work during large loads
 on a false low memory judgment.
 
-The search reads as follows, and this is how it went::
+The exercise ran as follows::
 
     cd ~/claude-tests/scaling2
 
@@ -600,7 +603,7 @@ The search reads as follows, and this is how it went::
 
     ./update-results.sh
 
-Record the outcome in ``RESULTS.rst`` as the search proceeds,
+Record the outcome in ``RESULTS.rst`` as the exercise proceeds,
 including which runs settled: the ``collect.sh`` verdict summary and
 the users-by-customers matrix together, because the summary alone
 hides that the best user count moves with scale.

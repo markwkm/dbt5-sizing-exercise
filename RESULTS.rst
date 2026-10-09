@@ -1,12 +1,12 @@
-=====================================================
- DBT-5 scale factor and user scaling results, rerun
-=====================================================
+========================================
+ DBT-5 customer and user sizing results
+========================================
 
-The profiled rerun of the search recorded in ``../scaling``.  The
+The results of the profiled customer and user sizing exercise.  The
 method is ``PLAN.rst``, the steps it produced are ``JOURNAL.rst``,
-what differs in this rerun's setup is in ``README.rst``, the harness
-defects it found are in ``FIXES.rst``, and this file records what
-was measured.  Throughput is stated in Trade Result transactions per
+the setup is described in ``README.rst``, the harness defects the
+exercise found are in ``FIXES.rst``, and this file records what was
+measured.  Throughput is stated in Trade Result transactions per
 second, written ``trtps``, which is the quantity the specification
 calls ``tpsE``.
 
@@ -66,29 +66,19 @@ one run per user count.
 The answer under the 20 percent allowance
 -----------------------------------------
 
-What follows is the answer under the 20 percent allowance the
-search ran under until 2026-09-11, kept as the record of that part
-of the search.
 What follows in this section is the answer under the 20 percent
-allowance the search ran under until 2026-09-11, kept as the record
-of that part of the search.
+allowance that the exercise ran under until 2026-09-11, kept as the
+record of that part of the exercise.
 
 **30000 customers at 24 users, 67.86 trtps**, against a ceiling of
 72.0, ratio 0.94.  Closed 2026-09-10 at 13:59 UTC.
 
 30000 is the smallest customer count the allowance permitted: it
 reaches 67.86 trtps against a ceiling of 72.0, and the Load Unit
-below it, probed from the first search's results rather than by the
-plan's rule, exceeded its ceiling at every user count.  That probe
+below it, probed on the basis of earlier measurements on this
+machine rather than by the plan's rule, exceeded its ceiling at
+every user count.  That probe
 was set aside with the allowance, and its runs are in ``unused/``.
-
-The first search reached the same customer count with 67.18 trtps at
-20 users.  This one reports 1 percent more at a higher user count,
-and the difference is in the shape of the throughput curve above 20
-users rather than at its peak, see phase 2.  Everything else that
-changed between the two searches, the profiles, the market exchange
-fix and the broker layout, affects the 5000 customer scale and the
-validity of the runs, not this number.
 
 **Run to run scatter at the answer point.**  The answer point was
 measured three times: once in the phase 2 sweep, four and a half
@@ -131,14 +121,14 @@ revision 1.14.0, sets the Scale Factor at 500 customers per tpsE and
 accepts a measured rate only between 80 and 102 percent of ``C /
 500``, reporting anything over 100 percent as ``C / 500``.  The 20
 percent allowance over that was the user's, for the first part of
-the search, and was withdrawn on 2026-09-11, see "The strict rule".
+the exercise, and was withdrawn on 2026-09-11, see "The strict rule".
 ``PLAN.rst`` has the wording and the phases.
 
 Phase 0 measures every user count from 1 to 32 at the smallest legal
 ``C``, 5000 customers, where the ceiling under the allowance is 12.0
 trtps.  The machine exceeds that ceiling with a single user, so phase
 0 cannot contain the answer.  It is the baseline from which the rest
-of the search extrapolates: the peak rate with the whole database in
+of the exercise extrapolates: the peak rate with the whole database in
 memory sets the customer count of the phase 1 spot check, and the
 shape of throughput against concurrency, with a processor profile at
 every point, is the reference against which every larger scale is
@@ -181,10 +171,13 @@ Profile                   perf, 20 s at the middle of the interval
 The instance is an Amazon Web Services (AWS) r5b.4xlarge, and its
 storage is 26 Elastic Block Store (EBS) volumes of the gp3 type,
 combined by the Logical Volume Manager (LVM) into one striped
-volume.  The server configuration is the original search's, verified
-against the ``pg_settings`` capture inside an original run, except
-that statement, connection and disconnection logging are off.
-Nothing is changed during the search.
+volume.  PostgreSQL's defaults are far from ideal for a workload
+like this one, so the server settings above are rough starting
+values from long-standing rules of thumb for sizing PostgreSQL, some
+of them about 20 years old, which may or may not have been measured
+recently.  They are not tuned values.  Statement, connection and
+disconnection logging are off.  Nothing is changed during the
+exercise.
 
 A note on these runs and the specification's execution rules, so
 that none is mistaken for a compliant measurement.  The 3600 second
@@ -210,8 +203,9 @@ seconds.  ``MEE_busy`` is the mean number of the market exchange
 emulator's 16 connections to the Brokerage House in use, the
 delivery rate multiplied by the delivery round trip time, from
 ``mee-load.sh``.  It shows how far the pool is from being fully
-occupied, which is the condition that limited the first search's
-deliveries.
+occupied, which is the condition under which deliveries limit
+throughput, as they did before the market exchange fix described in
+``FIXES.rst``.
 
 The second table is what ``stability.sh`` reports for each run: the
 reported rate, the mean over the settled part of the run, its
@@ -418,9 +412,7 @@ tts_buffer_heap_getsomeattrs    2.8    2.8
 Buffer lookup and pinning, and the pruning and following of heap
 only tuple (HOT) chains on heavily updated pages, are the largest
 items in the profile: the cost of an in-memory workload of small
-transactions that update the same rows repeatedly.  The first
-search's 5000 customer runs never reached this state, because the
-harness limited them long before the processor did.
+transactions that update the same rows repeatedly.
 
 **The decline past 22 users is contention, and it is mild.**  Lock
 acquisition rises from 3.2 to 3.6 percent of samples, Trade Results
@@ -442,15 +434,6 @@ drift is under 3 percent per hour, and every run settles within 5 to
 therefore reports 190.16 for a steady rate equal to its neighbors'.
 The reported figures include those minutes and understate steady
 state by 1 to 3 percent.
-
-**Comparison with the first search.**  It measured 5000 customers
-with 300 second runs and a market exchange that delivered Trade
-Results one at a time, and found 120.05, 77.22, 63.96 and 53.81 trtps
-at 8, 16, 24 and 32 users, falling with concurrency.  This rerun
-finds 136.07, 193.59, 190.87 and 183.21 at the same user counts.
-Those first numbers were the delivery rate of one connection, and the
-conclusion drawn from them, that throughput at 5000 customers falls
-monotonically with concurrency, was an artifact of the harness.
 
 **The spot check.**  The peak rate requires ``193.59 * 500 = 96795``
 customers under the strict rule, rounded up to the next Load Unit:
@@ -507,15 +490,9 @@ Users   trtps  Ratio
    40   67.56  0.94
 =====  ======  ==========
 
-The 20 user point, 67.22, is within 0.04 of the first search's 67.18
-at the same customers and users, on the same server configuration,
-which is the most direct check available that the two searches
-measure the same system.  The shape above 20 users differs: the
-first search fell to 63.61 at 24 users and 55.94 at 32, while this
-one holds a plateau from 22 to 40 users within 0.35 trtps, with the
-market exchange delivering results over several connections instead
-of one.  Steady rates over the settled parts of the runs are 68.5 to
-68.9 across that plateau.
+Above 20 users the rate holds a plateau from 22 to 40 users within
+0.35 trtps.  Steady rates over the settled parts of the runs are
+68.5 to 68.9 across that plateau.
 
 The best point, 67.86 at 24 users, is interior.  Every later point
 ties it within 0.5 percent, and the plan's tie rule required the
@@ -541,13 +518,12 @@ The bracket is 5000 over, 30000 under.
 The plan interpolates the margin between the bracket ends: +181.8 at
 5000 and -230.8 at 97000 put the crossing near 45500, so the plan's
 next probe is 45000.  It was not taken.  Instead 30000 was probed on
-the basis of the first search, which on this same server
-configuration measured 3.43 trtps at 50000 customers and placed the
-crossing at 30000.  That departed from the plan, and
-the user pointed it out.  It reaches the same pair, since 45000
-would have come back far under and the interpolation from its margin
-would have named 30000 next, but the search then does not narrow on
-its own measurements, and the survey lacks the point between 30000
+the basis of earlier measurements on this machine, which placed the
+crossing there.  That departed from the plan, and the user pointed
+it out.  It reaches the same pair, since 45000 would have come back
+far under and the interpolation from its margin would have named
+30000 next, but the exercise then does not narrow on its own
+measurements, and the survey lacks the point between 30000
 and 97000 where throughput collapses.  Phase 4 below fills that in
 after the fact, at 45000, and phase 6 at 35000.
 
@@ -555,7 +531,7 @@ The strict rule
 ===============
 
 On 2026-09-11 the user withdrew the 20 percent allowance: guiding
-the search with a looser rule than the specification's had made its
+the exercise with a looser rule than the specification's had made its
 result harder to read, since the count that was under the allowance
 was over the specification's limit.  From that point the rule is
 clause 6.7.1.2 as written: a measured rate is accepted only between
@@ -564,8 +540,8 @@ clause 6.7.1.2 as written: a measured rate is accepted only between
 margin of 1.02, so the verdict column of ``collect.sh`` and the
 tables below follow the strict rule, and the earlier verdicts are
 reproduced with ``CEILING_MARGIN=1.2``.  The probe at the Load Unit
-below 30000, taken from the first search's results rather than by
-the plan's rule, is set aside from the same date, and its runs are
+below 30000, taken on the basis of earlier measurements rather than
+by the plan's rule, is set aside from the same date, and its runs are
 in ``unused/``.
 
 Every measured point, restated:
@@ -596,7 +572,7 @@ under, and the next probe was 32000, the Load Unit above the over
 end, with a strict window of 51.2 to 65.28 and a nominal rate of
 64.0.  It came back under at every user count, as phase 8 below
 records.  31000 over and 32000 under are adjacent Load Units, so
-the search is closed and 32000 is the answer.  The answer is
+the bisection is closed and 32000 is the answer.  The answer is
 reported at its nominal rate if
 its measured rate lies between the nominal and the 102 percent
 line, and as measured if it lies between 80 and 100 percent of the
@@ -698,8 +674,8 @@ One setting of the system under test belongs here.  The striped
 volume's read-ahead is 208 MB, ``read_ahead_kb`` 212992 on the
 device mapper device, set by the volume manager when the striped
 volume was created, against 128 KB on each member.  It has been the
-same for every run of both searches, and nothing is changed during
-a search, but a random 8 KB read workload on a device with a 208 MB
+same for every run, and nothing is changed during the exercise,
+but a random 8 KB read workload on a device with a 208 MB
 read-ahead window bears on the read-ahead effect noted at 97000
 customers in the storage section.
 
@@ -748,12 +724,13 @@ warm run decided it, and the verdict rests on the warm run, on the
 The bracket is 31000 over, 35000 under.  The next probe is 32000,
 the Load Unit above the over end, with a strict window of 51.2 to
 65.28 and a nominal rate of 64.0.  If 32000 is under, it is
-adjacent to 31000 and the search closes with 32000 as the answer.
+adjacent to 31000 and the bisection closes with 32000 as the
+answer.
 
 Phase 8, 32000 customers
 ========================
 
-**Under at every user count, and the search is closed.**  The
+**Under at every user count, and the bisection is closed.**  The
 strict window is 51.2 to 65.28 with a nominal rate of 64.0.  Eight
 warm cache points were measured, all under the line and above the
 floor:
@@ -803,7 +780,7 @@ Order, 64 to 130 Trade Results given up on per run, Trade Order
 rollbacks 1.0 percent, and the longest Trade Result response time
 2.0 to 2.4 seconds.  The build took 118 minutes.
 
-**The verdict closes the search.**  32000 is under and valid, 31000
+**The verdict closes the bisection.**  32000 is under and valid, 31000
 is over, and they are adjacent Load Units, so 32000 customers is
 the smallest legal count and the answer.  Every point lies below
 the nominal 64.0, so the answer is reported as measured rather
@@ -822,10 +799,10 @@ Answer section.
 Phase 4, the bisection redone by the plan's rule
 =================================================
 
-After the search had closed, the user asked that the bisection be
-redone the way the plan prescribes, from this search's own
-measurements and as if the first search's results were unknown, so
-that the survey narrows on its own measurements.  The plan
+After the bisection had closed, the user asked that it be redone
+the way the plan prescribes, from this exercise's own measurements
+alone and without the earlier measurements that had placed the
+30000 probe, so that the survey narrows on its own measurements.  The plan
 interpolates the margin, throughput minus ceiling, between the
 bracket ends: +181.78 at 5000 and -230.82 at 97000 put the crossing
 near 45500, so the plan's first bisection probe is 45000.
@@ -848,14 +825,14 @@ of 23 rather than two.  The build took 170 minutes.
 
 **The rule then selects 30000.**  Interpolating the margin between
 +181.78 at 5000 and -103.38 at 45000 puts the crossing at 30499,
-which rounds to 30000 on the grid.  This search had measured 30000
+which rounds to 30000 on the grid.  This exercise had measured 30000
 ten times, all under the allowance ceiling, and the Load Unit below
 it over, so the bisection under the allowance closed on those
 measurements without another build.  The sequence the plan produces
-from this search's own data is therefore 5000, 97000, 45000, 30000,
+from this exercise's own data is therefore 5000, 97000, 45000, 30000,
 and it ends at the same answer.
-Where the earlier account had taken 30000 on the basis of the first
-search, the survey now narrows on what this one measured, and it has
+Where the earlier account had taken 30000 on the basis of earlier
+measurements, the survey now narrows on what this exercise measured, and it has
 the point that shows the collapse between 30000 and 97000: 4.62
 trtps at 45000, where the database is more than four times memory,
 against 67.86 at 30000, three times.
@@ -1061,11 +1038,10 @@ processors wait on I/O 83 percent of the time and compute 4 percent
 of it.  Each Trade Result costs 196 MB of disk reads, sixty times
 the figure at 30000.  The operating system's own requests come to
 269 MB/s, less than the volume delivers, so the kernel's read ahead
-fetches more than PostgreSQL asks for.  The same effect was noted in
-the parameter campaign at large buffer pools.  Whether the 32000
-operations per second is the stripe's limit or the members' is not
-established, and the 0.6 ms wait shows that the devices themselves
-are not queueing.
+fetches more than PostgreSQL asks for.  Whether the 32000 operations
+per second is the stripe's limit or the members' is not established,
+and the 0.6 ms wait shows that the devices themselves are not
+queueing.
 
 **Across the scales the disk read cost per Trade Result is the
 quantity that drives the ratio's monotonic fall.**  It is 0.01 MB in
@@ -1139,7 +1115,7 @@ measured.  The rate is set by how many readers the workload keeps
 waiting, not by the device.  Reaching the instance's 43,333 would
 need about 26 outstanding requests, so more users would have raised
 throughput at this scale, as the plan expected of a system limited
-by I/O and as the first search saw at 50000 customers.  AWS's own
+by I/O.  AWS's own
 guideline for consistent latency is a queue of at most one request
 per 1,000 provisioned IOPS per volume.  The members held 0.75
 outstanding requests each against a guideline of 3 at baseline.
@@ -1472,18 +1448,16 @@ within a few tenths of a percent, as its flat throughput implies.
 **Checksums are a tenth of the backends' time once the database no
 longer fits.**  ``pg_checksum_page`` does not appear at 5000
 customers and takes 6.2 to 6.5 percent of all samples at 30000, a
-tenth of the backends' own share.  The cluster was
-initialized with data checksums, and PostgreSQL verifies a page's
-checksum each time it reads the page from the operating system.  At
-5000 customers nothing is read from the operating system, so nothing
-is verified.  At 30000, with 5.5 GB/s of pages arriving from the
-page cache, every one of them is.  Together with the kernel's
-copying and lookup, about a fifth of the machine at this scale is
-spent moving pages into ``shared_buffers`` and checking them, which
-is the symbol level view of the quarter of processor time the kernel
-accounts for in the storage section, and of why the parameter
-campaign found throughput at this scale rising with the buffer pool
-up to 68 GB.
+tenth of the backends' own share.  The cluster was initialized with
+data checksums, and PostgreSQL verifies a page's checksum each time
+it reads the page from the operating system.  At 5000 customers
+nothing is read from the operating system, so nothing is verified.
+At 30000, with 5.5 GB/s of pages arriving from the page cache, every
+one of them is.  Together with the kernel's copying and lookup,
+about a fifth of the machine at this scale is spent moving pages
+into ``shared_buffers`` and checking them, which is the symbol level
+view of the quarter of processor time the kernel accounts for in the
+storage section.
 
 **At 97000 customers the processor is not the limit.**  91 percent
 of samples are the idle loop, the backends have 2 percent and the
@@ -1572,16 +1546,16 @@ Result at 97000 customers.
 
 Two indexes are missing for this workload, ``(t_ca_id, t_dts)`` and
 ``(t_s_symb, t_dts)``.  With them each of those queries would read
-the ten to fifty rows it returns, about a hundredth of what it
-reads now, and the block traffic of ``trade``, four fifths of all
-block requests at every scale, would fall by about the same factor.
-That would change the shape of this whole search.  The collapse of
-throughput with database size is this traffic, and at 5000
-customers the same scans are the largest part of the buffer lookups
-that head the processor profile.  The specification leaves the
-choice of indexes to the sponsor, and nothing is changed during a
-search, so this is a finding for a later campaign rather than a
-change made here.
+the ten to fifty rows it returns, about a hundredth of what it reads
+now, and the block traffic of ``trade``, four fifths of all block
+requests at every scale, would fall by about the same factor. That
+would change the shape of this whole exercise.  The collapse of
+throughput with database size is this traffic, and at 5000 customers
+the same scans are the largest part of the buffer lookups that head
+the processor profile.  The specification leaves the choice of
+indexes to the sponsor, and nothing is changed during the exercise,
+so this is a finding for a later exercise rather than a change made
+here.
 
 **Indexes that are not used.**  Of the 45 indexes on the TPC-E
 tables, 43 are scanned in every one of the 66 reportable runs,
@@ -1643,8 +1617,7 @@ here and any of these changes would appear in a compliant report.
 Clause 2.3.9 requires room for 5 percent more rows, indexes
 included.
 
-None of the changes has been measured.  ``../indexes/PLAN.rst`` is
-the plan for testing them.  In order of the strength of the
+None of the changes has been measured.  In order of the strength of the
 recommendation:
 
 1. **Replace** ``i_t_ca_id`` **with an index on**
@@ -1692,10 +1665,10 @@ recommendation:
    with a few rows per scan, and the required primary keys cannot
    go.
 
-The first two changes would change the shape of the scale factor
-search itself, since the collapse of throughput with database size
-is this traffic, so a search with the new indexes must start again
-from its baseline.
+The first two changes would change the shape of the sizing
+exercise itself, since the collapse of throughput with database
+size is this traffic, so a sizing exercise with the new indexes must
+start again from its baseline.
 
 The tables follow.  Rates are per second over the run.
 
