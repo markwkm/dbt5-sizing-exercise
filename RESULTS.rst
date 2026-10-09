@@ -31,9 +31,9 @@ at the nominal rate, and the tie rule picks the lowest user count
 within 3 percent of the best, 18 users.  16 users, the logical
 processor count, falls 6 percent short of the best and is not a
 tie.  "The strict rule" and phase 8 below have the measurements,
-``throughput-crossing-podo.png`` draws the four customer counts
+``throughput-crossing-default.png`` draws the four customer counts
 around the crossing against their limit lines, and
-``throughput-survey-podo.png`` every customer count measured.
+``throughput-survey-default.png`` every customer count measured.
 
 **Run to run scatter at the answer point.**  The point was measured
 three times: once in the phase 8 sweep, seven and a half hours
